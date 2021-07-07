@@ -415,7 +415,7 @@ int16_t mde_NTCSensor_GetTemperature(uint8_t in_solidNum,SensorType_Def in_SenTy
 //****************************返回电压值****************************************
 int16_t mde_NTCSensor_pull_feedback_degree(void)
 {
-    return mde_sensor[SENSOR_SEVEN].Adc12Value;
+    return 0;
 }
 //++++++++++++++++++++++++++++++start+++++++++++++++++++++++++++++++++++++++++++
 //****************************返回温度值****************************************

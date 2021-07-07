@@ -1,39 +1,42 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#include "stm32f10x.h"
+#include "gd32f4xx.h"
 #include "intrinsics.h"
 #include ".\bsp_pwm.h"
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//EC马达PWM输出控制
-//PWM输出频率 3K
-//PC9   TIM8_CH4  
-//PC8   TIM8_CH3 
-//PC7   TIM8_CH2
+//PA9   TIM0_CH1  
+//PA8   TIM0_CH0 
+//PC9   TIM7_CH3
+#define T0_CH1_PORT     GPIOA        
+#define T0_CH1_PIN      GPIO_PIN_9
+
+#define T0_CH0_PORT     GPIOA        
+#define T0_CH0_PIN      GPIO_PIN_8
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#define PWM_FREQENCY   499
+#define PWM_FREQENCY   500
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-void TIM8CH4_Loading_PwmDutyOut(INT8U PwmData)
-{
-    if(PwmData>100)
-    {
-        PwmData=100;
-    }
-    PwmData=100-PwmData;
-    TIM_SetCompare4(TIM8,(PwmData * PWM_FREQENCY )/100);
-}
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-void TIM8CH2_Loading_PwmDutyOut(INT8U PwmData)
+void TIM0CH0_Loading_PwmDutyOut(INT8U PwmData)
 {
     if(PwmData>100)
     {
         PwmData=100;
     }
    // PwmData=100-PwmData;
-    TIM_SetCompare2(TIM8,(PwmData * PWM_FREQENCY )/100);
+    timer_channel_output_pulse_value_config(TIMER0,TIMER_CH_0,(PwmData * PWM_FREQENCY )/100);
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-void TIM8CH3_Loading_PwmDutyOut(INT8U PwmData)
+void TIM0CH1_Loading_PwmDutyOut(INT8U PwmData)
+{
+    if(PwmData>100)
+    {
+        PwmData=100;
+    }
+   // PwmData=100-PwmData;
+    timer_channel_output_pulse_value_config(TIMER0,TIMER_CH_1,(PwmData * PWM_FREQENCY )/100);
+}
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+/*void TIM8CH3_Loading_PwmDutyOut(INT8U PwmData)
 {
     if(PwmData>100)
     {
@@ -41,99 +44,71 @@ void TIM8CH3_Loading_PwmDutyOut(INT8U PwmData)
     }
     PwmData=100-PwmData;
     TIM_SetCompare3(TIM8,(PwmData * PWM_FREQENCY )/100);
-}
+}*/
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 void PwmControl_Configure(void)
 {
-    GPIO_InitTypeDef GPIO_InitStructure;
+    rcu_periph_clock_enable(RCU_GPIOA);
+    rcu_periph_clock_enable(RCU_GPIOC);
     
-    
-    /* 设置TIM8CLK为72MHZ */
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM8, ENABLE); 
- ///   RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
-    /* GPIOC clock enable, Enable AFIO function */
-    RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOC| RCC_APB2Periph_AFIO, ENABLE);
-    /* PC6,7,8: Config to PWM output mode */
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;            // 复用推挽输出
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_9|GPIO_Pin_8|GPIO_Pin_7;
-    GPIO_Init(GPIOC, &GPIO_InitStructure); 
-    
-     
-  //  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;            // 复用推挽输出
-  //  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-  //  GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_11|GPIO_Pin_7;
-  //  GPIO_Init(GPIOA, &GPIO_InitStructure); 
-    
-    TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-    TIM_OCInitTypeDef  TIM_OCInitStructure;
-    
-    TIM_DeInit(TIM8);   
-    /* Time base configuration */    
-    TIM_TimeBaseStructure.TIM_Prescaler = 47;        // prescaler = 47, TIM_CLK = 72MHZ/(47+1) = 1.5MHZ.     
-    TIM_TimeBaseStructure.TIM_Period = PWM_FREQENCY -1 ;         // 当定时器从0计数到999，即为1000次，为一个定时周期
-                                                    // pwm F = 1.5MHZ/(499+1) = 3kHZ.  
-    TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1 ;    //设置时钟分频系数：不分频(这里用不到)
-    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  //向上计数模式
-    TIM_TimeBaseInit(TIM8, &TIM_TimeBaseStructure);
-    
-    TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;       //配置为PWM模式1
-    TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;  //当定时器计数值小于CCR1_Val时为高电平
+    /*Configure PB3 PB10 PB11(TIMER1 CH1 CH2 CH3) as alternate function*/
+    gpio_mode_set(T0_CH1_PORT, GPIO_MODE_AF, GPIO_PUPD_NONE, T0_CH1_PIN);
+    gpio_output_options_set(T0_CH1_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ,T0_CH1_PIN);
 
-    /* PWM1 Mode configuration: Channel4 */
-    TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-    TIM_OCInitStructure.TIM_Pulse = (0 * PWM_FREQENCY )/100;            //设置通道3的电平跳变值，输出另外一个占空比的PWM
-    
- //   TIM_OC1Init(TIM8, &TIM_OCInitStructure);                        //使能通道1
-  //  TIM_OC1PreloadConfig(TIM8, TIM_OCPreload_Enable);  
-    
-    TIM_OC2Init(TIM8, &TIM_OCInitStructure);                        //使能通道2
-    TIM_OC2PreloadConfig(TIM8, TIM_OCPreload_Enable);  
-    
-    TIM_OC3Init(TIM8, &TIM_OCInitStructure);                        //使能通道3
-    TIM_OC3PreloadConfig(TIM8, TIM_OCPreload_Enable);  
-    
-    TIM_OC4Init(TIM8, &TIM_OCInitStructure);                        //使能通道4
-    TIM_OC4PreloadConfig(TIM8, TIM_OCPreload_Enable);  
-   
-    TIM_ARRPreloadConfig(TIM8, ENABLE);                                // 使能TIM8重载寄存器ARR
+    gpio_mode_set(T0_CH0_PORT, GPIO_MODE_AF, GPIO_PUPD_NONE, T0_CH0_PIN);
+    gpio_output_options_set(T0_CH0_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ,T0_CH0_PIN);
 
-    /* TIM8 enable counter */
-    TIM_Cmd(TIM8, ENABLE);                   // 使能定时器8     
-    TIM_CtrlPWMOutputs(TIM8, ENABLE);        // 注意： 配置定时器8的PWM模式，必须加上这句话！！
-    
-    
-    //TIM_DeInit(TIM1);   
-    /* Time base configuration */    
-   // TIM_TimeBaseStructure.TIM_Prescaler = 47;        // prescaler = 47, TIM_CLK = 72MHZ/(47+1) = 1.5MHZ.     
-  //  TIM_TimeBaseStructure.TIM_Period = PWM_FREQENCY -1 ;         // 当定时器从0计数到999，即为1000次，为一个定时周期
-                                                    // pwm F = 1.5MHZ/(499+1) = 3kHZ.  
-  //  TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1 ;    //设置时钟分频系数：不分频(这里用不到)
- //   TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  //向上计数模式
-  //  TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
-    
-  //  TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;       //配置为PWM模式1
-  //  TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;  //当定时器计数值小于CCR1_Val时为高电平
+    gpio_af_set(T0_CH1_PORT, GPIO_AF_1, T0_CH1_PIN);
+    gpio_af_set(T0_CH0_PORT, GPIO_AF_1, T0_CH0_PIN);
+        /* -----------------------------------------------------------------------
+    TIMER1 configuration: generate 3 PWM signals with 3 different duty cycles:
+    TIMER1CLK = SystemCoreClock / 200 = 1MHz
 
-    /* PWM1 Mode configuration: Channel4 */
-   // TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-   // TIM_OCInitStructure.TIM_Pulse = (0 * PWM_FREQENCY )/100;            //设置通道3的电平跳变值，输出另外一个占空比的PWM
-    
-    
-  //  TIM_OC4Init(TIM1, &TIM_OCInitStructure);                        //使能通道4
-   // TIM_OC4PreloadConfig(TIM1, TIM_OCPreload_Enable);  
-   
-  //  TIM_ARRPreloadConfig(TIM1, ENABLE);                                // 使能TIM8重载寄存器ARR
+    TIMER1 channel1 duty cycle = (4000/ 16000)* 100  = 25%
+    TIMER1 channel2 duty cycle = (8000/ 16000)* 100  = 50%
+    TIMER1 channel3 duty cycle = (12000/ 16000)* 100 = 75%
+    ----------------------------------------------------------------------- */
+    timer_oc_parameter_struct timer_ocintpara;
+    timer_parameter_struct timer_initpara;
 
-    /* TIM8 enable counter */
-    //TIM_Cmd(TIM1, ENABLE);                   // 使能定时器8     
-  //  TIM_CtrlPWMOutputs(TIM1, ENABLE);        // 注意： 配置定时器8的PWM模式，必须加上这句话！！
-//--------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------   
-    TIM8CH2_Loading_PwmDutyOut(0);
-    TIM8CH3_Loading_PwmDutyOut(0);
-    TIM8CH4_Loading_PwmDutyOut(0);
- //   TIM8CH2_Loading_PwmDutyOut(0);
+    rcu_periph_clock_enable(RCU_TIMER0);
+    rcu_timer_clock_prescaler_config(RCU_TIMER_PSC_MUL4);
+
+    timer_deinit(TIMER0);
+
+    /* TIMER1 configuration */
+    timer_initpara.prescaler         = 167;
+    timer_initpara.alignedmode       = TIMER_COUNTER_EDGE;
+    timer_initpara.counterdirection  = TIMER_COUNTER_UP;
+    timer_initpara.period            = (PWM_FREQENCY-1);
+    timer_initpara.clockdivision     = TIMER_CKDIV_DIV1;
+    timer_initpara.repetitioncounter = 0;
+    timer_init(TIMER0,&timer_initpara);
+
+    /* CH1,CH2 and CH3 configuration in PWM mode */
+    timer_ocintpara.ocpolarity  = TIMER_OC_POLARITY_HIGH;
+    timer_ocintpara.outputstate = TIMER_CCX_ENABLE;
+    timer_ocintpara.ocnpolarity  = TIMER_OCN_POLARITY_HIGH;
+    timer_ocintpara.outputnstate = TIMER_CCXN_DISABLE;
+    timer_ocintpara.ocidlestate  = TIMER_OC_IDLE_STATE_LOW;
+    timer_ocintpara.ocnidlestate = TIMER_OCN_IDLE_STATE_LOW;
+
+    timer_channel_output_config(TIMER0,TIMER_CH_0,&timer_ocintpara);
+    timer_channel_output_config(TIMER0,TIMER_CH_1,&timer_ocintpara);
+
+    /* CH0 configuration in PWM mode1,duty cycle 25% */
+    timer_channel_output_pulse_value_config(TIMER0,TIMER_CH_0,0);
+    timer_channel_output_mode_config(TIMER0,TIMER_CH_0,TIMER_OC_MODE_PWM0);
+    timer_channel_output_shadow_config(TIMER0,TIMER_CH_0,TIMER_OC_SHADOW_DISABLE);
+
+    /* CH2 configuration in PWM mode1,duty cycle 50% */
+    timer_channel_output_pulse_value_config(TIMER0,TIMER_CH_1,0);
+    timer_channel_output_mode_config(TIMER0,TIMER_CH_1,TIMER_OC_MODE_PWM0);
+    timer_channel_output_shadow_config(TIMER0,TIMER_CH_1,TIMER_OC_SHADOW_DISABLE);
+    /* auto-reload preload enable */
+    timer_auto_reload_shadow_enable(TIMER0);
+    /* auto-reload preload enable */
+    timer_enable(TIMER0);
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

@@ -4,7 +4,7 @@
 //------------------------------E N D-------------------------------------------
 #include <stdbool.h>
 #include <stdint.h>
-#include "stm32f10x.h"
+#include "gd32f4xx.h"
 //++++++++++++++++++++++++++++++start+++++++++++++++++++++++++++++++++++++++++++
 //------------------------------E N D-------------------------------------------
 
@@ -53,9 +53,9 @@ void BSP_ADC_Channal_one(void);
 void BSP_ADC_Channal_two(void);
 void BSP_ADC_Channal_three(void);
 void BSP_ADC_Channal_four(void);
-void BSP_ADC_Channal_five(void);
-void BSP_ADC_Channal_six(void);
-void BSP_ADC_Channal_seven(void);
+//void BSP_ADC_Channal_five(void);
+//void BSP_ADC_Channal_six(void);
+//void BSP_ADC_Channal_seven(void);
 //------------------------------E N D-------------------------------------------
 //++++++++++++++++++++++++++++++start+++++++++++++++++++++++++++++++++++++++++++
 //Event

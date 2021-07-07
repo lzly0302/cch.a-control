@@ -2111,13 +2111,43 @@
       <name>mde_ntcSensor</name>
       <group>
         <name>depend</name>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_ntcSensor\depend\bsp_ntcSensor.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_ntcSensor\depend\bsp_ntcSensor.h</name>
+        </file>
       </group>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_ntcSensor\mde_ntcSensor.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_ntcSensor\mde_ntcSensor.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_ntcSensor\sod_ntcSensor.h</name>
+      </file>
     </group>
     <group>
       <name>mde_pwm</name>
       <group>
         <name>depend</name>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_pwm\depend\bsp_pwm.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_pwm\depend\bsp_pwm.h</name>
+        </file>
       </group>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_pwm\mde_pwm.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_pwm\mde_pwm.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_pwm\sod_pwm.h</name>
+      </file>
     </group>
     <group>
       <name>mde_relay</name>

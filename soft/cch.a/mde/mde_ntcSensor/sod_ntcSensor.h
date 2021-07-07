@@ -6,7 +6,7 @@
 //++++++++++++++++++++++++++++++start+++++++++++++++++++++++++++++++++++++++++++
 #include ".\depend\bsp_ntcSensor.h"
 //------------------------------E N D-------------------------------------------
-#define max_solid    7
+#define max_solid    4
 
 static NtcSensorParameter_Def mde_sensor[max_solid];
 
@@ -30,7 +30,7 @@ void mde_ntc_sensor_solid_cfg(void)
     mde_sensor[3].timeOutDelay.timStatusBits = timStatusBits_typeMillsecond;
     mde_sensor[3].channelClockDelay.timStatusBits = timStatusBits_typeMillsecond;
 
-    mde_sensor[4].SelectAdcChannel = BSP_ADC_Channal_five;
+    /*mde_sensor[4].SelectAdcChannel = BSP_ADC_Channal_five;
     mde_sensor[4].timeOutDelay.timStatusBits = timStatusBits_typeMillsecond;
     mde_sensor[4].channelClockDelay.timStatusBits = timStatusBits_typeMillsecond;
 
@@ -40,7 +40,7 @@ void mde_ntc_sensor_solid_cfg(void)
 
     mde_sensor[6].SelectAdcChannel = BSP_ADC_Channal_seven;
     mde_sensor[6].timeOutDelay.timStatusBits = timStatusBits_typeMillsecond;
-    mde_sensor[6].channelClockDelay.timStatusBits = timStatusBits_typeMillsecond;
+    mde_sensor[6].channelClockDelay.timStatusBits = timStatusBits_typeMillsecond;*/
 //-----------------------------------------------------------------------------
 }
 

@@ -17,9 +17,9 @@
 //
 //出口: 无
 void PwmControl_Configure(void);
-void TIM8CH4_Loading_PwmDutyOut(INT8U PwmData);
-void TIM8CH2_Loading_PwmDutyOut(INT8U PwmData);
-void TIM8CH3_Loading_PwmDutyOut(INT8U PwmData);
+void TIM0CH0_Loading_PwmDutyOut(INT8U PwmData);
+void TIM0CH1_Loading_PwmDutyOut(INT8U PwmData);
+//void TIM8CH3_Loading_PwmDutyOut(INT8U PwmData);
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
 #endif
