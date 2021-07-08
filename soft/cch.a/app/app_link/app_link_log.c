@@ -20,8 +20,8 @@ typedef enum
     UN_LOG_BOARDCAST_ACTIVE_RESULT,      //申请组网激活结果
     UN_LOG_SEND_BOARDCAST,               //申请组网
     UN_LOG_SEND_BOARDCAST_RESULT,        //申请组网结果
-    UN_LOG_SEND_BOARDCAST_1,               //申请组网
-    UN_LOG_SEND_BOARDCAST_RESULT_1,        //申请组网结果
+    UN_LOG_SEND_BOARDCAST_1,             //申请组网
+    UN_LOG_SEND_BOARDCAST_RESULT_1,      //申请组网结果
     UN_LOG_SEND_BOARDCAST_ROLL_BACK,     //回退
     UN_LOG_WAIT_LOG_OR_UPDATA,           //等待注册或者更新   主状态跳跃 
 
@@ -84,8 +84,8 @@ typedef enum
 
 typedef enum
 {
-    LOG_SECOND_IDLE         = 0x00,          //空闲状态
-    LOG_SECOND_WAIT_RECEIVE,                //等待接收
+    LOG_SECOND_IDLE         = 0x00,              //空闲状态
+    LOG_SECOND_WAIT_RECEIVE,                    //等待接收
     LOG_SECOND_ANSWER,                         //响应
     LOG_SECOND_ANSWER_RESULT,                  //响应结果
 }secondStatus_def;
@@ -360,7 +360,15 @@ bool pull_first_device(uint8_t in_solidNum)
 
 
 
+uint8_t pull_log_main_status(void)
+{
+    return appModbusRegedit[0].mainLinkStatus;
+}
 
+uint8_t pull_log_sub_status(void)
+{
+    return appModbusRegedit[0].unlogSubStatus;
+}
 
 void _log_task(uint8_t in_solidNum)
 {
@@ -431,7 +439,6 @@ void _log_task(uint8_t in_solidNum)
                         }
                         else 
                         {//激活失败
-                          //  appModbusRegedit[in_solidNum].unlogSubStatus = UN_LOG_WAIT_RECEIVE;
                         }           
                         break;
                     }
@@ -1174,7 +1181,6 @@ void _log_task(uint8_t in_solidNum)
             }
             case STATUS_LOG_TO_FIRST:
             {
-                static uint8_t retryCount[MAX_MODBUS_NUM];
                 switch (appModbusRegedit[in_solidNum].firstSubStatus)
                 {
                     case LOG_FIRST_IDLE:
@@ -1421,7 +1427,6 @@ void _log_task(uint8_t in_solidNum)
                             {//自己地址
                                 if(appModbusRegedit[in_solidNum].in_rev_data->Payload[1] == CONTROL_UPDATA_ACK)
                                 {
-                                    retryCount[in_solidNum] = 0;
                                     appModbusRegedit[in_solidNum].updataWord &= (~(0x01<< appModbusRegedit[in_solidNum].updataNumber));
                                     if(appModbusRegedit[in_solidNum].updataWord)
                                     {
@@ -1475,20 +1480,7 @@ void _log_task(uint8_t in_solidNum)
                         }
                         else if(pbc_pull_timerIsCompleted(&appModbusRegedit[in_solidNum].receive_timeout_delay))
                         {
-                            retryCount[in_solidNum]++;
-                            if(retryCount[in_solidNum] >= MAX_RETRY_COUNT)
-                            {
-                                retryCount[in_solidNum] = 0;
-                                appModbusRegedit[in_solidNum].updataWord &= (~(0x01<< appModbusRegedit[in_solidNum].updataNumber));
-                                appModbusRegedit[in_solidNum].firstSubStatus = LOG_FIRST_WAIT_RECEIVE;
-                                appModbusRegedit[in_solidNum].deviceList[appModbusRegedit[in_solidNum].updataNumber].onlineFlag = false;
-                                app_master_slave_updata_local_device_list(in_solidNum);
-                                pbc_reload_timerClock(&appModbusRegedit[in_solidNum].updata_list_delay,0);//发送列表
-                            }
-                            else
-                            {
-                                appModbusRegedit[in_solidNum].firstSubStatus = LOG_FIRST_RESEND_LIST_ACTIVE;
-                            }                           
+                            appModbusRegedit[in_solidNum].firstSubStatus = LOG_FIRST_RESEND_LIST_ACTIVE;
                         }
                         break;
                     }
@@ -1617,28 +1609,11 @@ void _log_task(uint8_t in_solidNum)
                         }
                         else if(pbc_pull_timerIsCompleted(&appModbusRegedit[in_solidNum].receive_timeout_delay))
                         {
-                            retryCount[in_solidNum]++;
-                            if(retryCount[in_solidNum] >= MAX_RETRY_COUNT)
-                            {
-                                retryCount[in_solidNum] = 0;
-                                appModbusRegedit[in_solidNum].updataWord &= (~(0x01<< appModbusRegedit[in_solidNum].updataNumber));
-                                appModbusRegedit[in_solidNum].firstSubStatus = LOG_FIRST_WAIT_RECEIVE;
-                                appModbusRegedit[in_solidNum].deviceList[appModbusRegedit[in_solidNum].updataNumber].onlineFlag = false;
-                                app_master_slave_updata_local_device_list(in_solidNum);
-                                pbc_reload_timerClock(&appModbusRegedit[in_solidNum].updata_list_delay,0);//发送列表
-                            }
-                            else
-                            {
-                                appModbusRegedit[in_solidNum].updataWord &= (~(0x01<< appModbusRegedit[in_solidNum].updataNumber));
-                                if(appModbusRegedit[in_solidNum].updataWord)
-                                {
-                                    appModbusRegedit[in_solidNum].firstSubStatus = LOG_FIRST_SEND_LIST_ACTIVE;
-                                }
-                                else
-                                {
-                                    appModbusRegedit[in_solidNum].firstSubStatus = LOG_FIRST_WAIT_RECEIVE;
-                                }     
-                            }
+                            appModbusRegedit[in_solidNum].updataWord &= (~(0x01<< appModbusRegedit[in_solidNum].updataNumber));
+                            appModbusRegedit[in_solidNum].firstSubStatus = LOG_FIRST_WAIT_RECEIVE;
+                            appModbusRegedit[in_solidNum].deviceList[appModbusRegedit[in_solidNum].updataNumber].onlineFlag = false;
+                            app_master_slave_updata_local_device_list(in_solidNum);
+                            pbc_reload_timerClock(&appModbusRegedit[in_solidNum].updata_list_delay,0);//发送列表
                         }                       
                         break;
                     }
@@ -1852,6 +1827,12 @@ void app_link_log_push_receive_data(uint8_t in_solidNum,bgk_comm_buff_def *in_re
     _log_task(in_solidNum);
 }
 
+void app_link_log_out(uint8_t in_solidNum)
+{
+    appModbusRegedit[in_solidNum].mainLinkStatus = STATUS_UN_LOG;
+    appModbusRegedit[in_solidNum].unlogSubStatus = UN_LOG_WAIT_RECEIVE;
+    pbc_reload_timerClock(&appModbusRegedit[in_solidNum].send_boardcast_delay,0);  
+}
 void app_link_log_task(void)
 {
     uint8_t i = 0;

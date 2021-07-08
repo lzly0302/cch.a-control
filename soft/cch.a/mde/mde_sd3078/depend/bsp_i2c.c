@@ -15,16 +15,16 @@
 
 //++++++++++++++++++++++++++++++start+++++++++++++++++++++++++++++++++++++++++++
 #include ".\bsp_i2c.h"
-#include "stm32f10x.h"
+#include "gd32f4xx.h"
 //------------------------------E N D-------------------------------------------
 
-#define SDA_SD3078_PORT   GPIOB
-#define SDA_SD3078_PIN    GPIO_Pin_9
+#define SDA_SD3078_PORT   GPIOE
+#define SDA_SD3078_PIN    GPIO_PIN_2
 
-#define SCL_SD3078_PORT   GPIOB
-#define SCL_SD3078_PIN    GPIO_Pin_8
+#define SCL_SD3078_PORT   GPIOE
+#define SCL_SD3078_PIN    GPIO_PIN_3
 
-#define DELAY_COUNT      200
+#define DELAY_COUNT      500
 void Delay_IIC(uint16_t delay)
 {
     while(delay)
@@ -36,48 +36,35 @@ void Delay_IIC(uint16_t delay)
 
 void bsp_i2c_setSdaOut(void)
 {
-    GPIO_InitTypeDef GPIO_InitStructure; 
-
-    GPIO_InitStructure.GPIO_Pin =  SDA_SD3078_PIN;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_Init(SDA_SD3078_PORT, &GPIO_InitStructure);//推挽输出
+    gpio_mode_set(SDA_SD3078_PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE,SDA_SD3078_PIN);
+    gpio_output_options_set(SDA_SD3078_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ,SDA_SD3078_PIN);
 	Delay_IIC(DELAY_COUNT);
 }
 
 void bsp_i2c_setSdaIn(void)
 {
-    GPIO_InitTypeDef GPIO_InitStructure; 
-
-    GPIO_InitStructure.GPIO_Pin =  SDA_SD3078_PIN;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-    GPIO_Init(SDA_SD3078_PORT, &GPIO_InitStructure);
+    gpio_mode_set(SDA_SD3078_PORT, GPIO_MODE_INPUT, GPIO_PUPD_NONE,SDA_SD3078_PIN);
 	Delay_IIC(DELAY_COUNT);
 }
 
 void bsp_i2c_configure(void)
 {
-    GPIO_InitTypeDef GPIO_InitStructure;    
-    
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+    rcu_periph_clock_enable(RCU_GPIOE);
+    gpio_mode_set(SDA_SD3078_PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE,SDA_SD3078_PIN);
+    gpio_output_options_set(SDA_SD3078_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ,SDA_SD3078_PIN);
 
-    GPIO_InitStructure.GPIO_Pin = SDA_SD3078_PIN;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_Init(SDA_SD3078_PORT, &GPIO_InitStructure);
-	GPIO_SetBits(SDA_SD3078_PORT,SDA_SD3078_PIN);
-	
-    GPIO_InitStructure.GPIO_Pin = SCL_SD3078_PIN;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_Init(SCL_SD3078_PORT, &GPIO_InitStructure);
-	GPIO_ResetBits(SCL_SD3078_PORT,SCL_SD3078_PIN);
+    GPIO_BOP(SDA_SD3078_PORT) = SDA_SD3078_PIN;
+
+    gpio_mode_set(SCL_SD3078_PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE,SCL_SD3078_PIN);
+    gpio_output_options_set(SCL_SD3078_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ,SCL_SD3078_PIN);
+
+    GPIO_BC(SCL_SD3078_PORT) = SCL_SD3078_PIN;
 }
 
 
 bool bsp_i2c_readSda(void)
 {
-    if(GPIO_ReadInputDataBit(SDA_SD3078_PORT, SDA_SD3078_PIN))
+    if(SET == gpio_input_bit_get(SDA_SD3078_PORT, SDA_SD3078_PIN))
     {
         return true;
     }
@@ -86,25 +73,25 @@ bool bsp_i2c_readSda(void)
 
 void bsp_i2c_setSdaHigh(void)
 {
-    GPIO_SetBits(SDA_SD3078_PORT,SDA_SD3078_PIN);
+    gpio_bit_set(SDA_SD3078_PORT,SDA_SD3078_PIN);
 	Delay_IIC(DELAY_COUNT);
 }
 
 void bsp_i2c_setSdaLow(void)
 {
-    GPIO_ResetBits(SDA_SD3078_PORT,SDA_SD3078_PIN);
+    gpio_bit_reset(SDA_SD3078_PORT,SDA_SD3078_PIN);
 	Delay_IIC(DELAY_COUNT);
 }
 
 void bsp_i2c_setSclHigh(void)
 {
-    GPIO_SetBits(SCL_SD3078_PORT,SCL_SD3078_PIN);
+    gpio_bit_set(SCL_SD3078_PORT,SCL_SD3078_PIN);
 	Delay_IIC(DELAY_COUNT);
 }
 
 void bsp_i2c_setSclLow(void)
 {
-    GPIO_ResetBits(SCL_SD3078_PORT,SCL_SD3078_PIN);
+    gpio_bit_reset(SCL_SD3078_PORT,SCL_SD3078_PIN);
 	Delay_IIC(DELAY_COUNT);
 }
 

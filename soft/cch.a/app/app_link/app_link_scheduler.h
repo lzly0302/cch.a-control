@@ -1,9 +1,12 @@
 #ifndef app_modbus_scheduler_H
 #define app_modbus_scheduler_H
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#define MAX_MODBUS_NUM           1  //最大串口实例
-#define SYSTEM_MASTER            0
-#define MAX_DEVICE_NUM           12 //链路最大设备数量
+#define MAX_MODBUS_NUM           2//最大实例
+#define SYSTEM_PAD               0
+#define SYSTEM_MASTER            1
+
+#define MAX_DEVICE_NUM           16//最大设备数量
+
 
 //----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

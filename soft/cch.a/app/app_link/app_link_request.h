@@ -1,7 +1,7 @@
 #ifndef _APP_LINK_REQUEST_H
 #define _APP_LINK_REQUEST_H
 
-
+#define SILENCE_TIME    30
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //interface list  4
 1:扫描任务:调度器使用         
@@ -70,6 +70,9 @@ transmitResult_t app_link_request_get_transmit_result(uint8_t solidNum);
 //入口: 无                           
 //出口: 无
 void app_link_request_reset_silence_time(uint8_t solidNum);
+
+uint8_t pull_request_main_status(void);
+uint8_t pull_request_tran_status(void);
 //------------------------------E N D-------------------------------------------
 
 #endif

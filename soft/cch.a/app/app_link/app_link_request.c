@@ -3,8 +3,8 @@
 
 typedef enum
 {
-    LINK_REQUEST_MAIN_STATUS_IDLE    = 0x00, //·¢ËÍ½á¹ûÊ§°Ü
-    LINK_REQUEST_MAIN_STATUS_SILENCE ,       //¾²Ä¬
+    LINK_REQUEST_MAIN_STATUS_IDLE    = 0x00, //ï¿½ï¿½ï¿½Í½ï¿½ï¿½Ê§ï¿½ï¿½
+    LINK_REQUEST_MAIN_STATUS_SILENCE ,       //ï¿½ï¿½Ä¬
     LINK_REQUEST_MAIN_STATUS_READ_RESULLT ,       
 }linkRequestMainStatus_t;
 
@@ -21,6 +21,14 @@ typedef struct
 linkRequest_t linkRequest[MAX_MODBUS_NUM];
 
 void debug_task(void);
+uint8_t pull_request_main_status(void)
+{
+    return linkRequest[0].main_status;
+}
+uint8_t pull_request_tran_status(void)
+{
+    return linkRequest[0].transmitResult;
+}
 bool app_link_request_transmit_activation_request(uint8_t solidNum)
 {
     if((LINK_REQUEST_MAIN_STATUS_IDLE == linkRequest[solidNum].main_status) &&\
@@ -57,7 +65,7 @@ transmitResult_t app_link_request_get_transmit_result(uint8_t solidNum)
 
 void app_link_request_reset_silence_time(uint8_t solidNum)
 {
-    pbc_reload_timerClock(&linkRequest[solidNum].silence_time,30); 
+    pbc_reload_timerClock(&linkRequest[solidNum].silence_time,SILENCE_TIME); 
     linkRequest[solidNum].main_status = LINK_REQUEST_MAIN_STATUS_SILENCE;
 }
 
@@ -66,11 +74,11 @@ void app_link_request_task(void)
     static bool cfg[MAX_MODBUS_NUM] = false;
     uint8_t i = 0;   
  //   debug_task();
-    for(;i < MAX_MODBUS_NUM; i++)
+    for(i = 0;i < MAX_MODBUS_NUM; i++)
     {
         if(cfg[i])
         {
-            pbc_timerMillRun_task(&linkRequest[i].silence_time);     
+         //   pbc_timerMillRun_task(&linkRequest[i].silence_time);     
             pbc_timerMillRun_task(&linkRequest[i].timeout);  
             switch(linkRequest[i].main_status)
             {
@@ -104,12 +112,16 @@ void app_link_request_task(void)
                             linkRequest[i].transmitResult = TRANSMIT_RESULT_FAIL;
                             app_link_request_reset_silence_time(i);                             
                         }                          
-                    }            
-                    if(pbc_pull_timerIsCompleted(&linkRequest[i].timeout))
-                    {
-                        linkRequest[i].transmitResult = TRANSMIT_RESULT_FAIL;
-                        linkRequest[i].main_status = LINK_REQUEST_MAIN_STATUS_IDLE;
-                    }                      
+                    } 
+                //    else
+                  //  {
+                        if(pbc_pull_timerIsCompleted(&linkRequest[i].timeout))
+                        {
+                            linkRequest[i].transmitResult = TRANSMIT_RESULT_FAIL;
+                            linkRequest[i].main_status = LINK_REQUEST_MAIN_STATUS_IDLE;
+                        }          
+                 //   }
+                               
                     break;
                 }
                 default:break;
@@ -120,7 +132,7 @@ void app_link_request_task(void)
             cfg[i] = true;  
             linkRequest[i].silence_time.timStatusBits  = timerType_millisecond;
             linkRequest[i].timeout.timStatusBits       = timerType_millisecond;
-            linkRequest[i].main_status = LINK_REQUEST_MAIN_STATUS_IDLE;            
+            linkRequest[i].main_status = LINK_REQUEST_MAIN_STATUS_IDLE;      
         }
     }    
 }

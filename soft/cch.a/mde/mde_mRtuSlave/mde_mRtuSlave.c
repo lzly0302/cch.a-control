@@ -404,10 +404,10 @@ void set_mRtu_parameter(sdt_int8u in_solidNum,mRtu_parameter_def* in_parameter)
         modbus_oper_solid[in_solidNum].mRtu_parameter.mRtu_parity = in_parameter->mRtu_parity;
         modbus_oper_solid[in_solidNum].mRtu_parameter.mRtu_stopBits = in_parameter->mRtu_stopBits;
         modbus_oper_solid[in_solidNum].mRtu_parameter.mRtu_sysFrequency = in_parameter->mRtu_sysFrequency;
-        if(MODBUS_REMOTE_1 == in_solidNum)
-        {   
-            bsp_uart1_phyReCfg(modbus_oper_solid[in_solidNum].mRtu_parameter.mRtu_baudrate,modbus_oper_solid[in_solidNum].mRtu_parameter.mRtu_parity);
-        }
+//        if(MODBUS_REMOTE_1 == in_solidNum)
+//        {   
+//            bsp_uart1_phyReCfg(modbus_oper_solid[in_solidNum].mRtu_parameter.mRtu_baudrate,modbus_oper_solid[in_solidNum].mRtu_parameter.mRtu_parity);
+//        }
     }
     else
     {

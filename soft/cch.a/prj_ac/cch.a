@@ -1929,45 +1929,9 @@
     <name>app</name>
     <group>
       <name>app_link</name>
-      <file>
-        <name>$PROJ_DIR$\..\app\app_link\app_link_log.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\app\app_link\app_link_log.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\app\app_link\app_link_request.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\app\app_link\app_link_request.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\app\app_link\app_link_scheduler.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\app\app_link\app_link_scheduler.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\app\app_link\app_link_synchronize.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\app\app_link\app_link_synchronize.h</name>
-      </file>
     </group>
     <file>
       <name>$PROJ_DIR$\..\app\app_cfg.h</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\app\app_dac_control.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\app\app_dac_control.h</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\app\app_digit_in.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\app\app_digit_in.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\app\app_general.c</name>
@@ -1986,24 +1950,6 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\app\app_logic_relay.h</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\app\app_master_comp.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\app\app_master_comp.h</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\app\app_master_sensor.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\app\app_master_sensor.h</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\app\app_modbus_onewire.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\app\app_modbus_onewire.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\app\app_modbus_register.c</name>
@@ -2040,18 +1986,6 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\app\app_tempertaure.h</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\app\app_upgrade_boughProtocol.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\app\app_upgrade_boughProtocol.h</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\app\app_upgrade_modbus.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\app\app_upgrade_modbus.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\app\main.c</name>
@@ -2174,7 +2108,25 @@
       <name>mde_sd3078</name>
       <group>
         <name>depend</name>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_sd3078\depend\bsp_i2c.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_sd3078\depend\bsp_i2c.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_sd3078\depend\bsp_sd3078.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_sd3078\depend\bsp_sd3078.h</name>
+        </file>
       </group>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_sd3078\mde_sd3078.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_sd3078\mde_sd3078.h</name>
+      </file>
     </group>
     <group>
       <name>mde_watchDog</name>
@@ -2234,6 +2186,12 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\pbc\Libraries\GD32F4xx_standard_peripheral\Include\gd32f4xx_gpio.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\pbc\Libraries\GD32F4xx_standard_peripheral\Source\gd32f4xx_misc.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\pbc\Libraries\GD32F4xx_standard_peripheral\Include\gd32f4xx_misc.h</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\pbc\Libraries\GD32F4xx_standard_peripheral\Source\gd32f4xx_rcu.c</name>

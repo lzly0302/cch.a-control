@@ -29,14 +29,13 @@ typedef struct
 #define CMD_SYN_81               0x81//应答同步带数据    无需应答
 #define CMD_SYN_41               0x41//应答同步不带数据  无需应答
 
-#define RECEIVE_TIMEOUT           1000
-#define ROLL_BACK_DELAY           5
-#define ANSWER_DELAY              16
-#define SEND_BOARDCAST_DELAY      10
+#define RECEIVE_TIMEOUT          1000
+#define ROLL_BACK_DELAY          5
+#define ANSWER_DELAY             16
+#define SEND_BOARDCAST_DELAY     10
 #define SEND_BOARDCAST_DELAY_MAX  50
-#define DETECT_DELAY              3000
-#define REQUST_NET_DELAY          300
-#define MAX_RETRY_COUNT           4
+#define DETECT_DELAY             3000
+#define REQUST_NET_DELAY         300
 //-----------------------------------------------------------------------------
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -93,6 +92,12 @@ bool app_link_log_pull_local_device_online(uint8_t in_solidNum);
 //入口: in_solidNum 对应实例   in_rev_data  接收到的数据                       
 //出口: 无
 void app_link_log_push_receive_data(uint8_t in_solidNum,bgk_comm_buff_def *in_rev_data);
+
+uint8_t pull_log_main_status(void);
+
+uint8_t pull_log_sub_status(void);
+/*退出登录*/
+void app_link_log_out(uint8_t in_solidNum);
 //------------------------------E N D-------------------------------------------
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endif

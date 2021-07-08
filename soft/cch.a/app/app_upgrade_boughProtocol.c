@@ -115,7 +115,7 @@ void app_upgrade_easy_task(void)
             }
             case ugd_esay_staue_start_answer:
             {
-                if(pull_bough_link_is_busy(0))
+                if(pull_bough_link_is_busy(1))
                 {
                     ugd_esay_staues = ugd_esay_staue_backoff;
                 }
@@ -124,7 +124,7 @@ void app_upgrade_easy_task(void)
                   
                     bgk_comm_buff_def* p_tx_bgk_buff;
                     
-                    p_tx_bgk_buff = pull_bough_message_pBuff(0);
+                    p_tx_bgk_buff = pull_bough_message_pBuff(1);
                     p_tx_bgk_buff->LinkSrcAddr[0] = answer_oper.src_addr[0];
                     p_tx_bgk_buff->LinkSrcAddr[1] = answer_oper.src_addr[1];
                     p_tx_bgk_buff->LinkSrcAddr[2] = answer_oper.src_addr[2];
@@ -146,7 +146,7 @@ void app_upgrade_easy_task(void)
                     {
                         p_tx_bgk_buff->Payload[i] = answer_oper.answer_payload[i];
                     }
-                    push_active_one_message_transmit(0,sdt_false);
+                    push_active_one_message_transmit(1,sdt_false);
                     ugd_esay_staues = ugd_esay_staue_cpl_answer;
                 }
                 break;
@@ -154,7 +154,7 @@ void app_upgrade_easy_task(void)
             case ugd_esay_staue_cpl_answer:
             {
                 bgk_trans_mon_def rd_monitor;
-                rd_monitor = pull_bough_transmit_monitor(0);
+                rd_monitor = pull_bough_transmit_monitor(1);
                 if(bgk_trans_mon_conflict == rd_monitor)
                 {
                     ugd_esay_staues = ugd_esay_staue_backoff;

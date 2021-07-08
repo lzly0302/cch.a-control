@@ -4,7 +4,8 @@
 int main (void)
 {
     mde_IWDG_Configure();
-    mde_systemClock_cfg();
+   // mde_systemClock_cfg();
+  //  app_read_run_parameter();
     pbc_createTask_one(app_general_task,0);
 //-----------------------------------------------------------------------------
     pbc_sysTickTaskProcess();

@@ -37,11 +37,11 @@ typedef enum
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 updateStatusW_def    slaveStatusWord = BACKUP_IDLE;
+static updateStatusW_def lastSlaveStatus = BACKUP_IDLE;
 //-----------------------------------------------------------------------------
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //
-static updateStatusW_def lastSlaveStatus = BACKUP_IDLE;
 //-----------------------------------------------------------------------------
 void app_updataBackup_readRegister(uint16_t regAddr,uint16_t* pDataBuff)
 {
