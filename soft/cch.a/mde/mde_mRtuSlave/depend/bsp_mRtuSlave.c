@@ -123,8 +123,8 @@ void bsp_uart0_cfg(void)
     usart_transmit_config(USART0, USART_TRANSMIT_ENABLE);
     usart_enable(USART0);
      /* enable USART TBE interrupt */  
-   // usart_interrupt_enable(USART0, USART_INT_TBE);
-  //  usart_interrupt_enable(USART0, USART_INT_RBNE);
+    usart_interrupt_enable(USART0, USART_INT_TBE);
+    usart_interrupt_enable(USART0, USART_INT_RBNE);
 }
 
 void bsp_timer1_cfg(void)

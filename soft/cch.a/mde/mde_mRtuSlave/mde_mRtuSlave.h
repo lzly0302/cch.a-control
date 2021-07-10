@@ -7,7 +7,7 @@
 //-----------------------------------------------------------------------------
 #define  MODBUS_REMOTE_1      0
 #define  MODBUS_ONEWIRE       1
-#define  MODBUS_REMOTE        2
+#define  MODBUS_REMOTE        0
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //
 typedef enum 

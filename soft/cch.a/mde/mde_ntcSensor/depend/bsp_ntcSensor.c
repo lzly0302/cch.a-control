@@ -40,8 +40,7 @@ void BSP_ADC_Hardware_Configure(void)
     rcu_periph_clock_enable(RCU_ADC0);
     adc_clock_config(ADC_ADCCK_PCLK2_DIV6);
      /* config the GPIO as analog mode, for ADC */
-    gpio_mode_set(GPIOA, GPIO_MODE_ANALOG, GPIO_PUPD_NONE,NTC1_PIN | NTC2_PIN | NTC3_PIN | NTC4_PIN);
-     
+    gpio_mode_set(GPIOA, GPIO_MODE_ANALOG, GPIO_PUPD_NONE,NTC1_PIN | NTC2_PIN | NTC3_PIN | NTC4_PIN);     
 }
 //------------------------------E N D-------------------------------------------
 
@@ -147,7 +146,7 @@ void BSP_ADC_Channal_two(void)
 }
 void BSP_ADC_Channal_three(void)
 {
-    adc_regular_channel_config(ADC0,0,ADC_CHANNEL_2,ADC_SAMPLETIME_15);
+    adc_regular_channel_config(ADC0,0,ADC_CHANNEL_3,ADC_SAMPLETIME_15);
 }
 
 void BSP_ADC_Channal_four(void)

@@ -5534,8 +5534,6 @@ uint16_t app_modbus_read_reg_data(uint16_t reg_addr,uint8_t in_src)
 				}        
 				break;
 			}
-
-
 			case REG_ADRESS_REMOTE_CONTROL:
 			{
 				reg_detailes = app_general_pull_remote_control();

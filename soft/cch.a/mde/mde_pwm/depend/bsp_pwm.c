@@ -32,7 +32,7 @@ void TIM0CH1_Loading_PwmDutyOut(INT8U PwmData)
     {
         PwmData=100;
     }
-   // PwmData=100-PwmData;
+    PwmData=100-PwmData;
     timer_channel_output_pulse_value_config(TIMER0,TIMER_CH_1,(PwmData * PWM_FREQENCY )/100);
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -49,7 +49,7 @@ void TIM0CH1_Loading_PwmDutyOut(INT8U PwmData)
 void PwmControl_Configure(void)
 {
     rcu_periph_clock_enable(RCU_GPIOA);
-    rcu_periph_clock_enable(RCU_GPIOC);
+    rcu_periph_clock_enable(RCU_GPIOB);
     
     /*Configure PB3 PB10 PB11(TIMER1 CH1 CH2 CH3) as alternate function*/
     gpio_mode_set(T0_CH1_PORT, GPIO_MODE_AF, GPIO_PUPD_NONE, T0_CH1_PIN);
@@ -60,6 +60,7 @@ void PwmControl_Configure(void)
 
     gpio_af_set(T0_CH1_PORT, GPIO_AF_1, T0_CH1_PIN);
     gpio_af_set(T0_CH0_PORT, GPIO_AF_1, T0_CH0_PIN);
+    
         /* -----------------------------------------------------------------------
     TIMER1 configuration: generate 3 PWM signals with 3 different duty cycles:
     TIMER1CLK = SystemCoreClock / 200 = 1MHz
@@ -86,10 +87,11 @@ void PwmControl_Configure(void)
     timer_init(TIMER0,&timer_initpara);
 
     /* CH1,CH2 and CH3 configuration in PWM mode */
-    timer_ocintpara.ocpolarity  = TIMER_OC_POLARITY_HIGH;
+    
     timer_ocintpara.outputstate = TIMER_CCX_ENABLE;
-    timer_ocintpara.ocnpolarity  = TIMER_OCN_POLARITY_HIGH;
     timer_ocintpara.outputnstate = TIMER_CCXN_DISABLE;
+    timer_ocintpara.ocpolarity  = TIMER_OC_POLARITY_HIGH;
+    timer_ocintpara.ocnpolarity  = TIMER_OCN_POLARITY_HIGH;
     timer_ocintpara.ocidlestate  = TIMER_OC_IDLE_STATE_LOW;
     timer_ocintpara.ocnidlestate = TIMER_OCN_IDLE_STATE_LOW;
 
@@ -107,6 +109,8 @@ void PwmControl_Configure(void)
     timer_channel_output_shadow_config(TIMER0,TIMER_CH_1,TIMER_OC_SHADOW_DISABLE);
     /* auto-reload preload enable */
     timer_auto_reload_shadow_enable(TIMER0);
+    /* TIMER0 primary output function enable */
+    timer_primary_output_config(TIMER0,ENABLE);
     /* auto-reload preload enable */
     timer_enable(TIMER0);
 }
