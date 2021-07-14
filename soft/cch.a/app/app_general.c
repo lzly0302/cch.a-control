@@ -3976,8 +3976,8 @@ void app_general_task(void)
         //app_sto_run_parameter_task();
 		app_pwm_control_task();      
         app_logic_realy_task();
-       // app_link_scheduler_task();   
-      //  app_modbus_onewire_task();
+        app_link_scheduler_task();   
+        app_modbus_onewire_task();
         app_modbus_remote_task();      
         app_real_time_clock_task();
         app_temperature_task();    

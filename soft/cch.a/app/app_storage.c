@@ -5,8 +5,8 @@ StoRunParamter_Def  StoRunParameter =
 {
         .localId[0] = 0xac,
         .localId[1] = 0x21,
-        .localId[2] = 0x04,
-        .localId[3] = 0x21,
+        .localId[2] = 0x07,
+        .localId[3] = 0x14,
         .localId[4] = 0x00,
         .localId[5] = 0x01,
 };
@@ -69,18 +69,18 @@ void app_read_run_parameter(void)
     }
 //    if(mde_read_storage_block(0,&StoRunParameter.sto_data[0]))
 //    {
-//        if((StoRunParameter.deviceAddress == 0) || (StoRunParameter.deviceAddress == 0xff))
-//        {
-//            StoRunParameter.deviceAddress = 0x01;   
-//        }
-//        if(StoRunParameter.baudrateValue == 0xff)
-//        {
-//            StoRunParameter.baudrateValue = 0x02;
-//        }
-//        if(StoRunParameter.evenOddCheck == 0xff)
-//        {
-//            StoRunParameter.evenOddCheck = 0;
-//        }
+        if((StoRunParameter.deviceAddress == 0) || (StoRunParameter.deviceAddress == 0xff))
+        {
+            StoRunParameter.deviceAddress = 0x01;   
+        }
+        if(StoRunParameter.baudrateValue == 0xff)
+        {
+            StoRunParameter.baudrateValue = 0x02;
+        }
+        if(StoRunParameter.evenOddCheck == 0xff)
+        {
+            StoRunParameter.evenOddCheck = 0;
+        }
 //        RestoreFactoryStorage();//调试功能，需删除
 //    }
 //    else

@@ -1929,6 +1929,30 @@
     <name>app</name>
     <group>
       <name>app_link</name>
+      <file>
+        <name>$PROJ_DIR$\..\app\app_link\app_link_log.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\app\app_link\app_link_log.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\app\app_link\app_link_request.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\app\app_link\app_link_request.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\app\app_link\app_link_scheduler.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\app\app_link\app_link_scheduler.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\app\app_link\app_link_synchronize.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\app\app_link\app_link_synchronize.h</name>
+      </file>
     </group>
     <file>
       <name>$PROJ_DIR$\..\app\app_cfg.h</name>
@@ -1950,6 +1974,12 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\app\app_logic_relay.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\app\app_modbus_onewire.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\app\app_modbus_onewire.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\app\app_modbus_register.c</name>
@@ -1997,7 +2027,31 @@
       <name>mde_boughLink</name>
       <group>
         <name>depend</name>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_bough_link\depend\bsp_bough_link.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_bough_link\depend\bsp_bough_link.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_bough_link\depend\bsp_bough_link_gd32f407vet6.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_bough_link\depend\snail_data_types.h</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_bough_link\depend\snail_macro.h</name>
+        </file>
       </group>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_bough_link\mde_bough_link_half.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_bough_link\mde_bough_link_half.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_bough_link\solid_bough_link_half.h</name>
+      </file>
     </group>
     <group>
       <name>mde_led</name>
@@ -2176,6 +2230,9 @@
         <name>$PROJ_DIR$\..\pbc\Libraries\GD32F4xx_standard_peripheral\Source\gd32f4xx_exti.c</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\pbc\Libraries\GD32F4xx_standard_peripheral\Include\gd32f4xx_exti.h</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\pbc\Libraries\GD32F4xx_standard_peripheral\Source\gd32f4xx_fwdgt.c</name>
       </file>
       <file>
@@ -2198,6 +2255,12 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\pbc\Libraries\GD32F4xx_standard_peripheral\Include\gd32f4xx_rcu.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\pbc\Libraries\GD32F4xx_standard_peripheral\Source\gd32f4xx_syscfg.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\pbc\Libraries\GD32F4xx_standard_peripheral\Include\gd32f4xx_syscfg.h</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\pbc\Libraries\GD32F4xx_standard_peripheral\Source\gd32f4xx_timer.c</name>

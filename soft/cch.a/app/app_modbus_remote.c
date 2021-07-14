@@ -178,10 +178,10 @@ void app_modbus_remote_task(void)
         parameter.mRtu_stopBits = mRtu_stopBits_one;
         parameter.mRtu_sysFrequency = 72000000;
         set_mRtu_parameter(MODBUS_REMOTE,&parameter);
-//        parameter.mRtu_address = StoRunParameter.deviceAddress;
-//        parameter.mRtu_baudrate = StoRunParameter.baudrateValue;
-//        parameter.mRtu_parity = (mRtu_parity_def)StoRunParameter.evenOddCheck;
-//		set_mRtu_parameter(MODBUS_REMOTE_1,&parameter);
+        parameter.mRtu_address = 0x01;
+        parameter.mRtu_baudrate = StoRunParameter.baudrateValue;
+        parameter.mRtu_parity = (mRtu_parity_def)StoRunParameter.evenOddCheck;
+		set_mRtu_parameter(MODBUS_REMOTE_1,&parameter);
     }
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -73,12 +73,11 @@ void app_link_request_task(void)
 {
     static bool cfg[MAX_MODBUS_NUM] = false;
     uint8_t i = 0;   
- //   debug_task();
     for(i = 0;i < MAX_MODBUS_NUM; i++)
     {
         if(cfg[i])
-        {
-         //   pbc_timerMillRun_task(&linkRequest[i].silence_time);     
+        {   
+          //  debug_task();
             pbc_timerMillRun_task(&linkRequest[i].timeout);  
             switch(linkRequest[i].main_status)
             {
@@ -113,15 +112,11 @@ void app_link_request_task(void)
                             app_link_request_reset_silence_time(i);                             
                         }                          
                     } 
-                //    else
-                  //  {
-                        if(pbc_pull_timerIsCompleted(&linkRequest[i].timeout))
-                        {
-                            linkRequest[i].transmitResult = TRANSMIT_RESULT_FAIL;
-                            linkRequest[i].main_status = LINK_REQUEST_MAIN_STATUS_IDLE;
-                        }          
-                 //   }
-                               
+                    if(pbc_pull_timerIsCompleted(&linkRequest[i].timeout))
+                    {
+                        linkRequest[i].transmitResult = TRANSMIT_RESULT_FAIL;
+                        linkRequest[i].main_status = LINK_REQUEST_MAIN_STATUS_IDLE;
+                    }                                   
                     break;
                 }
                 default:break;
@@ -143,7 +138,7 @@ void debug_task(void)
     pbc_timerClockRun_task(&debugTime);
     if(pbc_pull_timerIsCompleted(&debugTime))
     {
-        pbc_reload_timerClock(&debugTime,10000);
+        pbc_reload_timerClock(&debugTime,1000);
         if(app_link_request_transmit_activation_request(0))
         {
             

@@ -13,5 +13,7 @@
 #include ".\bsp_bough_link_hc32l136k8ta.h"
 #elif defined(hc32l176kata)
 #include ".\bsp_bough_link_hc32l176kata.h"
+#elif defined(gd32f407vet6)
+#include ".\bsp_bough_link_gd32f407vet6.h"
 #endif
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
