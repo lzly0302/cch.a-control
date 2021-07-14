@@ -2,7 +2,7 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>1741529606</fileChecksum>
+  <fileChecksum>644333465</fileChecksum>
   <configuration>
     <name>Debug</name>
     <outputs>
@@ -347,6 +347,14 @@
       <file>$PROJ_DIR$\..\pbc\Libraries\GD32F4xx_standard_peripheral\Include\gd32f4xx_fmc.h</file>
       <file>$PROJ_DIR$\Debug\Obj\app_link_scheduler.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\app_upgrade_modbus.o</file>
+      <file>$PROJ_DIR$\..\mde\mde_mixWater\depend\bsp_PID.c</file>
+      <file>$PROJ_DIR$\Debug\Obj\mde_mixWater.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\bsp_PID.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\bsp_PID.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\mde_mixWater.pbi</file>
+      <file>$PROJ_DIR$\..\mde\mde_mixWater\depend\bsp_PID.h</file>
+      <file>$PROJ_DIR$\..\mde\mde_mixWater\mde_mixWater.c</file>
+      <file>$PROJ_DIR$\..\mde\mde_mixWater\mde_mixWater.h</file>
     </outputs>
     <file>
       <name>[ROOT_NODE]</name>
@@ -1839,6 +1847,56 @@
         </tool>
       </inputs>
     </file>
+    <file>
+      <name>$PROJ_DIR$\..\mde\mde_mixWater\depend\bsp_PID.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 344</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 343</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 317 162 130 300 210 28 140 159 324 346</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 346 162 210 130 28 140 317 300 159 324</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\mde\mde_mixWater\mde_mixWater.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 345</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 342</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 140 206 130 210 260 159 324 162 33 346 28 317 300 348 109</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 348 210 130 28 140 317 300 159 324 162 346 260 206 33 109</file>
+        </tool>
+      </inputs>
+    </file>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>ILINK</tool>
+    </forcedrebuild>
   </configuration>
   <configuration>
     <name>Release</name>

@@ -7,3 +7,5 @@
 /doc/GD32F4xx_Firmware_Library_V2.1.2/Template/IAR_project/Debug
 /doc/GD32F4xx_Firmware_Library_V2.1.2/Template/IAR_project/settings
 /doc/GD32F4xx_Firmware_Library_V2.1.2/Template/IAR_project/Project.dep
+/soft/cch.a/mde/mde_mixWater/depend/bsp_mixwater.c
+/soft/cch.a/mde/mde_mixWater/depend/bsp_mixwater.h

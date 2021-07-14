@@ -2075,6 +2075,24 @@
       </file>
     </group>
     <group>
+      <name>mde_mixWater</name>
+      <group>
+        <name>depend</name>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_mixWater\depend\bsp_PID.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_mixWater\depend\bsp_PID.h</name>
+        </file>
+      </group>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_mixWater\mde_mixWater.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_mixWater\mde_mixWater.h</name>
+      </file>
+    </group>
+    <group>
       <name>mde_modbusSlave</name>
       <group>
         <name>depend</name>

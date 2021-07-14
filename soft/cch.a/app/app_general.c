@@ -3983,7 +3983,7 @@ void app_general_task(void)
         app_temperature_task();    
        // app_upgrade_easy_task();
         time_stamp_task();
-        //app_general_mix_water_task();
+        app_general_mix_water_task();
         app_led_task();   
     }
     else

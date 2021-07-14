@@ -9,7 +9,7 @@
 #include "..\.\mde\mde_mRtuSlave\mde_mRtuSlave.h"
 //#include "..\.\mde\mde_storage32bits\mde_storage32bits.h"
 #include "..\.\mde\mde_led\mde_led.h"
-//#include "..\.\mde\mde_mixWater\mde_mixWater.h"
+#include "..\.\mde\mde_mixWater\mde_mixWater.h"
 #include "..\.\mde\mde_ntcSensor\mde_ntcSensor.h"
 #include "..\.\mde\mde_relay\mde_relay.h"
 //#include "..\.\mde\mde_digitInput\mde_digitInput.h"

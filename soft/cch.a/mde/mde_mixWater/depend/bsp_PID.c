@@ -41,25 +41,29 @@ uint16_t PID_get_pid_value(PID_ValueStr *me,uint8_t mode)
   //  uint8_t index = 0;
     //计算当前误差 
     if(mode == 0x00)
-    {//制冷
+    {
         me->err_cur =me->feedback - me->target; 
     }
     else
-    {//制热
+    {
         me->err_cur =me->target - me->feedback; 
     }
-//    if(me->err_cur >= 10)
-//    {
-//        me->err_cur = 10;
-//    }
-    me->err_sum += me->err_cur;  
-    if(me->err_sum < -20)
-    {   
-         me->err_sum = -20;
+    if(me->err_cur >= 10)
+    {
+        me->err_cur = 10;
     }
-    if(me->err_sum > 110)
+    me->err_sum += me->err_cur;  
+    if(me->err_sum < -30)
     {   
-         me->err_sum = 110;
+         me->err_sum = 0;
+    }
+//    if(me->err_sum > 600)
+//    {   
+//         me->err_sum = 0;
+//    }
+    if(me->err_sum > 2000)
+    {   
+         me->err_sum = 2000;
     }
     //误差微分  
     me->err_last = me->err_cur;  
@@ -70,9 +74,9 @@ uint16_t PID_get_pid_value(PID_ValueStr *me,uint8_t mode)
     {
         out= 0;
     }
-    if(out > 8000)
+    if(out > 10000)
     {
-        out = 8000;
+        out = 10000;
     }
     return out;  
 }  
