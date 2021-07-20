@@ -5534,6 +5534,4154 @@ uint16_t app_modbus_read_reg_data(uint16_t reg_addr,uint8_t in_src)
 				}        
 				break;
 			}
+	        
+						case REG_ADDR_PAD13_ERROR_WORD:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_error_word(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD13_ONLINE_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_online(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD13_DEVICE_TYPE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_type(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_DEVICE_ID0:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id0(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD13_DEVICE_ID1:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id1(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_DEVICE_ID2:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id2(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{//有绑定信息
+					reg_detailes = app_general_pull_devive_power(virtualPort);
+				}
+				break;
+			}
+			case REG_ADDR_PAD13_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_cold_temp(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD13_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_heat_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD13_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_drop_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD13_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_warm_status(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD13_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_protect(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD13_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_temp(virtualPort);
+				}           
+				break;
+			}    
+			case REG_ADDR_PAD13_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_child_lock(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_onoff_memory(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD13_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_heat_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD13_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_high_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD13_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_low_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_lewtemp(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD13_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_measure_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					 reg_detailes = app_general_pull_pad_measure_hum(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD13_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_need(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD13_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_fan_speed(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD13_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_control(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD13_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_low(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD13_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_mid(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD13_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_high(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD13_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_cold_diff(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD13_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_heat_diff(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD13_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_colla_enable(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_colla_enable(virtualPort);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD13_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_need(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD13_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_out_speed(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD13_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_speed_output(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD13_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_control_num(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD13_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_two_output_mode(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD13_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_fan(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD13_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_warm(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD13_WARM_TYPE:
+			{/*辐射类型选择*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_type_warm_choose(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD13_ROOM_AREA:
+			{/*房间面积*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_room_area(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD13_LEW_TEMP_STATUS:
+			{/*露点保护状态*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_dorp_temp_output(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD13_ADJUST_TEMP:
+			{/*校温*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD13_ADJUST_HUM:
+			{/*校湿*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD13_VERSION:
+			{/*版本号*/
+				virtualPort = app_general_pull_pad_version((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+
+						case REG_ADDR_PAD14_ERROR_WORD:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_error_word(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD14_ONLINE_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_online(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD14_DEVICE_TYPE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_type(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_DEVICE_ID0:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id0(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD14_DEVICE_ID1:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id1(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_DEVICE_ID2:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id2(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{//有绑定信息
+					reg_detailes = app_general_pull_devive_power(virtualPort);
+				}
+				break;
+			}
+			case REG_ADDR_PAD14_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_cold_temp(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD14_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_heat_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD14_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_drop_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD14_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_warm_status(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD14_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_protect(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD14_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_temp(virtualPort);
+				}           
+				break;
+			}    
+			case REG_ADDR_PAD14_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_child_lock(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_onoff_memory(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD14_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_heat_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD14_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_high_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD14_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_low_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_lewtemp(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD14_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_measure_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					 reg_detailes = app_general_pull_pad_measure_hum(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD14_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_need(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD14_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_fan_speed(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD14_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_control(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD14_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_low(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD14_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_mid(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD14_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_high(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD14_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_cold_diff(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD14_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_heat_diff(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD14_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_colla_enable(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_colla_enable(virtualPort);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD14_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_need(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD14_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_out_speed(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD14_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_speed_output(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD14_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_control_num(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD14_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_two_output_mode(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD14_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_fan(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD14_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_warm(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD14_WARM_TYPE:
+			{/*辐射类型选择*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_type_warm_choose(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD14_ROOM_AREA:
+			{/*房间面积*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_room_area(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD14_LEW_TEMP_STATUS:
+			{/*露点保护状态*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_dorp_temp_output(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD14_ADJUST_TEMP:
+			{/*校温*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD14_ADJUST_HUM:
+			{/*校湿*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD14_VERSION:
+			{/*版本号*/
+				virtualPort = app_general_pull_pad_version((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+
+						case REG_ADDR_PAD15_ERROR_WORD:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_error_word(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD15_ONLINE_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_online(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD15_DEVICE_TYPE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_type(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_DEVICE_ID0:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id0(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD15_DEVICE_ID1:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id1(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_DEVICE_ID2:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id2(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{//有绑定信息
+					reg_detailes = app_general_pull_devive_power(virtualPort);
+				}
+				break;
+			}
+			case REG_ADDR_PAD15_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_cold_temp(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD15_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_heat_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD15_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_drop_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD15_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_warm_status(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD15_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_protect(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD15_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_temp(virtualPort);
+				}           
+				break;
+			}    
+			case REG_ADDR_PAD15_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_child_lock(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_onoff_memory(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD15_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_heat_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD15_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_high_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD15_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_low_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_lewtemp(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD15_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_measure_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					 reg_detailes = app_general_pull_pad_measure_hum(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD15_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_need(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD15_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_fan_speed(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD15_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_control(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD15_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_low(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD15_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_mid(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD15_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_high(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD15_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_cold_diff(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD15_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_heat_diff(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD15_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_colla_enable(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_colla_enable(virtualPort);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD15_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_need(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD15_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_out_speed(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD15_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_speed_output(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD15_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_control_num(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD15_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_two_output_mode(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD15_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_fan(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD15_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_warm(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD15_WARM_TYPE:
+			{/*辐射类型选择*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_type_warm_choose(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD15_ROOM_AREA:
+			{/*房间面积*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_room_area(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD15_LEW_TEMP_STATUS:
+			{/*露点保护状态*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_dorp_temp_output(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD15_ADJUST_TEMP:
+			{/*校温*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD15_ADJUST_HUM:
+			{/*校湿*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD15_VERSION:
+			{/*版本号*/
+				virtualPort = app_general_pull_pad_version((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+
+						case REG_ADDR_PAD16_ERROR_WORD:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_error_word(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD16_ONLINE_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_online(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD16_DEVICE_TYPE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_type(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_DEVICE_ID0:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id0(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD16_DEVICE_ID1:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id1(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_DEVICE_ID2:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id2(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{//有绑定信息
+					reg_detailes = app_general_pull_devive_power(virtualPort);
+				}
+				break;
+			}
+			case REG_ADDR_PAD16_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_cold_temp(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD16_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_heat_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD16_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_drop_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD16_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_warm_status(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD16_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_protect(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD16_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_temp(virtualPort);
+				}           
+				break;
+			}    
+			case REG_ADDR_PAD16_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_child_lock(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_onoff_memory(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD16_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_heat_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD16_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_high_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD16_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_low_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_lewtemp(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD16_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_measure_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					 reg_detailes = app_general_pull_pad_measure_hum(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD16_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_need(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD16_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_fan_speed(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD16_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_control(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD16_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_low(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD16_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_mid(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD16_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_high(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD16_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_cold_diff(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD16_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_heat_diff(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD16_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_colla_enable(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_colla_enable(virtualPort);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD16_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_need(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD16_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_out_speed(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD16_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_speed_output(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD16_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_control_num(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD16_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_two_output_mode(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD16_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_fan(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD16_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_warm(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD16_WARM_TYPE:
+			{/*辐射类型选择*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_type_warm_choose(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD16_ROOM_AREA:
+			{/*房间面积*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_room_area(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD16_LEW_TEMP_STATUS:
+			{/*露点保护状态*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_dorp_temp_output(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD16_ADJUST_TEMP:
+			{/*校温*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD16_ADJUST_HUM:
+			{/*校湿*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD16_VERSION:
+			{/*版本号*/
+				virtualPort = app_general_pull_pad_version((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+						case REG_ADDR_PAD17_ERROR_WORD:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_error_word(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD17_ONLINE_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_online(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD17_DEVICE_TYPE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_type(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_DEVICE_ID0:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id0(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD17_DEVICE_ID1:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id1(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_DEVICE_ID2:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id2(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{//有绑定信息
+					reg_detailes = app_general_pull_devive_power(virtualPort);
+				}
+				break;
+			}
+			case REG_ADDR_PAD17_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_cold_temp(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD17_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_heat_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD17_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_drop_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD17_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_warm_status(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD17_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_protect(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD17_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_temp(virtualPort);
+				}           
+				break;
+			}    
+			case REG_ADDR_PAD17_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_child_lock(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_onoff_memory(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD17_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_heat_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD17_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_high_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD17_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_low_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_lewtemp(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD17_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_measure_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					 reg_detailes = app_general_pull_pad_measure_hum(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD17_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_need(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD17_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_fan_speed(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD17_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_control(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD17_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_low(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD17_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_mid(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD17_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_high(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD17_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_cold_diff(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD17_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_heat_diff(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD17_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_colla_enable(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_colla_enable(virtualPort);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD17_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_need(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD17_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_out_speed(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD17_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_speed_output(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD17_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_control_num(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD17_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_two_output_mode(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD17_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_fan(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD17_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_warm(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD17_WARM_TYPE:
+			{/*辐射类型选择*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_type_warm_choose(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD17_ROOM_AREA:
+			{/*房间面积*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_room_area(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD17_LEW_TEMP_STATUS:
+			{/*露点保护状态*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_dorp_temp_output(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD17_ADJUST_TEMP:
+			{/*校温*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD17_ADJUST_HUM:
+			{/*校湿*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD17_VERSION:
+			{/*版本号*/
+				virtualPort = app_general_pull_pad_version((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+						case REG_ADDR_PAD18_ERROR_WORD:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_error_word(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD18_ONLINE_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_online(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD18_DEVICE_TYPE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_type(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_DEVICE_ID0:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id0(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD18_DEVICE_ID1:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id1(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_DEVICE_ID2:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id2(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{//有绑定信息
+					reg_detailes = app_general_pull_devive_power(virtualPort);
+				}
+				break;
+			}
+			case REG_ADDR_PAD18_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_cold_temp(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD18_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_heat_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD18_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_drop_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD18_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_warm_status(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD18_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_protect(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD18_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_temp(virtualPort);
+				}           
+				break;
+			}    
+			case REG_ADDR_PAD18_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_child_lock(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_onoff_memory(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD18_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_heat_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD18_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_high_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD18_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_low_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_lewtemp(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD18_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_measure_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					 reg_detailes = app_general_pull_pad_measure_hum(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD18_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_need(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD18_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_fan_speed(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD18_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_control(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD18_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_low(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD18_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_mid(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD18_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_high(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD18_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_cold_diff(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD18_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_heat_diff(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD18_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_colla_enable(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_colla_enable(virtualPort);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD18_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_need(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD18_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_out_speed(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD18_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_speed_output(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD18_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_control_num(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD18_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_two_output_mode(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD18_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_fan(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD18_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_warm(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD18_WARM_TYPE:
+			{/*辐射类型选择*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_type_warm_choose(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD18_ROOM_AREA:
+			{/*房间面积*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_room_area(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD18_LEW_TEMP_STATUS:
+			{/*露点保护状态*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_dorp_temp_output(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD18_ADJUST_TEMP:
+			{/*校温*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD18_ADJUST_HUM:
+			{/*校湿*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD18_VERSION:
+			{/*版本号*/
+				virtualPort = app_general_pull_pad_version((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+
+						case REG_ADDR_PAD19_ERROR_WORD:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_error_word(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD19_ONLINE_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_online(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD19_DEVICE_TYPE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_type(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_DEVICE_ID0:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id0(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD19_DEVICE_ID1:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id1(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_DEVICE_ID2:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id2(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{//有绑定信息
+					reg_detailes = app_general_pull_devive_power(virtualPort);
+				}
+				break;
+			}
+			case REG_ADDR_PAD19_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_cold_temp(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD19_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_heat_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD19_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_drop_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD19_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_warm_status(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD19_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_protect(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD19_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_temp(virtualPort);
+				}           
+				break;
+			}    
+			case REG_ADDR_PAD19_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_child_lock(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_onoff_memory(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD19_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_heat_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD19_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_high_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD19_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_low_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_lewtemp(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD19_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_measure_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					 reg_detailes = app_general_pull_pad_measure_hum(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD19_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_need(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD19_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_fan_speed(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD19_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_control(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD19_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_low(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD19_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_mid(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD19_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_high(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD19_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_cold_diff(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD19_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_heat_diff(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD19_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_colla_enable(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_colla_enable(virtualPort);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD19_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_need(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD19_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_out_speed(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD19_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_speed_output(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD19_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_control_num(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD19_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_two_output_mode(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD19_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_fan(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD19_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_warm(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD19_WARM_TYPE:
+			{/*辐射类型选择*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_type_warm_choose(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD19_ROOM_AREA:
+			{/*房间面积*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_room_area(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD19_LEW_TEMP_STATUS:
+			{/*露点保护状态*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_dorp_temp_output(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD19_ADJUST_TEMP:
+			{/*校温*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD19_ADJUST_HUM:
+			{/*校湿*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD19_VERSION:
+			{/*版本号*/
+				virtualPort = app_general_pull_pad_version((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+
+						case REG_ADDR_PAD20_ERROR_WORD:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_error_word(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD20_ONLINE_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_online(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD20_DEVICE_TYPE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_type(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_DEVICE_ID0:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id0(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD20_DEVICE_ID1:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id1(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_DEVICE_ID2:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id2(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{//有绑定信息
+					reg_detailes = app_general_pull_devive_power(virtualPort);
+				}
+				break;
+			}
+			case REG_ADDR_PAD20_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_cold_temp(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD20_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_heat_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD20_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_drop_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD20_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_warm_status(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD20_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_protect(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD20_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_temp(virtualPort);
+				}           
+				break;
+			}    
+			case REG_ADDR_PAD20_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_child_lock(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_onoff_memory(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD20_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_heat_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD20_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_high_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD20_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_low_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_lewtemp(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD20_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_measure_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					 reg_detailes = app_general_pull_pad_measure_hum(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD20_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_need(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD20_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_fan_speed(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD20_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_control(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD20_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_low(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD20_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_mid(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD20_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_high(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD20_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_cold_diff(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD20_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_heat_diff(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD20_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_colla_enable(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_colla_enable(virtualPort);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD20_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_need(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD20_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_out_speed(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD20_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_speed_output(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD20_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_control_num(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD20_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_two_output_mode(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD20_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_fan(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD20_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_warm(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD20_WARM_TYPE:
+			{/*辐射类型选择*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_type_warm_choose(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD20_ROOM_AREA:
+			{/*房间面积*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_room_area(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD20_LEW_TEMP_STATUS:
+			{/*露点保护状态*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_dorp_temp_output(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD20_ADJUST_TEMP:
+			{/*校温*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD20_ADJUST_HUM:
+			{/*校湿*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD20_VERSION:
+			{/*版本号*/
+				virtualPort = app_general_pull_pad_version((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+
+						case REG_ADDR_PAD21_ERROR_WORD:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_error_word(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD21_ONLINE_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_online(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD21_DEVICE_TYPE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_type(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_DEVICE_ID0:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id0(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD21_DEVICE_ID1:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id1(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_DEVICE_ID2:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id2(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{//有绑定信息
+					reg_detailes = app_general_pull_devive_power(virtualPort);
+				}
+				break;
+			}
+			case REG_ADDR_PAD21_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_cold_temp(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD21_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_heat_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD21_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_drop_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD21_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_warm_status(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD21_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_protect(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD21_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_temp(virtualPort);
+				}           
+				break;
+			}    
+			case REG_ADDR_PAD21_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_child_lock(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_onoff_memory(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD21_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_heat_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD21_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_high_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD21_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_low_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_lewtemp(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD21_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_measure_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					 reg_detailes = app_general_pull_pad_measure_hum(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD21_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_need(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD21_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_fan_speed(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD21_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_control(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD21_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_low(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD21_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_mid(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD21_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_high(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD21_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_cold_diff(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD21_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_heat_diff(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD21_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_colla_enable(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_colla_enable(virtualPort);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD21_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_need(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD21_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_out_speed(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD21_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_speed_output(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD21_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_control_num(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD21_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_two_output_mode(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD21_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_fan(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD21_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_warm(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD21_WARM_TYPE:
+			{/*辐射类型选择*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_type_warm_choose(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD21_ROOM_AREA:
+			{/*房间面积*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_room_area(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD21_LEW_TEMP_STATUS:
+			{/*露点保护状态*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_dorp_temp_output(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD21_ADJUST_TEMP:
+			{/*校温*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD21_ADJUST_HUM:
+			{/*校湿*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD21_VERSION:
+			{/*版本号*/
+				virtualPort = app_general_pull_pad_version((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+
+						case REG_ADDR_PAD22_ERROR_WORD:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_error_word(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD22_ONLINE_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_online(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD22_DEVICE_TYPE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_type(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_DEVICE_ID0:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id0(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD22_DEVICE_ID1:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id1(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_DEVICE_ID2:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_devive_id2(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{//有绑定信息
+					reg_detailes = app_general_pull_devive_power(virtualPort);
+				}
+				break;
+			}
+			case REG_ADDR_PAD22_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_cold_temp(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD22_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_heat_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD22_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_drop_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD22_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_warm_status(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD22_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_protect(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD22_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_freeze_temp(virtualPort);
+				}           
+				break;
+			}    
+			case REG_ADDR_PAD22_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_child_lock(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_onoff_memory(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD22_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_heat_comfortable_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD22_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_high_temp(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD22_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_low_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_deadzone_lewtemp(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD22_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_measure_temp(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					 reg_detailes = app_general_pull_pad_measure_hum(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD22_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_need(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD22_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_fan_speed(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD22_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_control(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD22_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_low(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD22_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_mid(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD22_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_set_pwm_high(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD22_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_cold_diff(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD22_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_ai_heat_diff(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD22_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_cold_colla_enable(virtualPort);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_warm_colla_enable(virtualPort);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD22_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_need(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD22_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_out_speed(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD22_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_fan_speed_output(virtualPort);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD22_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_control_num(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD22_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_two_output_mode(virtualPort);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD22_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_fan(virtualPort);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD22_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_bind_list_warm(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD22_WARM_TYPE:
+			{/*辐射类型选择*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_type_warm_choose(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD22_ROOM_AREA:
+			{/*房间面积*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_room_area(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD22_LEW_TEMP_STATUS:
+			{/*露点保护状态*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_lew_dorp_temp_output(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD22_ADJUST_TEMP:
+			{/*校温*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_temp(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD22_ADJUST_HUM:
+			{/*校湿*/
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD22_VERSION:
+			{/*版本号*/
+				virtualPort = app_general_pull_pad_version((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					reg_detailes = app_general_pull_pad_adjust_hum(virtualPort);
+				}        
+				break;
+			}
 			case REG_ADRESS_REMOTE_CONTROL:
 			{
 				reg_detailes = app_general_pull_remote_control();
@@ -5609,7 +9757,7 @@ bool app_modebus_write_reg_data(uint16_t reg_addr,uint16_t reg_detailes,uint8_t 
 				pbc_int16uToArray_bigEndian(reg_detailes,&buff[0]);
 				currentRtc->second = buff[0];
 				currentRtc->week = buff[1];
-				//app_push_once_save_write_rtc();
+				app_push_once_save_write_rtc();
 				break;
 			}
 			case  MRegaddr_HourAndMinute:
@@ -5620,7 +9768,7 @@ bool app_modebus_write_reg_data(uint16_t reg_addr,uint16_t reg_detailes,uint8_t 
 				pbc_int16uToArray_bigEndian(reg_detailes,&buff[0]);
 				currentRtc->hour = buff[0];
 				currentRtc->minute = buff[1];
-				//app_push_once_save_write_rtc();
+				app_push_once_save_write_rtc();
 				break;
 			}
 			case  MRegaddr_MonthAndDay:
@@ -5631,7 +9779,7 @@ bool app_modebus_write_reg_data(uint16_t reg_addr,uint16_t reg_detailes,uint8_t 
 				pbc_int16uToArray_bigEndian(reg_detailes,&buff[0]);
 				currentRtc->month = buff[0];
 				currentRtc->day = buff[1];
-				//app_push_once_save_write_rtc();
+				app_push_once_save_write_rtc();
 				break;
 			}
 			case  MRegaddr_Year:
@@ -5639,7 +9787,7 @@ bool app_modebus_write_reg_data(uint16_t reg_addr,uint16_t reg_detailes,uint8_t 
 				realTime_t* currentRtc;
 				currentRtc = app_real_time_pull_rtc();
 				currentRtc->year = (reg_detailes-2000);
-				//app_push_once_save_write_rtc();
+				app_push_once_save_write_rtc();
 				break;
 			}
 		    case MRegaddr_SalveAddr: 
@@ -10780,6 +14928,3526 @@ bool app_modebus_write_reg_data(uint16_t reg_addr,uint16_t reg_detailes,uint8_t 
 				break;
 			}
 			case REG_ADDR_PAD12_ADJUST_HUM:
+			{//校湿
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_hum(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+
+						case REG_ADDR_PAD13_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_devive_power(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD13_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_cold_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_heat_temp(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD13_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_drop_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD13_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_warm_status(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD13_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD13_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_protect(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_child_lock(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD13_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_onoff_memory(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD13_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_comfortable_temp(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD13_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_heat_comfortable_temp(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD13_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_high_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD13_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_low_temp(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD13_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD13_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_lewtemp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD13_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_temp(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD13_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_hum(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD13_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_need(virtualPort,reg_detailes);
+				} 
+				break;
+			}
+			case REG_ADDR_PAD13_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_fan_speed(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD13_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_control(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD13_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_low(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD13_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_mid(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD13_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_high(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD13_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_cold_diff(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD13_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_heat_diff(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD13_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD13_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD13_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_need(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD13_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_out_speed(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_speed_output(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD13_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_control_num(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD13_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_two_output_mode(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_fan(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_warm(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_WARM_TYPE:
+			{//辐射类型
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_type_warm_choose(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_ROOM_AREA:
+			{//房间面积
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_room_area(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_LEW_TEMP_STATUS:
+			{//露点状态
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_dorp_temp_output(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_ADJUST_TEMP:
+			{//校温
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD13_ADJUST_HUM:
+			{//校湿
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_hum(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+
+						case REG_ADDR_PAD14_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_devive_power(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD14_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_cold_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_heat_temp(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD14_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_drop_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD14_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_warm_status(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD14_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD14_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_protect(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_child_lock(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD14_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_onoff_memory(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD14_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_comfortable_temp(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD14_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_heat_comfortable_temp(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD14_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_high_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD14_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_low_temp(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD14_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD14_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_lewtemp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD14_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_temp(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD14_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_hum(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD14_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_need(virtualPort,reg_detailes);
+				} 
+				break;
+			}
+			case REG_ADDR_PAD14_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_fan_speed(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD14_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_control(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD14_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_low(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD14_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_mid(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD14_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_high(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD14_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_cold_diff(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD14_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_heat_diff(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD14_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD14_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD14_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_need(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD14_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_out_speed(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_speed_output(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD14_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_control_num(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD14_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_two_output_mode(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_fan(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_warm(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_WARM_TYPE:
+			{//辐射类型
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_type_warm_choose(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_ROOM_AREA:
+			{//房间面积
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_room_area(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_LEW_TEMP_STATUS:
+			{//露点状态
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_dorp_temp_output(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_ADJUST_TEMP:
+			{//校温
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD14_ADJUST_HUM:
+			{//校湿
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_hum(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+
+						case REG_ADDR_PAD15_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_devive_power(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD15_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_cold_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_heat_temp(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD15_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_drop_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD15_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_warm_status(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD15_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD15_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_protect(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_child_lock(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD15_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_onoff_memory(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD15_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_comfortable_temp(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD15_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_heat_comfortable_temp(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD15_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_high_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD15_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_low_temp(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD15_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD15_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_lewtemp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD15_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_temp(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD15_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_hum(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD15_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_need(virtualPort,reg_detailes);
+				} 
+				break;
+			}
+			case REG_ADDR_PAD15_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_fan_speed(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD15_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_control(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD15_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_low(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD15_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_mid(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD15_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_high(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD15_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_cold_diff(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD15_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_heat_diff(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD15_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD15_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD15_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_need(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD15_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_out_speed(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_speed_output(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD15_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_control_num(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD15_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_two_output_mode(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_fan(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_warm(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_WARM_TYPE:
+			{//辐射类型
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_type_warm_choose(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_ROOM_AREA:
+			{//房间面积
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_room_area(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_LEW_TEMP_STATUS:
+			{//露点状态
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_dorp_temp_output(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_ADJUST_TEMP:
+			{//校温
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD15_ADJUST_HUM:
+			{//校湿
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_hum(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+
+						case REG_ADDR_PAD16_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_devive_power(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD16_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_cold_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_heat_temp(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD16_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_drop_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD16_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_warm_status(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD16_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD16_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_protect(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_child_lock(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD16_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_onoff_memory(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD16_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_comfortable_temp(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD16_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_heat_comfortable_temp(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD16_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_high_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD16_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_low_temp(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD16_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD16_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_lewtemp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD16_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_temp(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD16_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_hum(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD16_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_need(virtualPort,reg_detailes);
+				} 
+				break;
+			}
+			case REG_ADDR_PAD16_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_fan_speed(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD16_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_control(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD16_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_low(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD16_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_mid(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD16_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_high(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD16_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_cold_diff(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD16_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_heat_diff(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD16_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD16_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD16_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_need(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD16_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_out_speed(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_speed_output(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD16_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_control_num(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD16_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_two_output_mode(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_fan(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_warm(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_WARM_TYPE:
+			{//辐射类型
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_type_warm_choose(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_ROOM_AREA:
+			{//房间面积
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_room_area(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_LEW_TEMP_STATUS:
+			{//露点状态
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_dorp_temp_output(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_ADJUST_TEMP:
+			{//校温
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD16_ADJUST_HUM:
+			{//校湿
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_hum(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+
+						case REG_ADDR_PAD17_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_devive_power(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD17_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_cold_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_heat_temp(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD17_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_drop_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD17_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_warm_status(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD17_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD17_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_protect(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_child_lock(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD17_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_onoff_memory(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD17_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_comfortable_temp(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD17_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_heat_comfortable_temp(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD17_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_high_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD17_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_low_temp(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD17_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD17_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_lewtemp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD17_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_temp(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD17_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_hum(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD17_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_need(virtualPort,reg_detailes);
+				} 
+				break;
+			}
+			case REG_ADDR_PAD17_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_fan_speed(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD17_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_control(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD17_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_low(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD17_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_mid(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD17_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_high(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD17_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_cold_diff(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD17_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_heat_diff(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD17_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD17_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD17_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_need(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD17_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_out_speed(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_speed_output(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD17_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_control_num(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD17_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_two_output_mode(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_fan(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_warm(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_WARM_TYPE:
+			{//辐射类型
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_type_warm_choose(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_ROOM_AREA:
+			{//房间面积
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_room_area(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_LEW_TEMP_STATUS:
+			{//露点状态
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_dorp_temp_output(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_ADJUST_TEMP:
+			{//校温
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD17_ADJUST_HUM:
+			{//校湿
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_hum(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+
+						case REG_ADDR_PAD18_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_devive_power(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD18_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_cold_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_heat_temp(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD18_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_drop_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD18_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_warm_status(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD18_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD18_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_protect(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_child_lock(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD18_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_onoff_memory(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD18_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_comfortable_temp(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD18_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_heat_comfortable_temp(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD18_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_high_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD18_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_low_temp(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD18_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD18_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_lewtemp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD18_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_temp(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD18_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_hum(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD18_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_need(virtualPort,reg_detailes);
+				} 
+				break;
+			}
+			case REG_ADDR_PAD18_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_fan_speed(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD18_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_control(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD18_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_low(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD18_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_mid(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD18_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_high(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD18_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_cold_diff(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD18_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_heat_diff(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD18_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD18_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD18_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_need(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD18_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_out_speed(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_speed_output(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD18_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_control_num(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD18_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_two_output_mode(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_fan(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_warm(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_WARM_TYPE:
+			{//辐射类型
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_type_warm_choose(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_ROOM_AREA:
+			{//房间面积
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_room_area(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_LEW_TEMP_STATUS:
+			{//露点状态
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_dorp_temp_output(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_ADJUST_TEMP:
+			{//校温
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD18_ADJUST_HUM:
+			{//校湿
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_hum(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+
+						case REG_ADDR_PAD19_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_devive_power(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD19_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_cold_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_heat_temp(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD19_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_drop_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD19_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_warm_status(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD19_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD19_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_protect(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_child_lock(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD19_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_onoff_memory(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD19_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_comfortable_temp(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD19_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_heat_comfortable_temp(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD19_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_high_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD19_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_low_temp(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD19_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD19_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_lewtemp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD19_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_temp(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD19_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_hum(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD19_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_need(virtualPort,reg_detailes);
+				} 
+				break;
+			}
+			case REG_ADDR_PAD19_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_fan_speed(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD19_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_control(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD19_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_low(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD19_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_mid(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD19_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_high(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD19_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_cold_diff(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD19_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_heat_diff(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD19_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD19_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD19_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_need(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD19_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_out_speed(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_speed_output(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD19_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_control_num(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD19_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_two_output_mode(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_fan(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_warm(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_WARM_TYPE:
+			{//辐射类型
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_type_warm_choose(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_ROOM_AREA:
+			{//房间面积
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_room_area(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_LEW_TEMP_STATUS:
+			{//露点状态
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_dorp_temp_output(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_ADJUST_TEMP:
+			{//校温
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD19_ADJUST_HUM:
+			{//校湿
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_hum(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+
+						case REG_ADDR_PAD20_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_devive_power(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD20_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_cold_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_heat_temp(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD20_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_drop_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD20_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_warm_status(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD20_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD20_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_protect(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_child_lock(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD20_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_onoff_memory(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD20_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_comfortable_temp(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD20_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_heat_comfortable_temp(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD20_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_high_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD20_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_low_temp(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD20_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD20_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_lewtemp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD20_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_temp(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD20_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_hum(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD20_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_need(virtualPort,reg_detailes);
+				} 
+				break;
+			}
+			case REG_ADDR_PAD20_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_fan_speed(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD20_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_control(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD20_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_low(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD20_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_mid(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD20_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_high(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD20_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_cold_diff(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD20_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_heat_diff(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD20_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD20_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD20_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_need(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD20_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_out_speed(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_speed_output(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD20_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_control_num(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD20_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_two_output_mode(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_fan(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_warm(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_WARM_TYPE:
+			{//辐射类型
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_type_warm_choose(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_ROOM_AREA:
+			{//房间面积
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_room_area(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_LEW_TEMP_STATUS:
+			{//露点状态
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_dorp_temp_output(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_ADJUST_TEMP:
+			{//校温
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD20_ADJUST_HUM:
+			{//校湿
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_hum(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+
+						case REG_ADDR_PAD21_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_devive_power(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD21_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_cold_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_heat_temp(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD21_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_drop_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD21_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_warm_status(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD21_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD21_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_protect(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_child_lock(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD21_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_onoff_memory(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD21_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_comfortable_temp(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD21_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_heat_comfortable_temp(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD21_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_high_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD21_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_low_temp(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD21_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD21_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_lewtemp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD21_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_temp(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD21_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_hum(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD21_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_need(virtualPort,reg_detailes);
+				} 
+				break;
+			}
+			case REG_ADDR_PAD21_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_fan_speed(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD21_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_control(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD21_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_low(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD21_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_mid(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD21_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_high(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD21_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_cold_diff(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD21_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_heat_diff(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD21_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD21_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD21_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_need(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD21_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_out_speed(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_speed_output(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD21_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_control_num(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD21_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_two_output_mode(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_fan(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_warm(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_WARM_TYPE:
+			{//辐射类型
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_type_warm_choose(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_ROOM_AREA:
+			{//房间面积
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_room_area(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_LEW_TEMP_STATUS:
+			{//露点状态
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_dorp_temp_output(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_ADJUST_TEMP:
+			{//校温
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD21_ADJUST_HUM:
+			{//校湿
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_hum(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+
+						case REG_ADDR_PAD22_POWER:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_devive_power(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD22_SET_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_cold_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_SET_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_heat_temp(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD22_LEW_DORP_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_drop_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD22_COLD_WARM_STATUS:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_warm_status(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD22_FREEZE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD22_FREEZE_PROTECT:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_freeze_protect(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_CHILD_LOCK:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_child_lock(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD22_POWER_MEMORY:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_onoff_memory(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD22_COMFORTABLE_COLD_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_comfortable_temp(virtualPort,reg_detailes);
+				}        
+				break;
+			}
+			case REG_ADDR_PAD22_COMFORTABLE_HEAT_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_heat_comfortable_temp(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD22_SET_HIGH_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_high_temp(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD22_SET_LOW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_low_temp(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD22_DEADZONE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_temp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD22_DEADZONE_LEW_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_deadzone_lewtemp(virtualPort,reg_detailes);
+				}       
+				break;
+			}
+			case REG_ADDR_PAD22_MEASURE_TEMP:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_temp(virtualPort,reg_detailes);
+				}      
+				break;
+			}
+			case REG_ADDR_PAD22_MEASURE_HUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_measure_hum(virtualPort,reg_detailes);
+				}     
+				break;
+			}
+			case REG_ADDR_PAD22_WARM_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_need(virtualPort,reg_detailes);
+				} 
+				break;
+			}
+			case REG_ADDR_PAD22_SET_FANSPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_fan_speed(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD22_CONTROL_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_control(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD22_PWM_LOW_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_low(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD22_PWM_MID_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_mid(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD22_PWM_HIGH_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_set_pwm_high(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD22_AI_COLD_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_cold_diff(virtualPort,reg_detailes);
+				}    
+				break;
+			}
+			case REG_ADDR_PAD22_AI_HEAT_COLLA_DEADZONE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_ai_heat_diff(virtualPort,reg_detailes);
+				}            
+				break;
+			}
+			case REG_ADDR_PAD22_AI_COLD_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_cold_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD22_AI_HEAT_COLLA_ENABLE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_warm_colla_enable(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD22_FAN_VAVLE_NEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_need(virtualPort,reg_detailes);
+				}         
+				break;
+			}
+			case REG_ADDR_PAD22_FAN_OUTPUT_LEVEL:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_out_speed(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_FAN_SPEED:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_fan_speed_output(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD22_CONTROL_OUTPUT_NUM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_control_num(virtualPort,reg_detailes);
+				}           
+				break;
+			}
+			case REG_ADDR_PAD22_TWO_CHOOSE_MODE:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_two_output_mode(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_BIND_FAN:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_fan(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_BIND_WARM:
+			{
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_bind_list_warm(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_WARM_TYPE:
+			{//辐射类型
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_type_warm_choose(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_ROOM_AREA:
+			{//房间面积
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_room_area(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_LEW_TEMP_STATUS:
+			{//露点状态
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_lew_dorp_temp_output(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_ADJUST_TEMP:
+			{//校温
+				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
+				if(virtualPort != PAD_NO_PHY_BIND)
+				{
+					app_general_push_pad_adjust_temp(virtualPort,reg_detailes);
+				}          
+				break;
+			}
+			case REG_ADDR_PAD22_ADJUST_HUM:
 			{//校湿
 				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
 				if(virtualPort != PAD_NO_PHY_BIND)

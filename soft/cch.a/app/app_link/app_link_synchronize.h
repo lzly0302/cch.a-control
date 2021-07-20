@@ -91,8 +91,9 @@ void app_link_syn_push_receive_data(uint8_t in_solidNum,bgk_comm_buff_def *in_re
 //功能:对外同步接口
 //入口: in_solidNum 对应实例     in_updataWord:数据点更新字                          
 //出口: 
+/*发送系统数据*/
 void app_link_syn_push_outside_updata_word(uint8_t in_solidNum,uint32_t in_updataWord);
-
+/*发送面板数据*/
 void app_link_syn_push_pad_updata_word(uint8_t in_prot,uint32_t in_updataWord);
 
 uint8_t pull_syn_main_status(void);

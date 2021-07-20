@@ -40,16 +40,24 @@ void app_temperature_task(void)
         if(secondCount >= SEND_TEMP_COUNT)
         {//1分钟更新一次
             secondCount = 0;
-            //app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_MIXWATER_TEMP);
+            app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_MIXWATER_TEMP);
         }      
-//        if(inWaterTemp == SensorError)
-//        {
-//            app_general_push_error_word(ERROR_NTC_IN_WATER);
-//        }
-//        else
-//        {
-//            app_general_clear_error_word(ERROR_NTC_IN_WATER);
-//        }
+        if(firstInWaterTemp == SensorError)
+        {
+            app_general_push_master_error_word(SYS_ERROR_FIRST_SUPPLY_WATER);
+        }
+        else
+        {
+            app_general_clear_master_error_word(SYS_ERROR_FIRST_SUPPLY_WATER);
+        }
+        if(firstBackWaterTemp == SensorError)
+        {
+            app_general_push_master_error_word(SYS_ERROR_FIRST_BACK_WATER);
+        }
+        else
+        {
+            app_general_clear_master_error_word(SYS_ERROR_FIRST_BACK_WATER);
+        }
         if(backWaterTemp == SensorError)
         {
             app_general_push_error_word(ERROR_NTC_BACK_WATER);

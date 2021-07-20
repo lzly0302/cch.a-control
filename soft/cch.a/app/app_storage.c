@@ -14,8 +14,15 @@ StoRunParamter_Def  StoRunParameter =
 static sdt_bool cfged = sdt_false;
 //-------------------------------------------------------------------------------
 static void sto_run_parameter_cfg(void)
-{
-  //  mde_storage_block_set_length_w(0,sizeof(StoRunParameter));
+{ 
+     uint32_t in_w25q64_id; 
+     SPI_FLASH_Init();
+     
+     in_w25q64_id = SPI_FLASH_ReadID();
+     if(in_w25q64_id == sFLASH_ID)
+     {
+        mde_storage_block_set_length_w(0,sizeof(StoRunParameter));
+     }
 }
 uint8_t * app_pull_local_id(void)
 {
@@ -40,7 +47,6 @@ void RestoreFactoryStorage(void)
     StoRunParameter.coldDropDiff = 30;
     StoRunParameter.lowTempProtectConfig = 50;
     StoRunParameter.powerOffStatus = 0;
-   // StoRunParameter.control_method = METHOD_BASIC;
     StoRunParameter.cold_no_need_temp_set = 200;
     StoRunParameter.cold_fan_need_temp_set = 100;
     StoRunParameter.cold_warm_need_temp_set = 160;
@@ -65,10 +71,10 @@ void app_read_run_parameter(void)
     else
     {
         cfged = sdt_true;
-       // sto_run_parameter_cfg();
+        sto_run_parameter_cfg();
     }
-//    if(mde_read_storage_block(0,&StoRunParameter.sto_data[0]))
-//    {
+    if(mde_read_storage_block(0,&StoRunParameter.sto_data[0]))
+    {
         if((StoRunParameter.deviceAddress == 0) || (StoRunParameter.deviceAddress == 0xff))
         {
             StoRunParameter.deviceAddress = 0x01;   
@@ -81,13 +87,13 @@ void app_read_run_parameter(void)
         {
             StoRunParameter.evenOddCheck = 0;
         }
-//        RestoreFactoryStorage();//调试功能，需删除
-//    }
-//    else
-//    {
-//        RestoreFactoryStorage();
-//        app_push_once_save_sto_parameter();
-//    }   
+      //  RestoreFactoryStorage();//调试功能，需删除
+    }
+    else
+    {
+        RestoreFactoryStorage();
+        app_push_once_save_sto_parameter();
+    }   
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 macro_createTimer(timer_notSave,(timerType_millisecond | timStatusBits_onceTriggered),0);
@@ -106,29 +112,29 @@ void app_sto_run_parameter_task(void)
     pbc_timerClockRun_task(&timer_notSave);
     if(pbc_pull_timerIsOnceTriggered(&timer_notSave))
     {
-      //  StoRunParamter_Def rd_sto;
-       // sdt_int32u i;
-     //   sdt_bool enable_write = sdt_false;
+        StoRunParamter_Def rd_sto;
+        sdt_int32u i;
+        sdt_bool enable_write = sdt_false;
         
-//        if(mde_read_storage_block(0,&rd_sto.sto_data[0]))
-//        {
-//            for(i = 0;i < (sizeof(StoRunParameter)/4);i ++)
-//            {
-//                if(rd_sto.sto_data[i] != StoRunParameter.sto_data[i])//数据有变化存储
-//                {
-//                    enable_write = sdt_true;
-//                    break;
-//                }
-//            }
-//        }
-//        else
-//        {
-//            enable_write = sdt_true;
-//        }
-//        if(enable_write)
-//        {
-//            mde_write_storage_block(0,&StoRunParameter.sto_data[0]);
-//        }
+        if(mde_read_storage_block(0,&rd_sto.sto_data[0]))
+        {
+            for(i = 0;i < (sizeof(StoRunParameter)/4);i ++)
+            {
+                if(rd_sto.sto_data[i] != StoRunParameter.sto_data[i])//数据有变化存储
+                {
+                    enable_write = sdt_true;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            enable_write = sdt_true;
+        }
+        if(enable_write)
+        {
+            mde_write_storage_block(0,&StoRunParameter.sto_data[0]);
+        }
     }
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

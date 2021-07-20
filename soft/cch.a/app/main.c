@@ -4,7 +4,7 @@
 int main (void)
 {
     mde_IWDG_Configure();
-  //  app_read_run_parameter();
+    app_read_run_parameter();
     pbc_createTask_one(app_general_task,0);
 //-----------------------------------------------------------------------------
     pbc_sysTickTaskProcess();

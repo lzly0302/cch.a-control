@@ -2590,6 +2590,45 @@
       </file>
     </group>
     <group>
+      <name>mde_storage32bits</name>
+      <group>
+        <name>depend</name>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_storage32bits\depend\bsp_flashMemory.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_storage32bits\depend\bsp_flashMemory.h</name>
+        </file>
+      </group>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_storage32bits\mde_storage32bits.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_storage32bits\mde_storage32bits.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_storage32bits\sod_Storage32bits.h</name>
+      </file>
+    </group>
+    <group>
+      <name>mde_w25q64</name>
+      <group>
+        <name>depend</name>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_w25q64\depend\bsp_w25q64.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_w25q64\depend\bsp_w25q64.h</name>
+        </file>
+      </group>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_w25q64\mde_w25q64.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_w25q64\mde_w25q64.h</name>
+      </file>
+    </group>
+    <group>
       <name>mde_watchDog</name>
       <group>
         <name>depend</name>
@@ -2662,6 +2701,12 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\pbc\Libraries\GD32F4xx_standard_peripheral\Include\gd32f4xx_rcu.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\pbc\Libraries\GD32F4xx_standard_peripheral\Source\gd32f4xx_spi.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\pbc\Libraries\GD32F4xx_standard_peripheral\Include\gd32f4xx_spi.h</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\pbc\Libraries\GD32F4xx_standard_peripheral\Source\gd32f4xx_syscfg.c</name>

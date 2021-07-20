@@ -36,6 +36,8 @@
 #define  SYS_ERROR_AFTER_FU_AIR_NTC      0X0100//氟盘后综合传感器故障
 #define  SYS_ERROR_BACK_AIR_NTC          0X0200//回风综合传感器故障
 #define  SYS_ERROR_EXHAST_AIR_NTC        0X0400//排风综合传感器故障
+#define  SYS_ERROR_FIRST_SUPPLY_WATER    0X0800//一次侧供水故障
+#define  SYS_ERROR_FIRST_BACK_WATER      0X0100//一次侧回水故障
 
 #define ARICOD_READ_ONLY_REG_NUM            84
 #define ARICOD_READ_WRITE_REG_NUM           74

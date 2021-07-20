@@ -7,7 +7,7 @@
 #include "..\.\pbc\pbc_dataConvert\pbc_dataConvert.h"
 #include "..\.\pbc\pbc_timeStamp\pbc_timeStamp.h"
 #include "..\.\mde\mde_mRtuSlave\mde_mRtuSlave.h"
-//#include "..\.\mde\mde_storage32bits\mde_storage32bits.h"
+#include "..\.\mde\mde_storage32bits\mde_storage32bits.h"
 #include "..\.\mde\mde_led\mde_led.h"
 #include "..\.\mde\mde_mixWater\mde_mixWater.h"
 #include "..\.\mde\mde_ntcSensor\mde_ntcSensor.h"
@@ -19,6 +19,7 @@
 //#include "..\.\mde\mde_upgradeFiles\mde_upgradeFiles.h"
 #include "..\.\mde\mde_sd3078\mde_sd3078.h"
 #include "..\.\mde\mde_bough_link\mde_bough_link_half.h"
+#include "..\.\mde\mde_w25q64\mde_w25q64.h"
 //#include "..\.\mde\mde_upgradeFiles\mde_upgradeFiles.h"
 
 #include ".\app_storage.h"
