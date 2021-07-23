@@ -1125,6 +1125,48 @@ bool _syn_pull_local_id(uint8_t *in_deviceId)
     }
     return false;
 }
+bool _syn_pull_extend_cc(void)
+{
+    uint8_t i = 0;
+    linkDeviceList_t* logList;
+    logList = app_link_log_pull_device_list(SYSTEM_MASTER);
+    for(i = 0; i < MAX_DEVICE_NUM;i++)
+    {
+        if(logList[i].onlineFlag)
+        {
+            if(logList[i].deviceType == DEVICE_TYPE_CC)
+            {
+                if(false == _syn_pull_local_id(&logList[i].DeviceID[0]))
+                {
+                    return true;
+                }              
+            }
+        }
+    }
+    return false;
+}
+
+uint8_t* _syn_pull_extend_cc_id(void)
+{
+     uint8_t i = 0;
+    linkDeviceList_t* logList;
+    logList = app_link_log_pull_device_list(SYSTEM_MASTER);
+    for(i = 0; i < MAX_DEVICE_NUM;i++)
+    {
+        if(logList[i].onlineFlag)
+        {
+            if(logList[i].deviceType == DEVICE_TYPE_CC)
+            {
+                if(false == _syn_pull_local_id(&logList[i].DeviceID[0]))
+                {
+                    return &logList[i].DeviceID[0];
+                }              
+            }
+        }
+    }
+    return &deviceid_addr[0];
+}
+
 bool _syn_pull_write_device_id(uint8_t *in_deviceId)
 {//烧录ID
     if((in_deviceId[0] == deviceid_addr[0])&&\
@@ -1156,6 +1198,8 @@ uint8_t* _syn_pull_type_hc_id(void)
     }
     return &deviceid_addr[0];
 }
+
+
 
 bool _syn_pull_type_hc_online(void)
 {

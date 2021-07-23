@@ -33,26 +33,15 @@ macro_creat_queueBasce(uart3_queue_txd,255);
 //-----------------------------------------------------------------------------
 void UART3_IRQHandler(void)
 {
-    if((RESET != usart_interrupt_flag_get(UART3, USART_INT_FLAG_ERR_ORERR)) && 
-       (RESET != usart_flag_get(UART3, USART_FLAG_RBNE)))
-    {//过载错误
-        /* receive data */
-        usart_data_receive(UART3);
-    }
-    else if((RESET != usart_interrupt_flag_get(UART3, USART_INT_FLAG_ERR_NERR)) && 
-       (RESET != usart_flag_get(UART3, USART_FLAG_RBNE)))
-    {//接收错误
-        /* receive data */
-        usart_data_receive(UART3);
-    }
-    else if((RESET != usart_interrupt_flag_get(UART3, USART_INT_FLAG_ERR_FERR)) && 
-       (RESET != usart_flag_get(UART3, USART_FLAG_RBNE)))
+    if((RESET != usart_flag_get(UART3, USART_FLAG_ORERR)) || 
+         (RESET != usart_flag_get(UART3, USART_FLAG_NERR)) || 
+           (RESET != usart_flag_get(UART3, USART_FLAG_FERR)))
     {
         /* receive data */
-        usart_data_receive(UART3); 
+        usart_data_receive(UART3);
     }
     else if((RESET != usart_interrupt_flag_get(UART3, USART_INT_FLAG_PERR)) && 
-       (RESET != usart_flag_get(UART3, USART_FLAG_RBNE)))
+       (RESET != usart_flag_get(UART3, USART_FLAG_PERR)))
     {
         /* receive data */
         usart_data_receive(UART3);
@@ -364,26 +353,15 @@ macro_creat_queueBasce(uart1_queue_txd,255);
 //-----------------------------------------------------------------------------
 void USART1_IRQHandler(void)
 {
-    if((RESET != usart_interrupt_flag_get(USART1, USART_INT_FLAG_ERR_ORERR)) && 
-       (RESET != usart_flag_get(USART1, USART_FLAG_RBNE)))
-    {//过载错误
-        /* receive data */
-        usart_data_receive(USART1);
-    }
-    else if((RESET != usart_interrupt_flag_get(USART1, USART_INT_FLAG_ERR_NERR)) && 
-       (RESET != usart_flag_get(USART1, USART_FLAG_RBNE)))
-    {//接收错误
-        /* receive data */
-        usart_data_receive(USART1);
-    }
-    else if((RESET != usart_interrupt_flag_get(USART1, USART_INT_FLAG_ERR_FERR)) && 
-       (RESET != usart_flag_get(USART1, USART_FLAG_RBNE)))
+    if((RESET != usart_flag_get(USART1, USART_FLAG_ORERR)) || 
+         (RESET != usart_flag_get(USART1, USART_FLAG_NERR)) || 
+           (RESET != usart_flag_get(USART1, USART_FLAG_FERR)))
     {
         /* receive data */
-        usart_data_receive(USART1); 
+        usart_data_receive(USART1);
     }
     else if((RESET != usart_interrupt_flag_get(USART1, USART_INT_FLAG_PERR)) && 
-       (RESET != usart_flag_get(USART1, USART_FLAG_RBNE)))
+       (RESET != usart_flag_get(USART1, USART_FLAG_PERR)))
     {
         /* receive data */
         usart_data_receive(USART1);

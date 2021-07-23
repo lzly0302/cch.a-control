@@ -23,26 +23,15 @@ macro_creat_queueBasce(uart0_queue_txd,255);
 //-----------------------------------------------------------------------------
 void USART0_IRQHandler(void)
 {
-    if((RESET != usart_interrupt_flag_get(USART0, USART_INT_FLAG_ERR_ORERR)) && 
-       (RESET != usart_flag_get(USART0, USART_FLAG_RBNE)))
+    if((RESET != usart_flag_get(USART0, USART_FLAG_ORERR)) ||
+        (RESET != usart_flag_get(USART0, USART_FLAG_FERR)) || 
+         (RESET != usart_flag_get(USART0, USART_FLAG_NERR)))
     {
         /* receive data */
         usart_data_receive(USART0);
-    }
-    else if((RESET != usart_interrupt_flag_get(USART0, USART_INT_FLAG_ERR_NERR)) && 
-       (RESET != usart_flag_get(USART0, USART_FLAG_RBNE)))
-    {
-        /* receive data */
-        usart_data_receive(USART0);
-    }
-    else if((RESET != usart_interrupt_flag_get(USART0, USART_INT_FLAG_ERR_FERR)) && 
-       (RESET != usart_flag_get(USART0, USART_FLAG_RBNE)))
-    {
-        /* receive data */
-        usart_data_receive(USART0); 
     }
     else if((RESET != usart_interrupt_flag_get(USART0, USART_INT_FLAG_PERR)) && 
-       (RESET != usart_flag_get(USART0, USART_FLAG_RBNE)))
+       (RESET != usart_flag_get(USART0, USART_FLAG_PERR)))
     {
         /* receive data */
         usart_data_receive(USART0);
@@ -67,8 +56,8 @@ void USART0_IRQHandler(void)
             macro_push_queueBasce_data(uart0_queue_rxd,n_bytes,Read_reg);
         } 
     }
-    if((RESET != usart_flag_get(USART0, USART_FLAG_TBE)) && 
-       (RESET != usart_interrupt_flag_get(USART0, USART_INT_FLAG_TBE)))
+    if((RESET != usart_flag_get(USART0, USART_FLAG_TC)) && 
+       (RESET != usart_interrupt_flag_get(USART0, USART_INT_FLAG_TC)))
     {          
         /* transmit data */
         sdt_int8u n_bytes,rd_byte_details;
@@ -80,7 +69,7 @@ void USART0_IRQHandler(void)
         }
         else
         {
-            usart_interrupt_disable(USART0, USART_INT_TBE);
+            usart_interrupt_disable(USART0, USART_INT_TC);
         }
     }
 }
@@ -123,7 +112,7 @@ void bsp_uart0_cfg(void)
     usart_transmit_config(USART0, USART_TRANSMIT_ENABLE);
     usart_enable(USART0);
      /* enable USART TBE interrupt */  
-    usart_interrupt_enable(USART0, USART_INT_TBE);
+    usart_interrupt_enable(USART0, USART_INT_TC);
     usart_interrupt_enable(USART0, USART_INT_RBNE);
 }
 
@@ -195,7 +184,7 @@ sdt_bool bsp_push_oneByte_uart0_txd(sdt_int8u in_byte_details)
         __disable_interrupt();
         macro_push_queueBasce_data(uart0_queue_txd,n_bytes,in_byte_details);
         __enable_interrupt();
-        usart_interrupt_enable(USART0, USART_INT_TBE);
+        usart_interrupt_enable(USART0, USART_INT_TC);
         return(sdt_true);
     }
 }
@@ -239,14 +228,15 @@ sdt_bool bsp_pull_uart0_txd_cmp(void)
     }
     else
     {
-        if(RESET != usart_flag_get(USART0, USART_FLAG_TBE))
+       /* if(RESET != usart_flag_get(USART0, USART_FLAG_TC))
         {
             return(sdt_false);
         }
         else
         {
             return(sdt_true);
-        }      
+        }  */
+        return(sdt_true);    
     }
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -305,26 +295,27 @@ macro_creat_queueBasce(uart2_queue_txd,255);
 //-----------------------------------------------------------------------------
 void USART2_IRQHandler(void)
 {
-    if((RESET != usart_interrupt_flag_get(USART2, USART_INT_FLAG_ERR_ORERR)) && 
-       (RESET != usart_flag_get(USART2, USART_FLAG_RBNE)))
+    if((RESET != usart_flag_get(USART2, USART_FLAG_ORERR)) || 
+         (RESET != usart_flag_get(USART2, USART_FLAG_NERR)) || 
+           (RESET != usart_flag_get(USART2, USART_FLAG_FERR)))
     {
         /* receive data */
         usart_data_receive(USART2);
     }
-    else if((RESET != usart_interrupt_flag_get(USART2, USART_INT_FLAG_ERR_NERR)) && 
-       (RESET != usart_flag_get(USART2, USART_FLAG_RBNE)))
-    {
-        /* receive data */
-        usart_data_receive(USART2);
-    }
-    else if((RESET != usart_interrupt_flag_get(USART2, USART_INT_FLAG_ERR_FERR)) && 
-       (RESET != usart_flag_get(USART2, USART_FLAG_RBNE)))
-    {
-        /* receive data */
-        usart_data_receive(USART2); 
-    }
+//    else if((RESET != usart_interrupt_flag_get(USART2, USART_INT_FLAG_ERR_NERR)) && 
+//       )
+//    {
+//        /* receive data */
+//        usart_data_receive(USART2);
+//    }
+//    else if((RESET != usart_interrupt_flag_get(USART2, USART_INT_FLAG_ERR_FERR)) && 
+//       
+//    {
+//        /* receive data */
+//        usart_data_receive(USART2); 
+//    }
     else if((RESET != usart_interrupt_flag_get(USART2, USART_INT_FLAG_PERR)) && 
-       (RESET != usart_flag_get(USART2, USART_FLAG_RBNE)))
+       (RESET != usart_flag_get(USART2, USART_FLAG_PERR)))
     {
         /* receive data */
         usart_data_receive(USART2);
@@ -349,21 +340,23 @@ void USART2_IRQHandler(void)
             macro_push_queueBasce_data(uart2_queue_rxd,n_bytes,Read_reg);
         } 
     }
-    if((RESET != usart_flag_get(USART2, USART_FLAG_TBE)) && 
-       (RESET != usart_interrupt_flag_get(USART2, USART_INT_FLAG_TBE)))
+    if(RESET != usart_interrupt_flag_get(USART2, USART_INT_FLAG_TC))    
     {          
         /* transmit data */
-        sdt_int8u n_bytes,rd_byte_details;
-        macro_pull_queueBasce_bytes(uart2_queue_txd,n_bytes);
-        if(n_bytes)
+        if(RESET != usart_flag_get(USART2, USART_FLAG_TC))
         {
-            macro_pull_queueBasce_data(uart2_queue_txd,n_bytes,rd_byte_details);
-            usart_data_transmit(USART2,rd_byte_details);
-        }
-        else
-        {
-            usart_interrupt_disable(USART2, USART_INT_TBE);
-        }
+            sdt_int8u n_bytes,rd_byte_details;
+            macro_pull_queueBasce_bytes(uart2_queue_txd,n_bytes);
+            if(n_bytes)
+            {
+                macro_pull_queueBasce_data(uart2_queue_txd,n_bytes,rd_byte_details);
+                usart_data_transmit(USART2,rd_byte_details);
+            }
+            else
+            {
+                usart_interrupt_disable(USART2, USART_INT_TC);
+            }
+        }        
     }
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -405,7 +398,7 @@ void bsp_uart2_cfg(void)
     usart_transmit_config(USART2, USART_TRANSMIT_ENABLE);
     usart_enable(USART2);
      /* enable USART TBE interrupt */  
-    usart_interrupt_enable(USART2, USART_INT_TBE);
+    usart_interrupt_enable(USART2, USART_INT_TC);
     usart_interrupt_enable(USART2, USART_INT_RBNE);
 }
 
@@ -477,7 +470,7 @@ sdt_bool bsp_push_oneByte_uart2_txd(sdt_int8u in_byte_details)
         __disable_interrupt();
         macro_push_queueBasce_data(uart2_queue_txd,n_bytes,in_byte_details);
         __enable_interrupt();
-        usart_interrupt_enable(USART2, USART_INT_TBE);
+        usart_interrupt_enable(USART2, USART_INT_TC);
         return(sdt_true);
     }
 }
@@ -521,14 +514,15 @@ sdt_bool bsp_pull_uart2_txd_cmp(void)
     }
     else
     {
-        if(RESET != usart_flag_get(USART2, USART_FLAG_TBE))
-        {
-            return(sdt_false);
-        }
-        else
-        {
-            return(sdt_true);
-        }      
+//        if(RESET != usart_flag_get(USART2, USART_FLAG_TC))
+//        {
+//            return(sdt_false);
+//        }
+//        else
+//        {
+//            return(sdt_true);
+//        }   
+        return(sdt_true);
     }
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -564,26 +558,15 @@ macro_creat_queueBasce(uart5_queue_txd,255);
 //-----------------------------------------------------------------------------
 void USART5_IRQHandler(void)
 {
-    if((RESET != usart_interrupt_flag_get(USART5, USART_INT_FLAG_ERR_ORERR)) && 
-       (RESET != usart_flag_get(USART5, USART_FLAG_RBNE)))
+     if((RESET != usart_flag_get(USART5, USART_FLAG_ORERR)) || 
+         (RESET != usart_flag_get(USART5, USART_FLAG_NERR)) || 
+           (RESET != usart_flag_get(USART5, USART_FLAG_FERR)))
     {
         /* receive data */
         usart_data_receive(USART5);
-    }
-    else if((RESET != usart_interrupt_flag_get(USART5, USART_INT_FLAG_ERR_NERR)) && 
-       (RESET != usart_flag_get(USART5, USART_FLAG_RBNE)))
-    {
-        /* receive data */
-        usart_data_receive(USART5);
-    }
-    else if((RESET != usart_interrupt_flag_get(USART5, USART_INT_FLAG_ERR_FERR)) && 
-       (RESET != usart_flag_get(USART5, USART_FLAG_RBNE)))
-    {
-        /* receive data */
-        usart_data_receive(USART5); 
     }
     else if((RESET != usart_interrupt_flag_get(USART5, USART_INT_FLAG_PERR)) && 
-       (RESET != usart_flag_get(USART5, USART_FLAG_RBNE)))
+       (RESET != usart_flag_get(USART5, USART_FLAG_PERR)))
     {
         /* receive data */
         usart_data_receive(USART5);
@@ -608,8 +591,8 @@ void USART5_IRQHandler(void)
             macro_push_queueBasce_data(uart5_queue_rxd,n_bytes,Read_reg);
         } 
     }
-    if((RESET != usart_flag_get(USART5, USART_FLAG_TBE)) && 
-       (RESET != usart_interrupt_flag_get(USART5, USART_INT_FLAG_TBE)))
+    if((RESET != usart_flag_get(USART5, USART_FLAG_TC)) && 
+       (RESET != usart_interrupt_flag_get(USART5, USART_INT_FLAG_TC)))
     {          
         /* transmit data */
         sdt_int8u n_bytes,rd_byte_details;
@@ -621,7 +604,7 @@ void USART5_IRQHandler(void)
         }
         else
         {
-            usart_interrupt_disable(USART5, USART_INT_TBE);
+            usart_interrupt_disable(USART5, USART_INT_TC);
         }
     }
 }
@@ -664,7 +647,7 @@ void bsp_uart5_cfg(void)
     usart_transmit_config(USART5, USART_TRANSMIT_ENABLE);
     usart_enable(USART5);
      /* enable USART TBE interrupt */  
-    usart_interrupt_enable(USART5, USART_INT_TBE);
+    usart_interrupt_enable(USART5, USART_INT_TC);
     usart_interrupt_enable(USART5, USART_INT_RBNE);
 }
 
@@ -736,7 +719,7 @@ sdt_bool bsp_push_oneByte_uart5_txd(sdt_int8u in_byte_details)
         __disable_interrupt();
         macro_push_queueBasce_data(uart5_queue_txd,n_bytes,in_byte_details);
         __enable_interrupt();
-        usart_interrupt_enable(USART5, USART_INT_TBE);
+        usart_interrupt_enable(USART5, USART_INT_TC);
         return(sdt_true);
     }
 }
@@ -780,14 +763,15 @@ sdt_bool bsp_pull_uart5_txd_cmp(void)
     }
     else
     {
-        if(RESET != usart_flag_get(USART5, USART_FLAG_TBE))
+       /* if(RESET != usart_flag_get(USART5, USART_FLAG_TBE))
         {
             return(sdt_false);
         }
         else
         {
             return(sdt_true);
-        }      
+        }  */  
+        return(sdt_true);  
     }
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -4046,7 +4046,7 @@ void app_general_mix_water_task(void)
         }
         else
         {
-            for(i = 0; i <  (MASTER_PAD_NUM-MASTER_PAD_VIRTUAL_NUM);i++)
+            for(i = 0; i <  MASTER_PAD_NUM;i++)
             {
                 if(output_terminal_backup[i])
                 {

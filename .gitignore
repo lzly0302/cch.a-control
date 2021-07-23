@@ -9,3 +9,7 @@
 /doc/GD32F4xx_Firmware_Library_V2.1.2/Template/IAR_project/Project.dep
 /soft/cch.a/mde/mde_mixWater/depend/bsp_mixwater.c
 /soft/cch.a/mde/mde_mixWater/depend/bsp_mixwater.h
+/soft/cch.a/app/app_master_sensor.h
+/soft/cch.a/app/app_master_comp.c
+/soft/cch.a/app/app_master_comp.h
+/soft/cch.a/app/app_master_sensor.c

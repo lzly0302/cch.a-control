@@ -1,7 +1,7 @@
 #ifndef app_cfg_H
 #define app_cfg_H
 
-//#define DEBUG_TEST  
+#define DEBUG_TEST  
 #include ".\snail_data_types.h"
 #include "..\.\pbc\pbc_sysTick\pbc_sysTick.h"
 #include "..\.\pbc\pbc_dataConvert\pbc_dataConvert.h"
