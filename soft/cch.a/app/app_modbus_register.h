@@ -1251,7 +1251,7 @@
 #define DEVICE_TYPE_ROMM                                 0x9522
 #define SOURCE_OUTSIDE                                   0x0001
 #define SOURCE_INSIDE                                    0x0002
-#define DEVICE_VERSION                                   0x2106
+#define DEVICE_VERSION                                   0x2101
 
 //-----------------------------------------------------------------------------
 uint16_t app_modbus_read_reg_data(uint16_t reg_addr,uint8_t in_src);
