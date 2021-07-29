@@ -2407,6 +2407,12 @@
       <name>$PROJ_DIR$\..\app\app_tempertaure.h</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\app\app_upgrade_modbus.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\app\app_upgrade_modbus.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\app\main.c</name>
     </file>
   </group>
@@ -2608,6 +2614,24 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\mde\mde_storage32bits\sod_Storage32bits.h</name>
+      </file>
+    </group>
+    <group>
+      <name>mde_upgradeFiles</name>
+      <group>
+        <name>depend</name>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_upgradeFiles\depend\bsp_upgradeFiles.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_upgradeFiles\depend\bsp_upgradeFiles.h</name>
+        </file>
+      </group>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_upgradeFiles\mde_upgradeFiles.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_upgradeFiles\mde_upgradeFiles.h</name>
       </file>
     </group>
     <group>

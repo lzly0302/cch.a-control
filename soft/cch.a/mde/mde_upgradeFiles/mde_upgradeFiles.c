@@ -233,7 +233,7 @@ sdt_int8u mde_push_fileMap(sdt_int8u* in_pBuff,sdt_bool in_resume)
 
         if(0x00000001 == fileMap_ver)
         {
-            sdt_int8u wr_inf[32];
+            static sdt_int8u wr_inf[32];
             pbc_int32uToArray_bigEndian(~update_srm,&wr_inf[0]);
             pbc_int32uToArray_bigEndian(~update_flag,&wr_inf[4]);
             pbc_int32uToArray_bigEndian(~update_checksum,&wr_inf[8]);
@@ -299,10 +299,7 @@ sdt_int16u mde_push_files_one_block(sdt_int16u in_block_num,sdt_int8u* in_pBuff)
                 sdt_int8u rd_inf[32];
                 bsp_read_information_user_upgrade(&rd_inf[0]); //读取信息块内容
 
-                //sdt_int32u fileMap_ver;
-                //sdt_int32u update_srm;
                 sdt_int32u update_flag;
-                //sdt_int32u update_checksum;
                 sdt_int32u update_codesize;
 
                 update_codesize = pbc_arrayToInt32u_bigEndian(&rd_inf[28]);  
@@ -312,16 +309,9 @@ sdt_int16u mde_push_files_one_block(sdt_int16u in_block_num,sdt_int8u* in_pBuff)
                 else
                 {
                     update_flag = upgrade_complete;
-                    //pbc_int32uToArray_bigEndian(~update_srm,&rd_inf[0]);
                     pbc_int32uToArray_bigEndian(~update_flag,&rd_inf[4]);
-                    //pbc_int32uToArray_bigEndian(~update_checksum,&rd_inf[8]);
-                    //pbc_int32uToArray_bigEndian(~update_codesize,&rd_inf[12]);
-                    //pbc_int32uToArray_bigEndian(update_srm,&rd_inf[16]);
                     pbc_int32uToArray_bigEndian(update_flag,&rd_inf[20]);
-                    //pbc_int32uToArray_bigEndian(update_checksum,&rd_inf[24]);
-                    //pbc_int32uToArray_bigEndian(update_codesize,&rd_inf[28]);
                     bsp_write_information_user_upgrade(&rd_inf[0]);       //写入信息到upgrade区
-
                     fwUpdate_status = fwUpdate_status_complete;
                 }                
             }

@@ -18,7 +18,7 @@ uint16_t app_modbus_read_reg_data(uint16_t reg_addr,uint8_t in_src)
     }
     else if((reg_addr == MRegaddr_SlaveStatusW) || (reg_addr == MRegaddr_RequestNumber))
     {
-        //app_updataBackup_readRegister(reg_addr,&reg_detailes);
+        app_updataBackup_readRegister(reg_addr,&reg_detailes);
     }
 	else 
 	{
@@ -9743,7 +9743,7 @@ bool app_modebus_write_reg_data(uint16_t reg_addr,uint16_t reg_detailes,uint8_t 
     uint8_t virtualPort = PAD_NO_PHY_BIND;
 	if((reg_addr >= MRegaddr_StrUpdateWord) && (reg_addr <= MRegaddr_Message63))
     {
-        //app_updataBackup_writeRegister(reg_addr,reg_detailes);
+        app_updataBackup_writeRegister(reg_addr,reg_detailes);
     }
 	else
 	{

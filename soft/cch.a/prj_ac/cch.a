@@ -1002,7 +1002,7 @@
         </option>
         <option>
           <name>Input description</name>
-          <state></state>
+          <state>Automatic choice of formatter.</state>
         </option>
         <option>
           <name>Output variant</name>
@@ -1011,7 +1011,7 @@
         </option>
         <option>
           <name>Output description</name>
-          <state></state>
+          <state>Automatic choice of formatter.</state>
         </option>
         <option>
           <name>GOutputBinary</name>
@@ -1019,7 +1019,7 @@
         </option>
         <option>
           <name>OGCoreOrChip</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GRuntimeLibSelect</name>
@@ -1033,7 +1033,7 @@
         </option>
         <option>
           <name>RTDescription</name>
-          <state></state>
+          <state>Use the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
         </option>
         <option>
           <name>OGProductVersion</name>
@@ -1053,7 +1053,7 @@
         </option>
         <option>
           <name>OGChipSelectEditMenu</name>
-          <state>Default	None</state>
+          <state>GD32F407xE	GD GD32F407xE</state>
         </option>
         <option>
           <name>GenLowLevelInterface</name>
@@ -1061,7 +1061,7 @@
         </option>
         <option>
           <name>GEndianModeBE</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OGBufferedTerminalOutput</name>
@@ -1092,7 +1092,7 @@
         <option>
           <name>GBECoreSlave</name>
           <version>24</version>
-          <state>38</state>
+          <state>39</state>
         </option>
         <option>
           <name>OGUseCmsis</name>
@@ -1109,21 +1109,21 @@
         <option>
           <name>CoreVariant</name>
           <version>24</version>
-          <state>38</state>
+          <state>39</state>
         </option>
         <option>
           <name>GFPUDeviceSlave</name>
-          <state>Default	None</state>
+          <state>GD32F407xE	GD GD32F407xE</state>
         </option>
         <option>
           <name>FPU2</name>
           <version>0</version>
-          <state>0</state>
+          <state>4</state>
         </option>
         <option>
           <name>NrRegs</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>NEON</name>
@@ -1132,7 +1132,7 @@
         <option>
           <name>GFPUCoreSlave2</name>
           <version>24</version>
-          <state>38</state>
+          <state>39</state>
         </option>
       </data>
     </settings>
@@ -1568,15 +1568,15 @@
         <option>
           <name>OOCOutputFormat</name>
           <version>3</version>
-          <state>0</state>
+          <state>3</state>
         </option>
         <option>
           <name>OCOutputOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state></state>
+          <state>cch.bin</state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>
@@ -1584,7 +1584,7 @@
         </option>
         <option>
           <name>OOCObjCopyEnable</name>
-          <state>0</state>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -1691,11 +1691,11 @@
         </option>
         <option>
           <name>IlinkIcfOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>lnk0t.icf</state>
+          <state>$PROJ_DIR$\\app_GD32F407xE.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>
@@ -1755,7 +1755,7 @@
         </option>
         <option>
           <name>IlinkProgramEntryLabel</name>
-          <state></state>
+          <state>__iar_program_start</state>
         </option>
         <option>
           <name>DoFill</name>
@@ -2024,6 +2024,12 @@
       <name>$PROJ_DIR$\..\app\app_tempertaure.h</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\app\app_upgrade_modbus.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\app\app_upgrade_modbus.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\app\main.c</name>
     </file>
   </group>
@@ -2225,6 +2231,24 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\mde\mde_storage32bits\sod_Storage32bits.h</name>
+      </file>
+    </group>
+    <group>
+      <name>mde_upgradeFiles</name>
+      <group>
+        <name>depend</name>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_upgradeFiles\depend\bsp_upgradeFiles.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_upgradeFiles\depend\bsp_upgradeFiles.h</name>
+        </file>
+      </group>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_upgradeFiles\mde_upgradeFiles.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_upgradeFiles\mde_upgradeFiles.h</name>
       </file>
     </group>
     <group>

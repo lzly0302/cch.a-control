@@ -4144,7 +4144,8 @@ void app_general_task(void)
     static sdt_bool sys_cfged = sdt_false;
     mde_IWDG_FeedDog();
     if(sys_cfged)
-    {     
+    {   
+        mde_upgrade_files_task();
         app_sto_run_parameter_task();
 		app_pwm_control_task();      
         app_logic_realy_task();
