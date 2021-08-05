@@ -446,11 +446,327 @@ void ResumeUpgrade_Process(void)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//主站任務
+typedef enum
+{
+    ugdsm_idle               = 0x00,
+    ugdsm_query              = 0x01,
+    ugdsm_query_amswer       = 0x02,
+    ugdsm_entryBoot          = 0x03,
+    ugdsm_entryBoot_answer   = 0x04,
+    ugdsm_restart            = 0x05,
+    ugdsm_restart_answer     = 0x06,
+    ugdsm_resume             = 0x07,
+    ugdsm_resume_answer      = 0x08,
+    ugdsm_transFlies         = 0x09,
+    ugdsm_transFlies_answer  = 0x0A,
+    ugdsm_check_pad_list     = 0x0B,
+    ugdsm_check_fan_list     = 0x0C,
+}upgrade_stateMachine_def;
+#define easy_upgrade_version         0x01
+//-----------------------------------------------------------------------------
+#define easy_upgradeCmd_query        0x01
+#define easy_upgradeCmd_entryBoot    0x02
+#define easy_upgradeCmd_restart      0x03
+#define easy_upgradeCmd_resume       0x04
+#define easy_upgradeCmd_transFiles   0x05
+#define easy_upgradeCmd_errReport    0x06
+//-----------------------------------------------------------------------------
+#define easy_upgradeSte_noValid      0x00
+#define easy_upgradeSte_noBoot       0x01
+#define easy_upgradeSte_Boot         0x10
+#define easy_upgradeSte_transFiles   0x12
+#define easy_upgradeSte_completed    0x1F
+bgk_comm_buff_def* pReceive_date;
+bool  haveDataFlag = false;
+static upgrade_stateMachine_def upgrade_stateMachine = ugdsm_idle;
+//主动升级任务
+void app_bough_update_master_task(void)
+{
+    macro_createTimer(timer_transmit,timerType_millisecond,0);
+    macro_createTimer(timer_answerTimeout,timerType_millisecond,0);
+//-----------------------------------------------------------------------------
+    bgk_comm_buff_def *transmit_data;
+    static uint16_t padList = 0;//
+    linkDeviceList_t* logList;
+    uint8_t *local_addr;
+    uint8_t i = 0;
+    static uint8_t padPort = 0;//面板端口
+    static uint16_t device_quety_fileNumber;
+//-----------------------------------------------------------------------------
+    pbc_timerClockRun_task(&timer_transmit);
+    pbc_timerClockRun_task(&timer_answerTimeout);
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+    switch(upgrade_stateMachine)
+    {
+        case ugdsm_idle:
+        {
+            if(mde_upgrade_pull_pad_status())
+            {
+                upgrade_stateMachine = ugdsm_check_pad_list;
+            }          
+            break;
+        }
+        case ugdsm_check_pad_list:
+        {
+            if(padList)
+            {
 
+            }
+            else
+            {
+                logList = app_link_log_pull_device_list(SYSTEM_PAD);
+                for(i = 0; i < MAX_DEVICE_NUM;i++)
+                {
+                    if(logList[i].onlineFlag)
+                    {
+                        if(logList[i].deviceType == DEVICE_TYPE_ROMM)
+                        {
+                            padList |= (0x01<<i);
+                        }
+                    }
+                }      
+            }
+            if(padList)
+            {
+                upgrade_stateMachine = ugdsm_query;
+            }
+            else
+            {
+                upgrade_stateMachine = ugdsm_idle;
+            }
+            break;
+        }
+        case ugdsm_query:
+        {
+            if(pbc_pull_timerIsCompleted(&timer_transmit))
+            {
+                pbc_reload_timerClock(&timer_transmit,2000);
+                for(i = 0;i < MAX_DEVICE_NUM;i++)
+                {
+                    if(padList & (0x01<<i))
+                    {                        
+                        padPort = i;
+                        break;
+                    }
+                }
+                transmit_data = pull_bough_message_pBuff(SYSTEM_PAD);
+                logList = app_link_log_pull_device_list(SYSTEM_PAD);
+                transmit_data->LinkDstAddr[0] = logList[padPort].DeviceID[0];
+                transmit_data->LinkDstAddr[1] = logList[padPort].DeviceID[1];
+                transmit_data->LinkDstAddr[2] = logList[padPort].DeviceID[2];
+                transmit_data->LinkDstAddr[3] = logList[padPort].DeviceID[3];
+                transmit_data->LinkDstAddr[4] = logList[padPort].DeviceID[4];
+                transmit_data->LinkDstAddr[5] = logList[padPort].DeviceID[5];
+                local_addr = app_pull_local_id();
+                transmit_data->LinkSrcAddr[0] = local_addr[0];
+                transmit_data->LinkSrcAddr[1] = local_addr[1];
+                transmit_data->LinkSrcAddr[2] = local_addr[2];
+                transmit_data->LinkSrcAddr[3] = local_addr[3];
+                transmit_data->LinkSrcAddr[4] = local_addr[4];
+                transmit_data->LinkSrcAddr[5] = local_addr[5];
+                transmit_data->ProcotolType = 0xD002;
+                transmit_data->PayloadLength = 4;
+                transmit_data->Payload[0] = easy_upgrade_version;
+                transmit_data->Payload[1] = easy_upgradeCmd_query;
+                transmit_data->Payload[2] = 0x00;
+                transmit_data->Payload[3] = 0x00;
+                push_active_one_message_transmit(SYSTEM_PAD,false);
+                upgrade_stateMachine = ugdsm_query_amswer;
+                pbc_reload_timerClock(&timer_answerTimeout,1500);
+            }
+            break;
+        }
+        case ugdsm_query_amswer:
+        {
+            if(pbc_pull_timerIsCompleted(&timer_answerTimeout))
+            {
+                upgrade_stateMachine = ugdsm_query;
+            }
+            if(haveDataFlag)
+            {
+                haveDataFlag = false;
+                if((pReceive_date->ProcotolType == 0xD002) && (pReceive_date->Payload[0] == easy_upgrade_version) &&\
+                  (pReceive_date->Payload[1] == (easy_upgradeCmd_query|0x80)))
+                {
+                    if(pReceive_date->Payload[2] == easy_upgradeSte_Boot)
+                    {
+                       // if(app_pull_resumeOrRestart())
+                       // {
+                      //      upgrade_stateMachine = ugdsm_resume;
+                      //  }
+                      //  else
+                      //  {
+                            upgrade_stateMachine = ugdsm_restart;
+                       // }
+                    }
+                    else if(pReceive_date->Payload[2] == easy_upgradeSte_Boot)
+                    {
+                        upgrade_stateMachine = ugdsm_entryBoot;
+                    }
+                }
+            }
+            break;
+        }
+        case ugdsm_entryBoot:
+        {
+            break;
+        }
+        case ugdsm_entryBoot_answer:
+        {
+           // pReceive_date = bsp_receive_message_event(&have_message);
+            break;
+        }
+        case ugdsm_restart:
+        {
+            transmit_data = pull_bough_message_pBuff(SYSTEM_PAD);
+            logList = app_link_log_pull_device_list(SYSTEM_PAD);
+            transmit_data->LinkDstAddr[0] = logList[padPort].DeviceID[0];
+            transmit_data->LinkDstAddr[1] = logList[padPort].DeviceID[1];
+            transmit_data->LinkDstAddr[2] = logList[padPort].DeviceID[2];
+            transmit_data->LinkDstAddr[3] = logList[padPort].DeviceID[3];
+            transmit_data->LinkDstAddr[4] = logList[padPort].DeviceID[4];
+            transmit_data->LinkDstAddr[5] = logList[padPort].DeviceID[5];
+            local_addr = app_pull_local_id();
+            transmit_data->LinkSrcAddr[0] = local_addr[0];
+            transmit_data->LinkSrcAddr[1] = local_addr[1];
+            transmit_data->LinkSrcAddr[2] = local_addr[2];
+            transmit_data->LinkSrcAddr[3] = local_addr[3];
+            transmit_data->LinkSrcAddr[4] = local_addr[4];
+            transmit_data->LinkSrcAddr[5] = local_addr[5];
+            transmit_data->ProcotolType = 0xD002;
+            transmit_data->PayloadLength = 128+6;
+            transmit_data->Payload[0] = easy_upgrade_version;
+            transmit_data->Payload[1] = easy_upgradeCmd_restart;
+            transmit_data->Payload[2] = 0x00;
+            transmit_data->Payload[3] = 0x00;
+            transmit_data->Payload[4] = 0x00;
+            transmit_data->Payload[5] = 0x00;
 
+           /* sdt_int8u i;
+            for(i = 0;i < 128;i ++)
+            {
+                transmit_data.Payload[6+i] = (sdt_int8u)pRdData[i];
+            }*/
+            SPI_FLASH_BufferRead(&transmit_data->Payload[6+i],PAD_UPDATA_TUF_ADDRESS,128);
+            push_active_one_message_transmit(SYSTEM_PAD,false);
+            upgrade_stateMachine = ugdsm_restart_answer;
+            pbc_reload_timerClock(&timer_answerTimeout,1500);
+
+            break;
+        }
+        case ugdsm_restart_answer:
+        {
+            if(haveDataFlag)
+            {
+                haveDataFlag = false;
+                if((easy_upgradeCmd_restart | 0x80) == pReceive_date->Payload[1])
+                {
+                    device_quety_fileNumber = pReceive_date->Payload[4];
+                    device_quety_fileNumber = device_quety_fileNumber<<8;
+                    device_quety_fileNumber |= pReceive_date->Payload[5];
+                    upgrade_stateMachine = ugdsm_transFlies;
+                }
+            }
+
+            break;
+        }
+        case ugdsm_resume:
+        {
+            break;
+        }
+        case ugdsm_resume_answer:
+        {
+           // pReceive_date = bsp_receive_message_event(&have_message);
+            break;
+        }
+        case ugdsm_transFlies:
+        {
+            transmit_data = pull_bough_message_pBuff(SYSTEM_PAD);
+            logList = app_link_log_pull_device_list(SYSTEM_PAD);
+            transmit_data->LinkDstAddr[0] = logList[padPort].DeviceID[0];
+            transmit_data->LinkDstAddr[1] = logList[padPort].DeviceID[1];
+            transmit_data->LinkDstAddr[2] = logList[padPort].DeviceID[2];
+            transmit_data->LinkDstAddr[3] = logList[padPort].DeviceID[3];
+            transmit_data->LinkDstAddr[4] = logList[padPort].DeviceID[4];
+            transmit_data->LinkDstAddr[5] = logList[padPort].DeviceID[5];
+            local_addr = app_pull_local_id();
+            transmit_data->LinkSrcAddr[0] = local_addr[0];
+            transmit_data->LinkSrcAddr[1] = local_addr[1];
+            transmit_data->LinkSrcAddr[2] = local_addr[2];
+            transmit_data->LinkSrcAddr[3] = local_addr[3];
+            transmit_data->LinkSrcAddr[4] = local_addr[4];
+            transmit_data->LinkSrcAddr[5] = local_addr[5];
+            transmit_data->ProcotolType = 0xD002;
+            transmit_data->PayloadLength = 128+6;
+            transmit_data->Payload[0] = easy_upgrade_version;
+            transmit_data->Payload[1] = easy_upgradeCmd_transFiles;
+            transmit_data->Payload[2] = 0x00;
+            transmit_data->Payload[3] = 0x00;
+            transmit_data->Payload[4] = device_quety_fileNumber >> 8;
+            transmit_data->Payload[5] = device_quety_fileNumber;
+
+            /*sdt_int8u i;
+            for(i = 0;i < 128;i ++)
+            {
+                transmit_data.Payload[6+i] = (sdt_int8u)pRdData[device_quety_fileNumber*128+i];
+            }*/
+            SPI_FLASH_BufferRead(&transmit_data->Payload[6+i],PAD_UPDATA_TUF_ADDRESS+device_quety_fileNumber*128,128);
+            push_active_one_message_transmit(SYSTEM_PAD,false);
+            upgrade_stateMachine = ugdsm_transFlies_answer;
+            pbc_reload_timerClock(&timer_answerTimeout,1500);
+            break;
+        }
+        case ugdsm_transFlies_answer:
+        {
+            if(haveDataFlag)
+            {
+                haveDataFlag = false;
+                if((easy_upgradeCmd_transFiles | 0x80) == pReceive_date->Payload[1])
+                {
+                    if(easy_upgradeSte_completed == pReceive_date->Payload[2])
+                    {//升级完成
+                        padList &= (~(0x01<<padPort));
+                        if(padList)
+                        {
+                            upgrade_stateMachine = ugdsm_check_pad_list;
+                        }
+                        else
+                        {
+                            upgrade_stateMachine = ugdsm_idle;
+                            mde_upgrade_clear_pad_status();
+                        }                   
+                    }
+                    else
+                    {
+                        device_quety_fileNumber = pReceive_date->Payload[4];
+                        device_quety_fileNumber = device_quety_fileNumber<<8;
+                        device_quety_fileNumber |= pReceive_date->Payload[5];
+                        upgrade_stateMachine = ugdsm_transFlies;
+                    }
+                }
+            }
+            if(pbc_pull_timerIsCompleted(&timer_answerTimeout))
+            {
+                upgrade_stateMachine = ugdsm_transFlies;
+            }
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+}
 
 //------------------------------------------------------------------------------
-  
+void app_bough_update_master_receive_protocol(bgk_comm_buff_def* in_pReceive_date)
+{
+    haveDataFlag = true;
+    pReceive_date = in_pReceive_date;
+    app_bough_update_master_task();
+}
 //------------------------------------------------------------------------------
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

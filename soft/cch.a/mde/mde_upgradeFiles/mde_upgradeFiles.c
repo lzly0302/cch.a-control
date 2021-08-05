@@ -3,6 +3,7 @@
 #include ".\mde_upgradeFiles.h"
 #include "..\..\pbc\pbc_sysTick\pbc_sysTick.h"
 #include "..\..\pbc\pbc_dataConvert\pbc_dataConvert.h"
+#include <string.h>
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //fireware update task
 //-------------------------------------------------------------------------------------------------
@@ -18,6 +19,37 @@ static fwUpdate_status_def fwUpdate_status = fwUpdate_status_waitFilesMap;
 static sdt_int16u fwBlock_number;
 macro_createTimer(timer_reset,timerType_millisecond,0);
 macro_createTimer(timer_updateTimeout,timerType_second,0);
+device_type_Def  device_type_s = TYPE_CC;
+//面板需要升级
+sdt_bool padNeedUpgrade = sdt_false;
+sdt_bool mde_upgrade_pull_pad_status(void)
+{
+    return padNeedUpgrade;
+}
+void mde_upgrade_clear_pad_status(void)
+{
+    padNeedUpgrade = sdt_false;
+}
+//环控中心需要升级
+sdt_bool aeNeedUpgrade = sdt_false;
+sdt_bool mde_upgrade_pull_ae_status(void)
+{
+    return aeNeedUpgrade;
+}
+void mde_upgrade_clear_ae_status(void)
+{
+    aeNeedUpgrade = sdt_false;
+}
+//风盘需要升级
+sdt_bool fanNeedUpgrade = sdt_false;
+sdt_bool mde_upgrade_pull_fan_status(void)
+{
+    return fanNeedUpgrade;
+}
+void mde_upgrade_clear_fan_status(void)
+{
+    fanNeedUpgrade = sdt_false;
+}
 //-------------------------------------------------------------------------------------------------
 void mde_upgrade_files_task(void)
 {
@@ -36,16 +68,41 @@ void mde_upgrade_files_task(void)
         case fwUpdate_status_complete:
         {
             pbc_reload_timerClock(&timer_reset,1000);
-            fwUpdate_status = fwUpdate_status_restart;
+            fwUpdate_status = fwUpdate_status_restart;      
             break;
         }
         case fwUpdate_status_restart:
         {
             if(pbc_pull_timerIsCompleted(&timer_reset))
             {
-                while(1)//; //wait watchdog timeout
+                if(device_type_s == TYPE_CC)
                 {
-                    //mde_watchdog_reload();
+                    while(1)//; //wait watchdog timeout
+                    {
+                        //mde_watchdog_reload();
+                    }
+                }
+                else if(device_type_s == TYPE_PAD)
+                {
+                    padNeedUpgrade = sdt_true;
+                    fwUpdate_status = fwUpdate_status_waitFilesMap;
+                }
+                else if(device_type_s == TYPE_FAN)
+                {
+                    fanNeedUpgrade = sdt_true;
+                    fwUpdate_status = fwUpdate_status_waitFilesMap;
+                }
+                else if(device_type_s == TYPE_HC)
+                {
+                    aeNeedUpgrade = sdt_true;
+                    fwUpdate_status = fwUpdate_status_waitFilesMap;
+                }
+                else
+                {
+                    while(1)//; //wait watchdog timeout
+                    {
+                        //mde_watchdog_reload();
+                    }
                 }
             }
             break;
@@ -191,41 +248,121 @@ static sdt_int32u makeData32u_bigEndian(sdt_int8u* in_data)
     the_data |= in_data[3];
     return(the_data);
 }
+
+
 //-------------------------------------------------------------------------------------------------
 #define upgrade_complete   0x519AE493
 #define upgrade_updating   0x8D731A75
 //-------------------------------------------------------------------------------------------------
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//推入一个file map的报文
+//推入一个file map的报文  描述区报文
 //-------------------------------------------------------------------------------------------------
 sdt_int8u mde_push_fileMap(sdt_int8u* in_pBuff,sdt_bool in_resume)
 {
+    #define DEVICE_TYPE_LEN    16
     sdt_int8u error = BGEUERR_NoneError;
     sdt_int8u buff_block[128];
-    sdt_int8u i;
-    
+    sdt_int8u i,j;
+    char deviceType[DEVICE_TYPE_LEN];
     for(i = 0; i < 128; i++)
     {
         buff_block[i] = in_pBuff[i];
     }
-    
+    for(i = 0; i < DEVICE_TYPE_LEN;i++)
+    {//复制设备型号
+        deviceType[i] = 0;
+        if(buff_block[i] != ';')
+        {
+            deviceType[i] = buff_block[i];
+        }
+        else if(buff_block[i] == ';')
+        {
+            for(j = i+1;j < DEVICE_TYPE_LEN;j++)
+            {
+                deviceType[j] = 0;
+            }
+            break;
+        }
+    }
     sdt_int32u checkSum;
+
     
     checkSum = makeData32u_bigEndian(&buff_block[124]);
     if(checkSum == MakeCheckSumText(&buff_block[0],124)) //信息块(32bytes)
     {
 
         sdt_int8u rd_inf[32];
-        bsp_read_information_user_app(&rd_inf[0]); //读取当前信息块内容
-
         sdt_int32u fileMap_ver;
         sdt_int32u update_srm;
         sdt_int32u update_flag;
         sdt_int32u update_checksum;
         sdt_int32u update_codesize;
+
+        if(strcmp(deviceType, "CCH1.RC")==0)
+        {
+            device_type_s = TYPE_PAD;           
+        }
+        else if(strcmp(deviceType, "CCH1.FAN")==0)
+        {
+            device_type_s = TYPE_FAN;           
+        }
+        else if(strcmp(deviceType, "CCH1.HC")==0)
+        {
+            device_type_s = TYPE_HC;           
+        }
+         else if(strcmp(deviceType, "CCH1.CC")==0)
+        {
+            device_type_s = TYPE_CC;           
+        }
+        else
+        {
+            device_type_s = TYPE_CC;         
+        }
+        if(device_type_s == TYPE_PAD)
+        {
+            bsp_read_information_user_pad_upgrade(&rd_inf[0]);
+            update_srm = pbc_arrayToInt32u_bigEndian(&rd_inf[16]);        //序号,app区
+            if(update_srm == 0xFFFFFFFF)
+            {
+                update_srm = 0XFFFF0000;
+            }
+            update_srm = update_srm + 1;
+        }
+        else if(device_type_s == TYPE_FAN)
+        {
+            bsp_read_information_user_fan_upgrade(&rd_inf[0]);
+            update_srm = pbc_arrayToInt32u_bigEndian(&rd_inf[16]);        //序号,app区
+            if(update_srm == 0xFFFFFFFF)
+            {
+                update_srm = 0XFFFF0000;
+            }
+            update_srm = update_srm + 1;
+        }
+        else if(device_type_s == TYPE_HC)
+        {
+            bsp_read_information_user_ae_upgrade(&rd_inf[0]);
+            update_srm = pbc_arrayToInt32u_bigEndian(&rd_inf[16]);        //序号,app区
+            if(update_srm == 0xFFFFFFFF)
+            {
+                update_srm = 0XFFFF0000;
+            }
+            update_srm = update_srm + 1;
+        }
+        else if(device_type_s == TYPE_CC)
+        {
+            bsp_read_information_user_app(&rd_inf[0]); //读取当前信息块内容
+            update_srm = pbc_arrayToInt32u_bigEndian(&rd_inf[16]);        //序号,app区
+            update_srm = update_srm + 1;
+        }
+        else
+        {   
+            bsp_read_information_user_app(&rd_inf[0]); //读取当前信息块内容
+            update_srm = pbc_arrayToInt32u_bigEndian(&rd_inf[16]);        //序号,app区
+            update_srm = update_srm + 1;
+        }
         
-        update_srm = pbc_arrayToInt32u_bigEndian(&rd_inf[16]);        //序号,app区
-        update_srm = update_srm + 1;
+        
+        
         fileMap_ver = pbc_arrayToInt32u_bigEndian(&buff_block[120]);  //version
         update_checksum = pbc_arrayToInt32u_bigEndian(&buff_block[108]);//校验文
         update_codesize = pbc_arrayToInt32u_bigEndian(&buff_block[112]);//代码字节数
@@ -242,7 +379,29 @@ sdt_int8u mde_push_fileMap(sdt_int8u* in_pBuff,sdt_bool in_resume)
             pbc_int32uToArray_bigEndian(update_flag,&wr_inf[20]);
             pbc_int32uToArray_bigEndian(update_checksum,&wr_inf[24]);
             pbc_int32uToArray_bigEndian(update_codesize,&wr_inf[28]);
-            bsp_write_information_user_upgrade(&wr_inf[0]);       //写入信息到upgrade区
+            if(device_type_s == TYPE_PAD)
+            {
+                bsp_write_information_user_pad_upgrade(&wr_inf[0]);
+                bsp_write_block_user_pad_upgrade(0, &buff_block[0]);
+            } 
+            else if(device_type_s == TYPE_FAN)
+            {
+                bsp_write_information_user_fan_upgrade(&wr_inf[0]);
+                bsp_write_block_user_fan_upgrade(0, &buff_block[0]);
+            }  
+            else if(device_type_s == TYPE_HC)
+            {
+                bsp_write_information_user_ae_upgrade(&wr_inf[0]);
+                bsp_write_block_user_ae_upgrade(0, &buff_block[0]);
+            }  
+            else if(device_type_s == TYPE_CC)
+            {
+                bsp_write_information_user_upgrade(&wr_inf[0]);       //写入信息到upgrade区
+            }      
+            else
+            {
+                bsp_write_information_user_upgrade(&wr_inf[0]);       //写入信息到upgrade区
+            }          
         }
         else
         {
@@ -269,6 +428,7 @@ sdt_int8u mde_push_fileMap(sdt_int8u* in_pBuff,sdt_bool in_resume)
     return(error);
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//数据区
 //-------------------------------------------------------------------------------------------------
 sdt_int16u mde_push_files_one_block(sdt_int16u in_block_num,sdt_int8u* in_pBuff)
 {
@@ -291,13 +451,54 @@ sdt_int16u mde_push_files_one_block(sdt_int16u in_block_num,sdt_int8u* in_pBuff)
             }
             else
             {
-                Decrypt(&buff_block[0],128);
-                bsp_write_block_user_upgrade(fwBlock_number, &buff_block[0]);//写入一个块的数据到upgrade区
+                if(device_type_s == TYPE_PAD)
+                {
+                    bsp_write_block_user_pad_upgrade((fwBlock_number+1), &buff_block[0]);//写入一个块的数据到upgrade区
+                }
+                else if(device_type_s == TYPE_FAN)
+                {
+                    bsp_write_block_user_fan_upgrade((fwBlock_number+1), &buff_block[0]);//写入一个块的数据到upgrade区
+                }
+                else if(device_type_s == TYPE_HC)
+                {
+                    bsp_write_block_user_ae_upgrade((fwBlock_number+1), &buff_block[0]);//写入一个块的数据到upgrade区
+                }
+                else if(device_type_s == TYPE_CC)
+                {
+                    Decrypt(&buff_block[0],128);
+                    bsp_write_block_user_upgrade(fwBlock_number, &buff_block[0]);//写入一个块的数据到upgrade区
+                }
+                else
+                {
+                    Decrypt(&buff_block[0],128);
+                    bsp_write_block_user_upgrade(fwBlock_number, &buff_block[0]);//写入一个块的数据到upgrade区
+                }
+                
 
                 fwBlock_number ++;
                 
                 sdt_int8u rd_inf[32];
-                bsp_read_information_user_upgrade(&rd_inf[0]); //读取信息块内容
+                if(device_type_s == TYPE_PAD)
+                {
+                    bsp_read_information_user_pad_upgrade(&rd_inf[0]); //读取信息块内容
+                }
+                else if(device_type_s == TYPE_FAN)
+                {
+                    bsp_read_information_user_fan_upgrade(&rd_inf[0]); //读取信息块内容
+                }
+                else if(device_type_s == TYPE_HC)
+                {
+                    bsp_read_information_user_ae_upgrade(&rd_inf[0]); //读取信息块内容
+                }
+                else if(device_type_s == TYPE_CC)
+                {
+                    bsp_read_information_user_upgrade(&rd_inf[0]); //读取信息块内容
+                }
+                else
+                {
+                    bsp_read_information_user_upgrade(&rd_inf[0]); //读取信息块内容
+                }
+                
 
                 sdt_int32u update_flag;
                 sdt_int32u update_codesize;
@@ -311,7 +512,27 @@ sdt_int16u mde_push_files_one_block(sdt_int16u in_block_num,sdt_int8u* in_pBuff)
                     update_flag = upgrade_complete;
                     pbc_int32uToArray_bigEndian(~update_flag,&rd_inf[4]);
                     pbc_int32uToArray_bigEndian(update_flag,&rd_inf[20]);
-                    bsp_write_information_user_upgrade(&rd_inf[0]);       //写入信息到upgrade区
+                    if(device_type_s == TYPE_PAD)
+                    {
+                        bsp_write_information_user_pad_upgrade(&rd_inf[0]);       //写入信息到upgrade区
+                    }
+                    else if(device_type_s == TYPE_FAN)
+                    {
+                        bsp_write_information_user_fan_upgrade(&rd_inf[0]);       //写入信息到upgrade区
+                    }
+                    else if(device_type_s == TYPE_HC)
+                    {
+                        bsp_write_information_user_ae_upgrade(&rd_inf[0]);       //写入信息到upgrade区
+                    }
+                    else if(device_type_s == TYPE_CC)
+                    {
+                        bsp_write_information_user_upgrade(&rd_inf[0]);       //写入信息到upgrade区
+                    }
+                    else
+                    {
+                        bsp_write_information_user_upgrade(&rd_inf[0]);       //写入信息到upgrade区
+                    }
+                    
                     fwUpdate_status = fwUpdate_status_complete;
                 }                
             }

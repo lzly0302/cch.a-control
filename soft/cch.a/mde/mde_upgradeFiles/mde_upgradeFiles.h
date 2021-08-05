@@ -6,6 +6,13 @@
 #ifndef snail_data_types
     #include ".\depend\snail_data_types.h"
 #endif
+typedef enum
+{
+   TYPE_PAD      = 0x00,  //温控器
+   TYPE_FAN      = 0x01,  //风盘
+   TYPE_CC       = 0x02,  //输配中心
+   TYPE_HC       = 0x03,  //环控中心
+}device_type_Def;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #define BGEUERR_NoneError          0x00
 #define BGEUERR_Length             0x01
@@ -36,6 +43,8 @@ sdt_int8u mde_push_fileMap(sdt_int8u* in_pBuff,sdt_bool in_resume);
 //出口:是否传输完毕，sdt_true -- 传输完毕
 
 sdt_bool mde_pull_upgrade_next_block(sdt_int16u* out_pBlock_num);
+sdt_bool mde_upgrade_pull_pad_status(void);
+void mde_upgrade_clear_pad_status(void);
 //end+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endif 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

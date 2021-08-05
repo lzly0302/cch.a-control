@@ -1805,8 +1805,7 @@ void _control_pad_syn_task(void)
                                     appModbusSyn[SYSTEM_PAD].listWord |= (0x01<<i);
                                 }
                             }
-                        }
-                        
+                        }                       
                     }
                     if(appModbusSyn[SYSTEM_PAD].listWord == 0)
                     {//出现更新字但无末端列表则不再发送数据  20210425
@@ -1834,6 +1833,10 @@ void _control_pad_syn_task(void)
                         {
                             padOccupyWord[i] = 0;
                         }                                             
+                    }
+                    if(mde_upgrade_pull_pad_status())
+                    {//加入主动升级任务
+                        app_bough_update_master_task();
                     }
                 }
                 

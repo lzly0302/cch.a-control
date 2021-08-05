@@ -25,6 +25,18 @@
 #define page_unit_size           4096
 #define information_size         32
 #define user_upgrade_inf_page    0x4B000
+//温控器面板升级区地址0x90000-0xCffff   256K
+#define user_upgrade_pad_start_addr  0x90000//温控器升级程序存储地址
+#define user_upgrade_pad_inf_addr    0xCFFE0
+#define user_upgrade_pad_inf_page    0xCF000
+//风盘控制器升级区地址0xd0000-0x10ffff   256K
+#define user_upgrade_fan_start_addr  0xD0000//风盘控制器升级程序存储地址
+#define user_upgrade_fan_inf_addr    0x10FFE0
+#define user_upgrade_fan_inf_page    0x10F000
+//环控中心升级区地址0x50000-0x8ffff   256K
+#define user_upgrade_ae_start_addr   0x50000//环控中心升级程序存储地址
+#define user_upgrade_ae_inf_addr     0x8FFE0
+#define user_upgrade_ae_inf_page     0x8F000
 //------------------------------------------------------------------------------
 //名称:读取app区的信息内容32bytes
 //入口:返回的数据指针
@@ -44,7 +56,7 @@ void bsp_read_information_user_app(sdt_int8u* out_pBuff)
 //------------------------------------------------------------------------------
 //名称:写入一个块的数据到upgrade 128bytes
 //入口:块序号(从0开始)， 写入的数据指针
-uint8_t readBbuff[128];
+//uint8_t readBbuff[128];
 void bsp_write_block_user_upgrade(sdt_int16u in_block_num,sdt_int8u* in_pBuff)
 {
     sdt_int32u falsh_addr;
@@ -64,7 +76,6 @@ void bsp_read_information_user_upgrade(sdt_int8u* out_pBuff)
 {
    SPI_FLASH_BufferRead(out_pBuff,user_upgrade_inf_addr,information_size);
 }
-
 //------------------------------------------------------------------------------
 //名称:写入upgrade区的信息内容32bytes
 //入口:写入的数据指针
@@ -77,5 +88,82 @@ void bsp_write_information_user_upgrade(sdt_int8u* in_pBuff)
     SPI_FLASH_SectorErase(falsh_addr);
     upgrade_falsh_addr = user_upgrade_inf_addr;
     SPI_FLASH_BufferWrite(in_pBuff,upgrade_falsh_addr,32);  
+}
+//温控器面板升级区信息
+void bsp_read_information_user_pad_upgrade(sdt_int8u* out_pBuff)
+{
+   SPI_FLASH_BufferRead(out_pBuff,user_upgrade_pad_inf_addr,information_size);
+}
+void bsp_write_information_user_pad_upgrade(sdt_int8u* in_pBuff)
+{
+    sdt_int32u falsh_addr;
+    sdt_int32u upgrade_falsh_addr;
+    falsh_addr = user_upgrade_pad_inf_page;
+    SPI_FLASH_SectorErase(falsh_addr);
+    upgrade_falsh_addr = user_upgrade_pad_inf_addr;
+    SPI_FLASH_BufferWrite(in_pBuff,upgrade_falsh_addr,32);  
+}
+void bsp_write_block_user_pad_upgrade(sdt_int16u in_block_num,sdt_int8u* in_pBuff)
+{
+    sdt_int32u falsh_addr;
+    
+    falsh_addr = user_upgrade_pad_start_addr + in_block_num*128;
+    if(0 == (falsh_addr%page_unit_size))  //4k地址
+    {
+         SPI_FLASH_SectorErase(falsh_addr);
+    }
+    SPI_FLASH_BufferWrite(in_pBuff,falsh_addr,128);
+}
+
+//风盘控制器升级区信息
+void bsp_read_information_user_fan_upgrade(sdt_int8u* out_pBuff)
+{
+   SPI_FLASH_BufferRead(out_pBuff,user_upgrade_fan_inf_addr,information_size);
+}
+void bsp_write_information_user_fan_upgrade(sdt_int8u* in_pBuff)
+{
+    sdt_int32u falsh_addr;
+    sdt_int32u upgrade_falsh_addr;
+    falsh_addr = user_upgrade_fan_inf_page;
+    SPI_FLASH_SectorErase(falsh_addr);
+    upgrade_falsh_addr = user_upgrade_fan_inf_addr;
+    SPI_FLASH_BufferWrite(in_pBuff,upgrade_falsh_addr,32);  
+}
+void bsp_write_block_user_fan_upgrade(sdt_int16u in_block_num,sdt_int8u* in_pBuff)
+{
+    sdt_int32u falsh_addr;
+    
+    falsh_addr = user_upgrade_fan_start_addr + in_block_num*128;
+    if(0 == (falsh_addr%page_unit_size))  //4k地址
+    {
+        SPI_FLASH_SectorErase(falsh_addr);
+    }
+    SPI_FLASH_BufferWrite(in_pBuff,falsh_addr,128);
+}
+
+//环控中心升级区信息
+void bsp_read_information_user_ae_upgrade(sdt_int8u* out_pBuff)
+{
+   SPI_FLASH_BufferRead(out_pBuff,user_upgrade_ae_inf_addr,information_size);
+}
+void bsp_write_information_user_ae_upgrade(sdt_int8u* in_pBuff)
+{
+    sdt_int32u falsh_addr;
+    sdt_int32u upgrade_falsh_addr;
+    falsh_addr = user_upgrade_ae_inf_page;
+    SPI_FLASH_SectorErase(falsh_addr);
+    upgrade_falsh_addr = user_upgrade_ae_inf_addr;
+    SPI_FLASH_BufferWrite(in_pBuff,upgrade_falsh_addr,32);  
+}
+void bsp_write_block_user_ae_upgrade(sdt_int16u in_block_num,sdt_int8u* in_pBuff)
+{
+    sdt_int32u falsh_addr;
+    
+    falsh_addr = user_upgrade_ae_start_addr + in_block_num*128;
+    if(0 == (falsh_addr%page_unit_size))  //4k地址
+    {
+        SPI_FLASH_SectorErase(falsh_addr);
+    }
+    SPI_FLASH_BufferWrite(in_pBuff,falsh_addr,128);
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

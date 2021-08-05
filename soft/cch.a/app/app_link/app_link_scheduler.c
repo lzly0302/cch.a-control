@@ -7,7 +7,7 @@ void app_link_scheduler_task(void)
     mde_bough_link_task();
     app_link_log_task();//注册任务 
     app_link_request_task();//激活任务
-	//app_upgrade_easy_task();//升级任务
+	app_upgrade_easy_task();//升级任务
     uint8_t i = 0;
     for(; i < MAX_MODBUS_NUM; i++)
     {
@@ -32,11 +32,18 @@ void app_link_scheduler_task(void)
                     app_link_log_push_receive_data(i,ptRev);
                     break;
                 }  
-//				case PROTOTOL_UPGRADE:
-//                {
-//                    Bough_EasyUpgrade_Protocol(ptRev,app_pull_local_id());
-//                    break;
-//                }  
+				case PROTOTOL_UPGRADE:
+                {
+                    if(ptRev->Payload[1] & 0x80)
+                    {
+                        app_bough_update_master_receive_protocol(ptRev);    
+                    }
+                    else
+                    {
+                        Bough_EasyUpgrade_Protocol(ptRev,app_pull_local_id());
+                    }               
+                    break;
+                }  
                 default:break;
             }
         }

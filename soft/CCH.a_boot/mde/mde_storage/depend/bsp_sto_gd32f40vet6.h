@@ -152,23 +152,6 @@ void bsp_transfer_user_upgrade_to_app(sdt_int32u in_codesize)
     CheckWriteProtectionBits();
     fmc_unlock();
     fmc_flag_clear(FMC_FLAG_END | FMC_FLAG_OPERR | FMC_FLAG_WPERR | FMC_FLAG_PGMERR | FMC_FLAG_PGSERR);
-   /* falsh_addr = user_app_start_addr;
-    while(falsh_addr < user_upgrade_start_addr)
-    {
-        #ifdef NDEBUG
-        mde_IWDG_FeedDog();
-        #endif
-
-        FLASHStatus = FLASH_ErasePage(falsh_addr);   //Erase Appliction
-        if(FLASHStatus == FLASH_COMPLETE)
-        {
-            falsh_addr += page_unit_size;
-        }
-        else
-        {
-            return;
-        }
-    }*/
     /*擦除240K*/
     FLASHStatus = fmc_sector_erase(CTL_SECTOR_NUMBER_1);
     if(FMC_READY == FLASHStatus)
@@ -192,8 +175,6 @@ void bsp_transfer_user_upgrade_to_app(sdt_int32u in_codesize)
     
     #ifdef NDEBUG
     #else
-    //test
-  //  FLASHStatus = FLASH_ProgramWord(test_addr,test_reg);
     //    
     #endif
     
@@ -235,17 +216,11 @@ void bsp_transfer_user_upgrade_to_app(sdt_int32u in_codesize)
         app_falsh_addr += 4;
         upgrade_falsh_addr += 4;
     }
-
-   /* FLASHStatus=FLASH_EraseOptionBytes(); 
-    FLASH_EnableWriteProtection(FLASH_WRProt_Pages0to1|FLASH_WRProt_Pages2to3|FLASH_WRProt_Pages4to5|FLASH_WRProt_Pages6to7|FLASH_WRProt_Pages8to9|\
-                                FLASH_WRProt_Pages10to11|FLASH_WRProt_Pages12to13|FLASH_WRProt_Pages14to15|FLASH_WRProt_Pages16to17|\
-                                FLASH_WRProt_Pages18to19|FLASH_WRProt_Pages20to21|FLASH_WRProt_Pages22to23|FLASH_WRProt_Pages24to25|\
-                                FLASH_WRProt_Pages26to27|FLASH_WRProt_Pages28to29|FLASH_WRProt_Pages30to31|FLASH_WRProt_Pages32to33|\
-                                FLASH_WRProt_Pages34to35|FLASH_WRProt_Pages36to37|FLASH_WRProt_Pages38to39|FLASH_WRProt_Pages40to41|\
-                                FLASH_WRProt_Pages42to43|FLASH_WRProt_Pages44to45|FLASH_WRProt_Pages46to47|FLASH_WRProt_Pages48to49|\
-                                FLASH_WRProt_Pages50to51|FLASH_WRProt_Pages52to53|FLASH_WRProt_Pages54to55|FLASH_WRProt_Pages56to57\
-                                );
-    FLASH_Lock();*/
+    //扇区0-扇区7共512K  16+16+16+16+64+128+128+128
+    ob_unlock();
+    ob_write_protection_enable(OB_WP_0|OB_WP_1|OB_WP_2|OB_WP_3|OB_WP_4|OB_WP_5|OB_WP_6 | OB_WP_7);
+    ob_start();
+    ob_lock();
     fmc_lock();
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

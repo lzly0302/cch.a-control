@@ -130,7 +130,7 @@ void mde_need_upgrade(void)
         if(upgrade_complete == update_flag)
         {
             if(upgrade_checksum_is_ok(update_checksum,update_codesize))
-            {
+            {//校验成功
                 bsp_read_information_user_app(&rd_inf[0]);
                 if(check_notcode_is_ok(&rd_inf[0],sizeof(rd_inf)))
                 {
@@ -161,6 +161,7 @@ void mde_need_upgrade(void)
              
             if(need_upgrade) //need upgrade
             {//transfet data
+                
                 bsp_transfer_user_upgrade_to_app(update_codesize);
             }
         }

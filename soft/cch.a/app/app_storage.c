@@ -12,6 +12,7 @@ StoRunParamter_Def  StoRunParameter =
 };
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 static sdt_bool cfged = sdt_false;
+uint8_t readBuff[128];
 //-------------------------------------------------------------------------------
 static void sto_run_parameter_cfg(void)
 { 
@@ -22,6 +23,8 @@ static void sto_run_parameter_cfg(void)
      if(in_w25q64_id == sFLASH_ID)
      {
         mde_storage_block_set_length_w(0,sizeof(StoRunParameter));
+        SPI_FLASH_BufferRead(&readBuff[0],PAD_UPDATA_TUF_ADDRESS,128);
+        SPI_FLASH_BufferRead(&readBuff[0],(PAD_UPDATA_TUF_ADDRESS+128),128);
      }
 }
 uint8_t * app_pull_local_id(void)

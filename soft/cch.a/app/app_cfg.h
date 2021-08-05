@@ -27,7 +27,7 @@
 #include ".\app_pwm_control.h"
 #include ".\app_modbus_remote.h"
 #include ".\app_general.h"
-//#include ".\app_upgrade_boughProtocol.h"
+#include ".\app_upgrade_boughProtocol.h"
 #include ".\app_led.h"
 //#include ".\app_digit_in.h"
 #include ".\app_logic_relay.h"

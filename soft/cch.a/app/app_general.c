@@ -4145,7 +4145,7 @@ void app_general_task(void)
     mde_IWDG_FeedDog();
     if(sys_cfged)
     {   
-        mde_upgrade_files_task();
+        //mde_upgrade_files_task();
         app_sto_run_parameter_task();
 		app_pwm_control_task();      
         app_logic_realy_task();
@@ -4154,7 +4154,6 @@ void app_general_task(void)
         app_modbus_remote_task();      
         app_real_time_clock_task();
         app_temperature_task();    
-       // app_upgrade_easy_task();
         time_stamp_task();
         app_general_mix_water_task();
         app_led_task();   
