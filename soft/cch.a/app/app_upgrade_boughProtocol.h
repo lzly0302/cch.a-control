@@ -16,9 +16,10 @@ void app_upgrade_easy_task(void);
 //------------------------------------------------------------------------------
 //Function
 void Bough_EasyUpgrade_Protocol(bgk_comm_buff_def* _In_pReceiveData,sdt_int8u* _In_TheAddr);
-//Ö÷¶¯Éý¼¶ÈÎÎñ
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void app_bough_update_master_task(void);
-void app_bough_update_master_receive_protocol(bgk_comm_buff_def* in_pReceive_date);
+void app_bough_update_master_ae_task(void);
+void app_bough_update_master_receive_protocol(uint8_t in_solidNum,bgk_comm_buff_def* in_pReceive_date);
 //------------------------------------------------------------------------------
 #endif
 //++++++++++++++++++++++++++++++++++End+++++++++++++++++++++++++++++++++++++++++

@@ -639,7 +639,7 @@ void bsp_uart5_cfg(void)
 
     /* USART configure */
     usart_deinit(USART5);
-    usart_baudrate_set(USART5,9600);
+    usart_baudrate_set(USART5,19200);
     usart_parity_config(USART5,USART_PM_NONE);
     usart_word_length_set(USART5,USART_WL_8BIT);
     usart_stop_bit_set(USART5,USART_STB_1BIT);

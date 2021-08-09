@@ -43,8 +43,15 @@ sdt_int8u mde_push_fileMap(sdt_int8u* in_pBuff,sdt_bool in_resume);
 //出口:是否传输完毕，sdt_true -- 传输完毕
 
 sdt_bool mde_pull_upgrade_next_block(sdt_int16u* out_pBlock_num);
+//面板需要升级
 sdt_bool mde_upgrade_pull_pad_status(void);
 void mde_upgrade_clear_pad_status(void);
+//环控中心需要升级
+sdt_bool mde_upgrade_pull_ae_status(void);
+void mde_upgrade_clear_ae_status(void);
+//风盘需要升级
+sdt_bool mde_upgrade_pull_fan_status(void);
+void mde_upgrade_clear_fan_status(void);
 //end+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endif 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

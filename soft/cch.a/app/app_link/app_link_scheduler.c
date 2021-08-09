@@ -36,7 +36,7 @@ void app_link_scheduler_task(void)
                 {
                     if(ptRev->Payload[1] & 0x80)
                     {
-                        app_bough_update_master_receive_protocol(ptRev);    
+                        app_bough_update_master_receive_protocol(i,ptRev);    
                     }
                     else
                     {

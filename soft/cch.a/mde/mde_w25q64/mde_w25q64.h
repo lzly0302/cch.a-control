@@ -15,6 +15,8 @@
 #define SPI_FLASH_PerWritePageSize      256
 #define STORAGE_ADDRESS                 0
 #define PAD_UPDATA_TUF_ADDRESS          0x90000
+#define AE_UPDATA_TUF_ADDRESS           0x50000
+#define FAN_UPDATA_TUF_ADDRESS          0xd0000
 /* Private define ------------------------------------------------------------*/
 /*命令定义-开头*******************************/
 #define W25X_WriteEnable		      0x06 

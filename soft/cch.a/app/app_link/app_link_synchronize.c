@@ -1303,6 +1303,10 @@ void _master_system_syn_task(void)
                 {//更新字
                     appModbusSyn[SYSTEM_MASTER].mainSynStatsus = SYN_STATUS_SEND_UPDATA_ACTIVE;
                 }
+                else if(mde_upgrade_pull_ae_status())
+                {
+                    app_bough_update_master_ae_task();
+                }
                 break;
             }
             case SYN_STATUS_ANSWER:

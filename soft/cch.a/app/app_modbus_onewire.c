@@ -92,7 +92,7 @@ void app_modbus_onewire_task(void)
         cfged = sdt_true;
         mRtu_parameter_def parameter;
         parameter.mRtu_address = 0x01;
-        parameter.mRtu_baudrate = 9600;
+        parameter.mRtu_baudrate = 19200;
         parameter.mRtu_parity = mRtu_parity_none;
         parameter.mRtu_stopBits = mRtu_stopBits_one;
         parameter.mRtu_sysFrequency = 72000000;
