@@ -32,11 +32,12 @@ void bsp_write_information_user_upgrade(sdt_int8u* in_pBuff);
 
 //温控器面板升级区信息
 void bsp_read_information_user_pad_upgrade(sdt_int8u* out_pBuff);
+void bsp_write_information_user_pad_version_upgrade(sdt_int8u* in_pBuff,sdt_int8u* in_version);
 void bsp_write_information_user_pad_upgrade(sdt_int8u* in_pBuff);
 void bsp_write_block_user_pad_upgrade(sdt_int16u in_block_num,sdt_int8u* in_pBuff);
 //风盘控制器升级区信息
 void bsp_read_information_user_fan_upgrade(sdt_int8u* out_pBuff);
-void bsp_write_information_user_fan_upgrade(sdt_int8u* in_pBuff);
+void bsp_write_information_user_fan_version_upgrade(sdt_int8u* in_pBuff,sdt_int8u* in_version);
 void bsp_write_block_user_fan_upgrade(sdt_int16u in_block_num,sdt_int8u* in_pBuff);
 //环控中心升级区信息
 void bsp_read_information_user_ae_upgrade(sdt_int8u* out_pBuff);

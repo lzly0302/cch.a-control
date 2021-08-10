@@ -75,6 +75,7 @@ void app_read_run_parameter(void);
 void app_sto_run_parameter_task(void);
 void app_push_once_save_sto_parameter(void);
 uint8_t * app_pull_local_id(void);
+//uint16_t app_storage_pull_pad_version(void);
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 extern StoRunParamter_Def  StoRunParameter;
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

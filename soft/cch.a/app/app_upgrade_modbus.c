@@ -24,19 +24,14 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 uint16_t currentSerial = 0;//当前序列号
 //-----------------------------------------------------------------------------
-typedef enum
-{
-   BACKUP_IDLE                  =0x0000,//空闲状态
-   BACKUP_UPDATING              =0x0001,//升级状态
-   BACKUP_FINISH                =0x0002,//升级完成
-   BACKUP_CHECKSUM_ERROR        =0x0004,//校验错误
-   BACKUP_VERSION_TYPE_ERROR    =0x0008,//固件错误
-   BACKUP_SERIOL_ERROR          =0x0010,//报文序号错误
-   BACKUP_OTHER_ERROR           =0x0020,//其它错误
-}updateStatusW_def;  //状态字
+
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 updateStatusW_def    slaveStatusWord = BACKUP_IDLE;
+updateStatusW_def app_updaBackup_pull_status(void)
+{
+    return slaveStatusWord;
+}
 static updateStatusW_def lastSlaveStatus = BACKUP_IDLE;
 //-----------------------------------------------------------------------------
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

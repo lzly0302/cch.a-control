@@ -550,5 +550,15 @@ void app_general_push_hc_reset(uint16_t in_code);
 /*水机开关机*/
 bool app_general_pull_water_machine_status(void);
 void app_general_push_water_machine_status(bool in_status);
+//面板版本号升级
+uint16_t app_general_pull_version_pad_list(void);
+bool app_general_pull_version_pad_flag(void);
+void app_general_clear_version_pad_flag(void);
+void app_general_clear_port_version(uint8_t in_port);
+//风盘版本号升级
+
+uint16_t app_general_pull_version_fan_list(void);
+bool app_general_pull_version_fan_flag(void);
+void app_general_clear_version_fan_flag(void);
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endif

@@ -3304,7 +3304,112 @@ void app_general_check_dpstamp(void)
         }            
     }
 }
+bool pad_version_updata = false;
 
+uint16_t versionPadList = 0;
+
+//面板版本号升级
+uint16_t app_general_pull_version_pad_list(void)
+{
+    return versionPadList;
+}
+bool app_general_pull_version_pad_flag(void)
+{
+    return pad_version_updata;
+}
+void app_general_clear_version_pad_flag(void)
+{
+    versionPadList = 0;
+    pad_version_updata = false;
+}
+void app_general_clear_port_version(uint8_t in_port)
+{
+    s_sysPara.padPara[in_port].version_pad = 0;
+}
+//风盘版本号升级
+bool fan_version_updata = false;
+uint16_t versionFanList = 0;
+uint16_t app_general_pull_version_fan_list(void)
+{
+    return versionFanList;
+}
+bool app_general_pull_version_fan_flag(void)
+{
+    return fan_version_updata;
+}
+void app_general_clear_version_fan_flag(void)
+{
+    versionFanList = 0;
+    fan_version_updata = false;
+}
+void app_general_check_pad_updata(void)
+{
+    uint16_t padVersion = 0;
+    uint16_t padVersion_list = 0; 
+    uint16_t fanVersion = 0;
+    uint16_t fanVersion_list = 0; 
+    uint8_t buff[2];
+    uint8_t i = 0;
+    macro_createTimer(measure_delay,timerType_millisecond,0);
+    pbc_timerClockRun_task(&measure_delay);
+    if(pbc_pull_timerIsCompleted(&measure_delay))
+    {
+        pbc_reload_timerClock(&measure_delay,10000);
+        if(app_updaBackup_pull_status() != BACKUP_UPDATING)
+        {
+            if(!pad_version_updata)
+            {
+                SPI_FLASH_BufferRead(&buff[0],PAD_UPDATA_VERSION_ADDRESS,2);             
+                padVersion = pbc_arrayToInt16u_bigEndian(buff);//版本号                    
+                if(padVersion != 0xffff)
+                {      
+                    for(i = 0; i <  MASTER_PAD_NUM;i++)
+                    {
+                        if((s_sysPara.padPara[i].idUsedFlag) && (s_sysPara.padPara[i].deviceType == DEVICE_TYPE_ROMM))
+                        {
+                            if((s_sysPara.padPara[i].version_pad != 0) && (s_sysPara.padPara[i].version_pad < padVersion))
+                            {
+                                padVersion_list |= (0x01<<i);
+                            }
+                        }                   
+                    }
+                    if(padVersion_list != 0)
+                    {
+                        pad_version_updata = true;
+                        versionPadList = padVersion_list;
+                    }               
+                }
+                SPI_FLASH_BufferRead(&buff[0],FAN_UPDATA_VERSION_ADDRESS,2);     
+                fanVersion =  pbc_arrayToInt16u_bigEndian(buff);//版本号
+                if(fanVersion != 0xffff)
+                {
+                    for(i = 0; i <  MASTER_PAD_NUM;i++)
+                    {
+                        if((s_sysPara.padPara[i].idUsedFlag) && (s_sysPara.padPara[i].deviceType == DEVICE_TYPE_FAN))
+                        {
+                            if((s_sysPara.padPara[i].version_pad != 0) && (s_sysPara.padPara[i].version_pad < padVersion))
+                            {
+                                fanVersion_list |= (0x01<<i);
+                            }
+                        }
+                    }
+                    if(fanVersion_list != 0)
+                    {
+                        fan_version_updata = true;
+                        versionFanList = fanVersion_list;
+                    }
+                }
+            }
+        }   
+        else
+        {
+            versionPadList = 0;
+            versionFanList = 0;
+            pad_version_updata = false;  
+            fan_version_updata = false; 
+        }
+    }
+}
 void app_general_para_updata_task(void)
 {//1s更新一次
     uint8_t i = 0;
@@ -3453,6 +3558,7 @@ void app_general_mix_water_task(void)
         app_general_id_ocupy_task();//末端ID占用任务
         app_general_para_updata_task();//参数更新  
         app_general_check_dpstamp();//时间戳校准
+        app_general_check_pad_updata();
         static uint8_t   pump_status = 0;    //水泵输出
         if(StoRunParameter.systemPower)
         {

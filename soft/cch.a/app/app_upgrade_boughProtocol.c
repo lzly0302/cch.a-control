@@ -485,30 +485,80 @@ void app_bough_update_master_task(void)
 {
     macro_createTimer(timer_transmit,timerType_millisecond,0);
     macro_createTimer(timer_answerTimeout,timerType_millisecond,0);
+    macro_createTimer(pad_list_delay,timerType_second,0);
+
 //-----------------------------------------------------------------------------
     bgk_comm_buff_def *transmit_data;
     static uint16_t padList = 0;//
     linkDeviceList_t* logList;
     uint8_t *local_addr;
     uint8_t i = 0;
+    uint16_t id0,id1,id2;
+    static uint8_t max_retryCount = 0;
     static uint8_t padPort = 0;//面板端口
     static uint16_t device_quety_fileNumber;
 //-----------------------------------------------------------------------------
     pbc_timerClockRun_task(&timer_transmit);
     pbc_timerClockRun_task(&timer_answerTimeout);
+    pbc_timerClockRun_task(&pad_list_delay);
+    #define MAX_RETY_COUNT 10
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
     switch(upgrade_stateMachine)
     {
+        
         case ugdsm_idle:
         {
             if(mde_upgrade_pull_pad_status())
             {
                 upgrade_stateMachine = ugdsm_check_pad_list;
-            }          
+                padList = app_general_pull_version_pad_list();
+            }
+            else if(mde_upgrade_pull_fan_status())
+            {
+                upgrade_stateMachine = ugdsm_check_fan_list;
+            }
+            else if(app_general_pull_version_pad_flag())
+            {
+                padList = app_general_pull_version_pad_list();
+                upgrade_stateMachine = ugdsm_check_pad_list;
+            }
             break;
         }
         case ugdsm_check_pad_list:
+        {
+            if(pbc_pull_timerIsCompleted(&pad_list_delay))
+            {
+               /* if(padList)
+                {
+
+                }
+                else
+                {
+                    logList = app_link_log_pull_device_list(SYSTEM_PAD);
+                    for(i = 0; i < MAX_DEVICE_NUM;i++)
+                    {
+                        if(logList[i].onlineFlag)
+                        {
+                            if(logList[i].deviceType == DEVICE_TYPE_ROMM)
+                            {
+                                padList |= (0x01<<i);
+                            }
+                        }
+                    }      
+                }*/
+                if(padList)
+                {
+                    upgrade_stateMachine = ugdsm_query;
+                }
+                else
+                {
+                    upgrade_stateMachine = ugdsm_idle;
+                }
+            }
+            break;
+        }
+        case ugdsm_check_fan_list:
         {
             if(padList)
             {
@@ -521,7 +571,7 @@ void app_bough_update_master_task(void)
                 {
                     if(logList[i].onlineFlag)
                     {
-                        if(logList[i].deviceType == DEVICE_TYPE_ROMM)
+                        if(logList[i].deviceType == DEVICE_TYPE_FAN)
                         {
                             padList |= (0x01<<i);
                         }
@@ -552,13 +602,16 @@ void app_bough_update_master_task(void)
                     }
                 }
                 transmit_data = pull_bough_message_pBuff(SYSTEM_PAD);
-                logList = app_link_log_pull_device_list(SYSTEM_PAD);
-                transmit_data->LinkDstAddr[0] = logList[padPort].DeviceID[0];
-                transmit_data->LinkDstAddr[1] = logList[padPort].DeviceID[1];
-                transmit_data->LinkDstAddr[2] = logList[padPort].DeviceID[2];
-                transmit_data->LinkDstAddr[3] = logList[padPort].DeviceID[3];
-                transmit_data->LinkDstAddr[4] = logList[padPort].DeviceID[4];
-                transmit_data->LinkDstAddr[5] = logList[padPort].DeviceID[5];
+                //logList = app_link_log_pull_device_list(SYSTEM_PAD);
+                id0 = app_general_pull_devive_id0(padPort);
+                id1 = app_general_pull_devive_id1(padPort);
+                id2 = app_general_pull_devive_id2(padPort);
+                transmit_data->LinkDstAddr[0] =  (uint8_t)(id0>>8);
+                transmit_data->LinkDstAddr[1] = (uint8_t)(id0);
+                transmit_data->LinkDstAddr[2] = (uint8_t)(id1>>8);
+                transmit_data->LinkDstAddr[3] = (uint8_t)(id1);
+                transmit_data->LinkDstAddr[4] = (uint8_t)(id2>>8);
+                transmit_data->LinkDstAddr[5] = (uint8_t)(id2);
                 local_addr = app_pull_local_id();
                 transmit_data->LinkSrcAddr[0] = local_addr[0];
                 transmit_data->LinkSrcAddr[1] = local_addr[1];
@@ -599,6 +652,7 @@ void app_bough_update_master_task(void)
                       //  else
                       //  {
                             upgrade_stateMachine = ugdsm_restart;
+                            pbc_reload_timerClock(&timer_transmit,1000);
                        // }
                     }
                     else if(pReceive_date->Payload[2] == easy_upgradeSte_Boot)
@@ -620,40 +674,39 @@ void app_bough_update_master_task(void)
         }
         case ugdsm_restart:
         {
-            transmit_data = pull_bough_message_pBuff(SYSTEM_PAD);
-            logList = app_link_log_pull_device_list(SYSTEM_PAD);
-            transmit_data->LinkDstAddr[0] = logList[padPort].DeviceID[0];
-            transmit_data->LinkDstAddr[1] = logList[padPort].DeviceID[1];
-            transmit_data->LinkDstAddr[2] = logList[padPort].DeviceID[2];
-            transmit_data->LinkDstAddr[3] = logList[padPort].DeviceID[3];
-            transmit_data->LinkDstAddr[4] = logList[padPort].DeviceID[4];
-            transmit_data->LinkDstAddr[5] = logList[padPort].DeviceID[5];
-            local_addr = app_pull_local_id();
-            transmit_data->LinkSrcAddr[0] = local_addr[0];
-            transmit_data->LinkSrcAddr[1] = local_addr[1];
-            transmit_data->LinkSrcAddr[2] = local_addr[2];
-            transmit_data->LinkSrcAddr[3] = local_addr[3];
-            transmit_data->LinkSrcAddr[4] = local_addr[4];
-            transmit_data->LinkSrcAddr[5] = local_addr[5];
-            transmit_data->ProcotolType = 0xD002;
-            transmit_data->PayloadLength = 128+6;
-            transmit_data->Payload[0] = easy_upgrade_version;
-            transmit_data->Payload[1] = easy_upgradeCmd_restart;
-            transmit_data->Payload[2] = 0x00;
-            transmit_data->Payload[3] = 0x00;
-            transmit_data->Payload[4] = 0x00;
-            transmit_data->Payload[5] = 0x00;
-
-           /* sdt_int8u i;
-            for(i = 0;i < 128;i ++)
+            if(pbc_pull_timerIsCompleted(&timer_transmit))
             {
-                transmit_data.Payload[6+i] = (sdt_int8u)pRdData[i];
-            }*/
-            SPI_FLASH_BufferRead(&transmit_data->Payload[6+i],PAD_UPDATA_TUF_ADDRESS,128);
-            push_active_one_message_transmit(SYSTEM_PAD,false);
-            upgrade_stateMachine = ugdsm_restart_answer;
-            pbc_reload_timerClock(&timer_answerTimeout,1500);
+                transmit_data = pull_bough_message_pBuff(SYSTEM_PAD);
+                id0 = app_general_pull_devive_id0(padPort);
+                id1 = app_general_pull_devive_id1(padPort);
+                id2 = app_general_pull_devive_id2(padPort);
+                transmit_data->LinkDstAddr[0] =  (uint8_t)(id0>>8);
+                transmit_data->LinkDstAddr[1] = (uint8_t)(id0);
+                transmit_data->LinkDstAddr[2] = (uint8_t)(id1>>8);
+                transmit_data->LinkDstAddr[3] = (uint8_t)(id1);
+                transmit_data->LinkDstAddr[4] = (uint8_t)(id2>>8);
+                transmit_data->LinkDstAddr[5] = (uint8_t)(id2);
+                local_addr = app_pull_local_id();
+                transmit_data->LinkSrcAddr[0] = local_addr[0];
+                transmit_data->LinkSrcAddr[1] = local_addr[1];
+                transmit_data->LinkSrcAddr[2] = local_addr[2];
+                transmit_data->LinkSrcAddr[3] = local_addr[3];
+                transmit_data->LinkSrcAddr[4] = local_addr[4];
+                transmit_data->LinkSrcAddr[5] = local_addr[5];
+                transmit_data->ProcotolType = 0xD002;
+                transmit_data->PayloadLength = 128+6;
+                transmit_data->Payload[0] = easy_upgrade_version;
+                transmit_data->Payload[1] = easy_upgradeCmd_restart;
+                transmit_data->Payload[2] = 0x00;
+                transmit_data->Payload[3] = 0x00;
+                transmit_data->Payload[4] = 0x00;
+                transmit_data->Payload[5] = 0x00;
 
+                SPI_FLASH_BufferRead(&transmit_data->Payload[6+i],PAD_UPDATA_TUF_ADDRESS,128);
+                push_active_one_message_transmit(SYSTEM_PAD,false);
+                upgrade_stateMachine = ugdsm_restart_answer;
+                pbc_reload_timerClock(&timer_answerTimeout,1500);
+            }
             break;
         }
         case ugdsm_restart_answer:
@@ -667,9 +720,21 @@ void app_bough_update_master_task(void)
                     device_quety_fileNumber = device_quety_fileNumber<<8;
                     device_quety_fileNumber |= pReceive_date->Payload[5];
                     upgrade_stateMachine = ugdsm_transFlies;
+                    pbc_reload_timerClock(&timer_transmit,1000);
                 }
             }
-
+            if(pbc_pull_timerIsCompleted(&timer_answerTimeout))
+            {
+                pbc_reload_timerClock(&timer_transmit,1000);
+                upgrade_stateMachine = ugdsm_restart;
+                max_retryCount++;
+                if(max_retryCount >= MAX_RETY_COUNT)
+                {
+                    max_retryCount = 0;
+                    upgrade_stateMachine = ugdsm_check_pad_list;
+                }
+                
+            }
             break;
         }
         case ugdsm_resume:
@@ -683,39 +748,38 @@ void app_bough_update_master_task(void)
         }
         case ugdsm_transFlies:
         {
-            transmit_data = pull_bough_message_pBuff(SYSTEM_PAD);
-            logList = app_link_log_pull_device_list(SYSTEM_PAD);
-            transmit_data->LinkDstAddr[0] = logList[padPort].DeviceID[0];
-            transmit_data->LinkDstAddr[1] = logList[padPort].DeviceID[1];
-            transmit_data->LinkDstAddr[2] = logList[padPort].DeviceID[2];
-            transmit_data->LinkDstAddr[3] = logList[padPort].DeviceID[3];
-            transmit_data->LinkDstAddr[4] = logList[padPort].DeviceID[4];
-            transmit_data->LinkDstAddr[5] = logList[padPort].DeviceID[5];
-            local_addr = app_pull_local_id();
-            transmit_data->LinkSrcAddr[0] = local_addr[0];
-            transmit_data->LinkSrcAddr[1] = local_addr[1];
-            transmit_data->LinkSrcAddr[2] = local_addr[2];
-            transmit_data->LinkSrcAddr[3] = local_addr[3];
-            transmit_data->LinkSrcAddr[4] = local_addr[4];
-            transmit_data->LinkSrcAddr[5] = local_addr[5];
-            transmit_data->ProcotolType = 0xD002;
-            transmit_data->PayloadLength = 128+6;
-            transmit_data->Payload[0] = easy_upgrade_version;
-            transmit_data->Payload[1] = easy_upgradeCmd_transFiles;
-            transmit_data->Payload[2] = 0x00;
-            transmit_data->Payload[3] = 0x00;
-            transmit_data->Payload[4] = device_quety_fileNumber >> 8;
-            transmit_data->Payload[5] = device_quety_fileNumber;
-
-            /*sdt_int8u i;
-            for(i = 0;i < 128;i ++)
+            if(pbc_pull_timerIsCompleted(&timer_transmit))
             {
-                transmit_data.Payload[6+i] = (sdt_int8u)pRdData[device_quety_fileNumber*128+i];
-            }*/
-            SPI_FLASH_BufferRead(&transmit_data->Payload[6+i],PAD_UPDATA_TUF_ADDRESS+device_quety_fileNumber*128,128);
-            push_active_one_message_transmit(SYSTEM_PAD,false);
-            upgrade_stateMachine = ugdsm_transFlies_answer;
-            pbc_reload_timerClock(&timer_answerTimeout,1500);
+                transmit_data = pull_bough_message_pBuff(SYSTEM_PAD);
+                id0 = app_general_pull_devive_id0(padPort);
+                id1 = app_general_pull_devive_id1(padPort);
+                id2 = app_general_pull_devive_id2(padPort);
+                transmit_data->LinkDstAddr[0] =  (uint8_t)(id0>>8);
+                transmit_data->LinkDstAddr[1] = (uint8_t)(id0);
+                transmit_data->LinkDstAddr[2] = (uint8_t)(id1>>8);
+                transmit_data->LinkDstAddr[3] = (uint8_t)(id1);
+                transmit_data->LinkDstAddr[4] = (uint8_t)(id2>>8);
+                transmit_data->LinkDstAddr[5] = (uint8_t)(id2);
+                local_addr = app_pull_local_id();
+                transmit_data->LinkSrcAddr[0] = local_addr[0];
+                transmit_data->LinkSrcAddr[1] = local_addr[1];
+                transmit_data->LinkSrcAddr[2] = local_addr[2];
+                transmit_data->LinkSrcAddr[3] = local_addr[3];
+                transmit_data->LinkSrcAddr[4] = local_addr[4];
+                transmit_data->LinkSrcAddr[5] = local_addr[5];
+                transmit_data->ProcotolType = 0xD002;
+                transmit_data->PayloadLength = 128+6;
+                transmit_data->Payload[0] = easy_upgrade_version;
+                transmit_data->Payload[1] = easy_upgradeCmd_transFiles;
+                transmit_data->Payload[2] = 0x00;
+                transmit_data->Payload[3] = 0x00;
+                transmit_data->Payload[4] = device_quety_fileNumber >> 8;
+                transmit_data->Payload[5] = device_quety_fileNumber;
+                SPI_FLASH_BufferRead(&transmit_data->Payload[6+i],PAD_UPDATA_TUF_ADDRESS+device_quety_fileNumber*128,128);
+                push_active_one_message_transmit(SYSTEM_PAD,false);
+                upgrade_stateMachine = ugdsm_transFlies_answer;
+                pbc_reload_timerClock(&timer_answerTimeout,1500);
+            }            
             break;
         }
         case ugdsm_transFlies_answer:
@@ -728,14 +792,17 @@ void app_bough_update_master_task(void)
                     if(easy_upgradeSte_completed == pReceive_date->Payload[2])
                     {//升级完成
                         padList &= (~(0x01<<padPort));
+                        app_general_clear_port_version(padPort);
                         if(padList)
                         {
+                            pbc_reload_timerClock(&pad_list_delay,60);
                             upgrade_stateMachine = ugdsm_check_pad_list;
                         }
                         else
                         {
                             upgrade_stateMachine = ugdsm_idle;
                             mde_upgrade_clear_pad_status();
+                            app_general_clear_version_pad_flag();
                         }                   
                     }
                     else
@@ -744,12 +811,22 @@ void app_bough_update_master_task(void)
                         device_quety_fileNumber = device_quety_fileNumber<<8;
                         device_quety_fileNumber |= pReceive_date->Payload[5];
                         upgrade_stateMachine = ugdsm_transFlies;
+                        pbc_reload_timerClock(&timer_transmit,300);
                     }
                 }
             }
+            
             if(pbc_pull_timerIsCompleted(&timer_answerTimeout))
             {
                 upgrade_stateMachine = ugdsm_transFlies;
+                max_retryCount++;
+                if(max_retryCount >= MAX_RETY_COUNT)
+                {
+                    max_retryCount = 0;
+                    upgrade_stateMachine = ugdsm_transFlies;
+                    pbc_reload_timerClock(&timer_transmit,10000);
+                }
+                
             }
             break;
         }
@@ -773,7 +850,7 @@ void app_bough_update_master_ae_task(void)
     linkDeviceList_t* logList;
     uint8_t *local_addr;
     uint8_t i = 0;
-    static uint8_t aePort = 0;//面板端口
+    static uint8_t aePort = 0;
     static uint16_t device_quety_fileNumber_ae;
 //-----------------------------------------------------------------------------
     pbc_timerClockRun_task(&timer_transmit);

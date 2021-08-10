@@ -1838,12 +1838,21 @@ void _control_pad_syn_task(void)
                             padOccupyWord[i] = 0;
                         }                                             
                     }
-                    if(mde_upgrade_pull_pad_status())
+                    if(mde_upgrade_pull_pad_status()|| app_general_pull_version_pad_flag())
                     {//加入主动升级任务
-                        app_bough_update_master_task();
+                        if(app_updaBackup_pull_status() != BACKUP_UPDATING)
+                        {
+                            app_bough_update_master_task();
+                        }                  
                     }
-                }
-                
+                    else if(mde_upgrade_pull_fan_status() || app_general_pull_version_fan_flag())
+                    {//加入主动升级任务
+                        if(app_updaBackup_pull_status() != BACKUP_UPDATING)
+                        {
+                            app_bough_update_master_task();
+                        }                  
+                    }
+                }             
                 break;
             }
             case SYN_STATUS_ANSWER:

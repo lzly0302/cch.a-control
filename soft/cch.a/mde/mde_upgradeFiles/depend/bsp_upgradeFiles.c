@@ -29,9 +29,11 @@
 #define user_upgrade_pad_start_addr  0x90000//温控器升级程序存储地址
 #define user_upgrade_pad_inf_addr    0xCFFE0
 #define user_upgrade_pad_inf_page    0xCF000
+#define user_upgrade_pad_inf_version_addr    0xCFFCE  //版本号存储地址
 //风盘控制器升级区地址0xd0000-0x10ffff   256K
 #define user_upgrade_fan_start_addr  0xD0000//风盘控制器升级程序存储地址
 #define user_upgrade_fan_inf_addr    0x10FFE0
+#define user_upgrade_fan_inf_version_addr    0x10FFCE  //版本号存储地址
 #define user_upgrade_fan_inf_page    0x10F000
 //环控中心升级区地址0x50000-0x8ffff   256K
 #define user_upgrade_ae_start_addr   0x50000//环控中心升级程序存储地址
@@ -94,6 +96,17 @@ void bsp_read_information_user_pad_upgrade(sdt_int8u* out_pBuff)
 {
    SPI_FLASH_BufferRead(out_pBuff,user_upgrade_pad_inf_addr,information_size);
 }
+void bsp_write_information_user_pad_version_upgrade(sdt_int8u* in_pBuff,sdt_int8u* in_version)
+{
+    sdt_int32u falsh_addr;
+    sdt_int32u upgrade_falsh_addr;
+    falsh_addr = user_upgrade_pad_inf_page;
+    SPI_FLASH_SectorErase(falsh_addr);
+    upgrade_falsh_addr = user_upgrade_pad_inf_addr;
+    SPI_FLASH_BufferWrite(in_pBuff,upgrade_falsh_addr,32);  
+    upgrade_falsh_addr = user_upgrade_pad_inf_version_addr;
+    SPI_FLASH_BufferWrite(in_version,upgrade_falsh_addr,2);
+}
 void bsp_write_information_user_pad_upgrade(sdt_int8u* in_pBuff)
 {
     sdt_int32u falsh_addr;
@@ -120,15 +133,18 @@ void bsp_read_information_user_fan_upgrade(sdt_int8u* out_pBuff)
 {
    SPI_FLASH_BufferRead(out_pBuff,user_upgrade_fan_inf_addr,information_size);
 }
-void bsp_write_information_user_fan_upgrade(sdt_int8u* in_pBuff)
+void bsp_write_information_user_fan_version_upgrade(sdt_int8u* in_pBuff,sdt_int8u* in_version)
 {
     sdt_int32u falsh_addr;
     sdt_int32u upgrade_falsh_addr;
     falsh_addr = user_upgrade_fan_inf_page;
     SPI_FLASH_SectorErase(falsh_addr);
     upgrade_falsh_addr = user_upgrade_fan_inf_addr;
-    SPI_FLASH_BufferWrite(in_pBuff,upgrade_falsh_addr,32);  
+    SPI_FLASH_BufferWrite(in_pBuff,upgrade_falsh_addr,32);
+    upgrade_falsh_addr = user_upgrade_fan_inf_version_addr;
+    SPI_FLASH_BufferWrite(in_version,upgrade_falsh_addr,2);  
 }
+
 void bsp_write_block_user_fan_upgrade(sdt_int16u in_block_num,sdt_int8u* in_pBuff)
 {
     sdt_int32u falsh_addr;

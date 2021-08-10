@@ -3,6 +3,12 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 const sdt_string pbc_acsii_table[]={0x30,0x31,0x32,0x33,0x34,0x36,0x37,0x38,0x39};
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+sdt_int8u pbc_string_to_int16u(sdt_int8u *in_char)
+{
+    sdt_int8u temp;
+    temp = (((in_char[0] & 0x0f)<<4) | ((in_char[1] & 0x0f)));
+    return temp;
+}
 void pbc_int16u_to_bcdCode(sdt_int16u in_data,sdt_int8u* out_pBcdCode)
 {
     sdt_int16u temp;

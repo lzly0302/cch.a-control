@@ -15,6 +15,8 @@
 #define SPI_FLASH_PerWritePageSize      256
 #define STORAGE_ADDRESS                 0
 #define PAD_UPDATA_TUF_ADDRESS          0x90000
+#define PAD_UPDATA_VERSION_ADDRESS      0xCFFCE//面板版本号存储地址
+#define FAN_UPDATA_VERSION_ADDRESS      0x10FFCE  //风盘版本号存储地址
 #define AE_UPDATA_TUF_ADDRESS           0x50000
 #define FAN_UPDATA_TUF_ADDRESS          0xd0000
 /* Private define ------------------------------------------------------------*/

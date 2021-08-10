@@ -12,19 +12,23 @@ StoRunParamter_Def  StoRunParameter =
 };
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 static sdt_bool cfged = sdt_false;
-uint8_t readBuff[128];
+//uint16_t padVersion;
+/*uint16_t app_storage_pull_pad_version(void)
+{
+    return padVersion;
+}*/
 //-------------------------------------------------------------------------------
 static void sto_run_parameter_cfg(void)
 { 
      uint32_t in_w25q64_id; 
      SPI_FLASH_Init();
-     
+   //  uint8_t buff[2];
      in_w25q64_id = SPI_FLASH_ReadID();
      if(in_w25q64_id == sFLASH_ID)
      {
         mde_storage_block_set_length_w(0,sizeof(StoRunParameter));
-        SPI_FLASH_BufferRead(&readBuff[0],PAD_UPDATA_TUF_ADDRESS,128);
-        SPI_FLASH_BufferRead(&readBuff[0],(PAD_UPDATA_TUF_ADDRESS+128),128);
+       // SPI_FLASH_BufferRead(&buff[0],PAD_UPDATA_VERSION_ADDRESS,2);
+      //  padVersion = pbc_arrayToInt16u_bigEndian(buff);
      }
 }
 uint8_t * app_pull_local_id(void)

@@ -46,6 +46,7 @@ sdt_bool mde_pull_upgrade_next_block(sdt_int16u* out_pBlock_num);
 //面板需要升级
 sdt_bool mde_upgrade_pull_pad_status(void);
 void mde_upgrade_clear_pad_status(void);
+void mde_upgrade_set_pad_status(void);
 //环控中心需要升级
 sdt_bool mde_upgrade_pull_ae_status(void);
 void mde_upgrade_clear_ae_status(void);
