@@ -138,15 +138,19 @@ typedef struct
         uint8_t                    backAirLowPwm;
         uint8_t                    backAirMidPwm;
         uint8_t                    backAirHighPwm;
-        control_masterPara_t       padPara[MASTER_PAD_NUM];//面板参数 
+        uint8_t                    remote_degree;        //远程开度
         bool                       output_pump;          //水泵输出
         bool                       output_threeWayValve;  //三通阀输出
-        bool                       energyNeed;               //环控能需预冷阀
+        bool                       energyNeed;            //环控能需预冷阀
         bool                       remoteControlFlag;     //远程受控
         bool                       wind_value; //风阀切换
         bool                       debug_enable;//调试使能
         bool                       indoor_dehum_status;//户外除湿状态 
-        bool                       water_machine_status:1;//水机状态
+        bool                       water_machine_status;//水机状态
+        bool                       remote_pump;         //远程水泵
+        bool                       remote_threeVavle;   //远程三通阀
+        bool                       remote_bypass;       //远程旁通
+        control_masterPara_t       padPara[MASTER_PAD_NUM];//面板参数      
         uint32_t                   dpStamp[MAX_DATA_POINT_LEN_SYSTEM];
 }SysPara_t;
 
@@ -224,6 +228,7 @@ mixWater_set_mode_t app_pull_mix_water_mode(void)
     }
     return SET_WARM;
 }
+
 macro_createTimer(remote_control_delay,timerType_second ,0);
 /*远程受控模式*/
 void app_general_push_remote_control(bool in_remote_control)
@@ -280,6 +285,42 @@ bool  app_general_pull_remote_relay(uint8_t in_port)
         return true;
     }
     return false;
+}
+/*远程水泵*/
+void app_general_push_remote_pump(bool in_remote_status)
+{ 
+    s_sysPara.remote_pump = in_remote_status;
+}
+bool  app_general_pull_remote_pump(void)
+{
+    return s_sysPara.remote_pump;
+}
+/*远程三通阀*/
+void app_general_push_remote_threeVavle(bool in_remote_status)
+{ 
+    s_sysPara.remote_threeVavle = in_remote_status;
+}
+bool  app_general_pull_remote_threeVavle(void)
+{
+    return s_sysPara.remote_threeVavle;
+}
+/*远程旁通*/
+void app_general_push_remote_bypass(bool in_remote_status)
+{ 
+    s_sysPara.remote_bypass = in_remote_status;
+}
+bool  app_general_pull_remote_bypass(void)
+{
+    return s_sysPara.remote_bypass;
+}
+/*远程三通阀开度*/
+void app_general_push_remote_degree(uint8_t in_vavle)
+{ 
+    s_sysPara.remote_degree = in_vavle;
+}
+uint8_t  app_general_pull_remote_degree(void)
+{
+    return s_sysPara.remote_degree;
 }
 
 /*系统主机故障字*/
@@ -1164,11 +1205,14 @@ bool app_general_pull_anergy_need(void)
 }
 void app_general_push_anergy_need(bool in_status)
 {
-    if(s_sysPara.energyNeed != in_status)
-    {
-        s_sysPara.energyNeed = in_status;
-        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUT_STATUS);
-    }  
+    if(s_sysPara.debug_enable)
+    {//开启调试使能
+        if(s_sysPara.energyNeed != in_status)
+        {
+            s_sysPara.energyNeed = in_status;
+            app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUT_STATUS);
+        }  
+    }
 }
 
 /*系统传感器错误*/
@@ -1253,6 +1297,15 @@ bool app_general_pull_pump_output(void)
 {
     return s_sysPara.output_pump;
 }
+
+void app_general_push_pump_output(bool in_status)
+{
+    if(s_sysPara.debug_enable)
+    {
+        s_sysPara.output_pump = in_status;
+    }
+}
+
 /*输配三通阀门输出状态*/
 bool app_general_pull_three_vavle_output(void)
 {
@@ -4122,22 +4175,14 @@ void app_general_mix_water_task(void)
                 output_terminal_backup[i] = false;
             }
         }
-        //----------实际输出，12组实际只需8组输出
+        //----------实际输出
         uint8_t delay_count = 0;
         macro_createTimer(adjust_delay,timerType_millisecond,3000);
         pbc_timerClockRun_task(&adjust_delay);
-        if(output_aircod_backup)
-        {
-            mde_relay_on(RELAY_AIRCOD,(10+delay_count*10));
-            delay_count++;
-        }
-        else
-        {
-            mde_relay_off(RELAY_AIRCOD,0);
-        }
         if(s_sysPara.remoteControlFlag)
         {//远程绝对控制
-            for(i = 0; i <  (MASTER_PAD_NUM-MASTER_PAD_VIRTUAL_NUM);i++)
+            /*6二次侧+5一次侧继电器输出*/
+            for(i = 0; i < (MASTER_PAD_NUM-1);i++)
             {
                 if(s_sysPara.padPara[i].output_remote)
                 {
@@ -4149,10 +4194,51 @@ void app_general_mix_water_task(void)
                     mde_relay_off(i,0);
                 }     
             }
+            /*水泵输出*/
+            if(s_sysPara.remote_pump)
+            {
+                mde_relay_on(RELAY_PUMP,(10+delay_count*10));
+            }
+            else
+            {
+                mde_relay_off(RELAY_PUMP,0);
+            }
+             /*旁通输出*/
+            if(s_sysPara.remote_bypass)
+            {
+                mde_relay_on(RELAY_AIRCOD,(10+delay_count*10));
+                delay_count++;
+            }
+            else
+            {
+                mde_relay_off(RELAY_AIRCOD,0);
+            }
+            /*三通阀输出*/
+            if(s_sysPara.remote_threeVavle)
+            {
+                if(s_sysPara.remote_degree)
+                {//远程调开度
+                    mod_mixWater_set_puty(s_sysPara.remote_degree);
+                }
+                else
+                {//本地调节开度
+                    if(pbc_pull_timerIsCompleted(&adjust_delay))
+                    {
+                        pbc_reload_timerClock(&adjust_delay,3000); 
+                        mod_mixWater_adjust(app_pull_mix_water_mode(),app_pull_mix_water_temp(),app_pull_back_water_temp(),app_pull_mix_water_run_set_temp());
+                    }
+                }
+                
+            }
+            else
+            {
+                mod_mixWater_set_puty(0);//关闭三通阀  
+            }
         }
         else
         {
-            for(i = 0; i <  MASTER_PAD_NUM;i++)
+            /*6二次侧+5一次侧继电器输出*/
+            for(i = 0; i <  (MASTER_PAD_NUM-1);i++)
             {
                 if(output_terminal_backup[i])
                 {
@@ -4164,28 +4250,38 @@ void app_general_mix_water_task(void)
                     mde_relay_off(i,0);
                 }     
             }
-        }
-        
-        if(s_sysPara.output_pump)
-        {
-            mde_relay_on(RELAY_PUMP,(10+delay_count*10));
-        }
-        else
-        {
-            mde_relay_off(RELAY_PUMP,0);
-        }
-      //  mod_mixWater_set_puty(50);
-        if(s_sysPara.output_threeWayValve)
-        {
-            if(pbc_pull_timerIsCompleted(&adjust_delay))
+            /*水泵输出*/
+            if(s_sysPara.output_pump)
             {
-                pbc_reload_timerClock(&adjust_delay,3000); 
-                mod_mixWater_adjust(app_pull_mix_water_mode(),app_pull_mix_water_temp(),app_pull_back_water_temp(),app_pull_mix_water_run_set_temp());
+                mde_relay_on(RELAY_PUMP,(10+delay_count*10));
             }
-        }
-        else
-        {
-            mod_mixWater_set_puty(0);//关闭三通阀  
+            else
+            {
+                mde_relay_off(RELAY_PUMP,0);
+            }
+            /*三通阀输出*/
+            if(s_sysPara.output_threeWayValve)
+            {
+                if(pbc_pull_timerIsCompleted(&adjust_delay))
+                {
+                    pbc_reload_timerClock(&adjust_delay,3000); 
+                    mod_mixWater_adjust(app_pull_mix_water_mode(),app_pull_mix_water_temp(),app_pull_back_water_temp(),app_pull_mix_water_run_set_temp());
+                }
+            }
+            else
+            {
+                mod_mixWater_set_puty(0);//关闭三通阀  
+            }
+            /*旁通输出*/
+            if(output_aircod_backup)
+            {
+                mde_relay_on(RELAY_AIRCOD,(10+delay_count*10));
+                delay_count++;
+            }
+            else
+            {
+                mde_relay_off(RELAY_AIRCOD,0);
+            }
         }
     }
     else

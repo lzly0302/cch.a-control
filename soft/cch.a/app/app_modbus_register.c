@@ -9726,6 +9726,41 @@ uint16_t app_modbus_read_reg_data(uint16_t reg_addr,uint8_t in_src)
 			{
 				reg_detailes = app_general_pull_remote_relay(7);
 				break;
+			}
+			case REG_ADRESS_REMOTE_RELAY9:
+			{
+				reg_detailes = app_general_pull_remote_relay(8);
+				break;
+			}
+			case REG_ADRESS_REMOTE_RELAY10:
+			{
+				reg_detailes = app_general_pull_remote_relay(9);
+				break;
+			}
+			case REG_ADRESS_REMOTE_RELAY11:
+			{
+				reg_detailes = app_general_pull_remote_relay(10);
+				break;
+			}	
+			case REG_ADRESS_REMOTE_PUMP:
+			{//远程水泵
+				reg_detailes = app_general_pull_remote_pump();
+				break;
+			}
+			case REG_ADRESS_REMOTE_THREEVAVLE:
+			{//远程三通阀
+				reg_detailes = app_general_pull_remote_threeVavle();
+				break;
+			}
+			case REG_ADRESS_REMOTE_VAVLEDUTY:
+			{//远程三通阀开度
+				reg_detailes = app_general_pull_remote_degree();
+				break;
+			}
+			case REG_ADRESS_REMOTE_BY_PASS:
+			{//远程旁通
+				reg_detailes = app_general_pull_remote_bypass();
+				break;
 			}	
 			default:
 			{
@@ -10122,7 +10157,7 @@ bool app_modebus_write_reg_data(uint16_t reg_addr,uint16_t reg_detailes,uint8_t 
 			}
 			case REG_ADDR_OUTPUT_PUMP:
 			{
-			   // reg_detailes = 0;
+			    app_general_push_pump_output(reg_detailes);
 				break;
 			}
 			case REG_ADDR_OUTPUT_THREE_VAVLE:
@@ -18500,7 +18535,42 @@ bool app_modebus_write_reg_data(uint16_t reg_addr,uint16_t reg_detailes,uint8_t 
 			{
 				app_general_push_remote_relay(7,reg_detailes);
 				break;
+			}
+			case REG_ADRESS_REMOTE_RELAY9:
+			{
+				app_general_push_remote_relay(8,reg_detailes);
+				break;
+			}
+			case REG_ADRESS_REMOTE_RELAY10:
+			{
+				app_general_push_remote_relay(9,reg_detailes);
+				break;
+			}
+			case REG_ADRESS_REMOTE_RELAY11:
+			{
+				app_general_push_remote_relay(10,reg_detailes);
+				break;
 			}	
+			case REG_ADRESS_REMOTE_PUMP:
+			{
+				app_general_push_remote_pump(reg_detailes);
+				break;
+			}
+			case REG_ADRESS_REMOTE_THREEVAVLE:
+			{
+				app_general_push_remote_threeVavle(reg_detailes);
+				break;
+			}
+			case REG_ADRESS_REMOTE_VAVLEDUTY:
+			{
+				app_general_push_remote_degree(reg_detailes);
+				break;
+			}
+			case REG_ADRESS_REMOTE_BY_PASS:
+			{
+				app_general_push_remote_bypass(reg_detailes);
+				break;
+			}
 			default:
 			{
 				break;

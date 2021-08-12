@@ -229,6 +229,7 @@ int16_t app_general_pull_set_mixwater_heat_temp(void);
 
 /*输配水泵状态*/
 bool app_general_pull_pump_output(void);
+void app_general_push_pump_output(bool in_status);
 /*输配三通阀门输出状态*/
 bool app_general_pull_three_vavle_output(void);
 /*输配混水AI目标温度 */
@@ -490,6 +491,18 @@ bool  app_general_pull_remote_control(void);
 /*远程继电器*/
 void app_general_push_remote_relay(uint8_t in_port,bool in_remote_control);
 bool  app_general_pull_remote_relay(uint8_t in_port);
+/*远程水泵*/
+void app_general_push_remote_pump(bool in_remote_status);
+bool  app_general_pull_remote_pump(void);
+/*远程三通阀*/
+void app_general_push_remote_threeVavle(bool in_remote_status);
+bool  app_general_pull_remote_threeVavle(void);
+/*远程旁通*/
+void app_general_push_remote_bypass(bool in_remote_status);
+bool  app_general_pull_remote_bypass(void);
+/*远程三通阀开度*/
+void app_general_push_remote_degree(uint8_t in_vavle);
+uint8_t  app_general_pull_remote_degree(void);
 /*调试使能*/
 bool app_general_pull_debug_enable(void);
 void app_general_push_debug_enable(bool in_status);
@@ -556,9 +569,9 @@ bool app_general_pull_version_pad_flag(void);
 void app_general_clear_version_pad_flag(void);
 void app_general_clear_port_version(uint8_t in_port);
 //风盘版本号升级
-
 uint16_t app_general_pull_version_fan_list(void);
 bool app_general_pull_version_fan_flag(void);
 void app_general_clear_version_fan_flag(void);
+
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endif

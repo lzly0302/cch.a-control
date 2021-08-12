@@ -31,9 +31,9 @@ void app_temperature_task(void)
     {
         pbc_reload_timerClock(&measure_delay,1000);
         mixWaterTemp = mde_NTCSensor_GetTemperature(SENSOR_ONE,B_3380_10K,Res01_Degree);
-        backWaterTemp = mde_NTCSensor_GetTemperature(SENSOR_TWO,B_3380_10K,Res01_Degree);
-        firstInWaterTemp = mde_NTCSensor_GetTemperature(SENSOR_THREE,B_3380_10K,Res01_Degree); 
-        firstBackWaterTemp = mde_NTCSensor_GetTemperature(SENSOR_FOUR,B_3380_10K,Res01_Degree); 
+        backWaterTemp = mde_NTCSensor_GetTemperature(SENSOR_FOUR,B_3380_10K,Res01_Degree);
+        firstInWaterTemp = mde_NTCSensor_GetTemperature(SENSOR_TWO,B_3380_10K,Res01_Degree); 
+        firstBackWaterTemp = mde_NTCSensor_GetTemperature(SENSOR_THREE,B_3380_10K,Res01_Degree); 
         #define SEND_TEMP_COUNT   60
         static uint8_t secondCount = 0;
         secondCount++;

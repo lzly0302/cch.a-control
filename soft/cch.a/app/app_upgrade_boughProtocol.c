@@ -732,8 +732,7 @@ void app_bough_update_master_task(void)
                 {
                     max_retryCount = 0;
                     upgrade_stateMachine = ugdsm_check_pad_list;
-                }
-                
+                }        
             }
             break;
         }
@@ -819,6 +818,7 @@ void app_bough_update_master_task(void)
             if(pbc_pull_timerIsCompleted(&timer_answerTimeout))
             {
                 upgrade_stateMachine = ugdsm_transFlies;
+                pbc_reload_timerClock(&timer_transmit,10000);
                 max_retryCount++;
                 if(max_retryCount >= MAX_RETY_COUNT)
                 {
@@ -934,6 +934,7 @@ void app_bough_update_master_ae_task(void)
                     if(aepReceive_date->Payload[2] == easy_upgradeSte_Boot)
                     {
                         ae_upgrade_stateMachine = ugdsm_restart;
+                        pbc_reload_timerClock(&timer_transmit,1000);
                     }
                     else if(aepReceive_date->Payload[2] == easy_upgradeSte_Boot)
                     {
@@ -953,35 +954,36 @@ void app_bough_update_master_ae_task(void)
         }
         case ugdsm_restart:
         {
-            transmit_data = pull_bough_message_pBuff(SYSTEM_MASTER);
-            logList = app_link_log_pull_device_list(SYSTEM_MASTER);
-            transmit_data->LinkDstAddr[0] = logList[aePort].DeviceID[0];
-            transmit_data->LinkDstAddr[1] = logList[aePort].DeviceID[1];
-            transmit_data->LinkDstAddr[2] = logList[aePort].DeviceID[2];
-            transmit_data->LinkDstAddr[3] = logList[aePort].DeviceID[3];
-            transmit_data->LinkDstAddr[4] = logList[aePort].DeviceID[4];
-            transmit_data->LinkDstAddr[5] = logList[aePort].DeviceID[5];
-            local_addr = app_pull_local_id();
-            transmit_data->LinkSrcAddr[0] = local_addr[0];
-            transmit_data->LinkSrcAddr[1] = local_addr[1];
-            transmit_data->LinkSrcAddr[2] = local_addr[2];
-            transmit_data->LinkSrcAddr[3] = local_addr[3];
-            transmit_data->LinkSrcAddr[4] = local_addr[4];
-            transmit_data->LinkSrcAddr[5] = local_addr[5];
-            transmit_data->ProcotolType = 0xD002;
-            transmit_data->PayloadLength = 128+6;
-            transmit_data->Payload[0] = easy_upgrade_version;
-            transmit_data->Payload[1] = easy_upgradeCmd_restart;
-            transmit_data->Payload[2] = 0x00;
-            transmit_data->Payload[3] = 0x00;
-            transmit_data->Payload[4] = 0x00;
-            transmit_data->Payload[5] = 0x00;
-
-            SPI_FLASH_BufferRead(&transmit_data->Payload[6+i],AE_UPDATA_TUF_ADDRESS,128);
-            push_active_one_message_transmit(SYSTEM_MASTER,false);
-            ae_upgrade_stateMachine = ugdsm_restart_answer;
-            pbc_reload_timerClock(&timer_answerTimeout,1500);
-
+            if(pbc_pull_timerIsCompleted(&timer_transmit))
+            {
+                transmit_data = pull_bough_message_pBuff(SYSTEM_MASTER);
+                logList = app_link_log_pull_device_list(SYSTEM_MASTER);
+                transmit_data->LinkDstAddr[0] = logList[aePort].DeviceID[0];
+                transmit_data->LinkDstAddr[1] = logList[aePort].DeviceID[1];
+                transmit_data->LinkDstAddr[2] = logList[aePort].DeviceID[2];
+                transmit_data->LinkDstAddr[3] = logList[aePort].DeviceID[3];
+                transmit_data->LinkDstAddr[4] = logList[aePort].DeviceID[4];
+                transmit_data->LinkDstAddr[5] = logList[aePort].DeviceID[5];
+                local_addr = app_pull_local_id();
+                transmit_data->LinkSrcAddr[0] = local_addr[0];
+                transmit_data->LinkSrcAddr[1] = local_addr[1];
+                transmit_data->LinkSrcAddr[2] = local_addr[2];
+                transmit_data->LinkSrcAddr[3] = local_addr[3];
+                transmit_data->LinkSrcAddr[4] = local_addr[4];
+                transmit_data->LinkSrcAddr[5] = local_addr[5];
+                transmit_data->ProcotolType = 0xD002;
+                transmit_data->PayloadLength = 128+6;
+                transmit_data->Payload[0] = easy_upgrade_version;
+                transmit_data->Payload[1] = easy_upgradeCmd_restart;
+                transmit_data->Payload[2] = 0x00;
+                transmit_data->Payload[3] = 0x00;
+                transmit_data->Payload[4] = 0x00;
+                transmit_data->Payload[5] = 0x00;
+                SPI_FLASH_BufferRead(&transmit_data->Payload[6+i],AE_UPDATA_TUF_ADDRESS,128);
+                push_active_one_message_transmit(SYSTEM_MASTER,false);
+                ae_upgrade_stateMachine = ugdsm_restart_answer;
+                pbc_reload_timerClock(&timer_answerTimeout,1500);
+            }
             break;
         }
         case ugdsm_restart_answer:
@@ -995,9 +997,14 @@ void app_bough_update_master_ae_task(void)
                     device_quety_fileNumber_ae = device_quety_fileNumber_ae<<8;
                     device_quety_fileNumber_ae |= aepReceive_date->Payload[5];
                     ae_upgrade_stateMachine = ugdsm_transFlies;
+                    pbc_reload_timerClock(&timer_transmit,1000);
                 }
             }
-
+            if(pbc_pull_timerIsCompleted(&timer_answerTimeout))
+            {
+                pbc_reload_timerClock(&timer_transmit,1000);
+                upgrade_stateMachine = ugdsm_restart;
+            }
             break;
         }
         case ugdsm_resume:
@@ -1010,34 +1017,36 @@ void app_bough_update_master_ae_task(void)
         }
         case ugdsm_transFlies:
         {
-            transmit_data = pull_bough_message_pBuff(SYSTEM_MASTER);
-            logList = app_link_log_pull_device_list(SYSTEM_MASTER);
-            transmit_data->LinkDstAddr[0] = logList[aePort].DeviceID[0];
-            transmit_data->LinkDstAddr[1] = logList[aePort].DeviceID[1];
-            transmit_data->LinkDstAddr[2] = logList[aePort].DeviceID[2];
-            transmit_data->LinkDstAddr[3] = logList[aePort].DeviceID[3];
-            transmit_data->LinkDstAddr[4] = logList[aePort].DeviceID[4];
-            transmit_data->LinkDstAddr[5] = logList[aePort].DeviceID[5];
-            local_addr = app_pull_local_id();
-            transmit_data->LinkSrcAddr[0] = local_addr[0];
-            transmit_data->LinkSrcAddr[1] = local_addr[1];
-            transmit_data->LinkSrcAddr[2] = local_addr[2];
-            transmit_data->LinkSrcAddr[3] = local_addr[3];
-            transmit_data->LinkSrcAddr[4] = local_addr[4];
-            transmit_data->LinkSrcAddr[5] = local_addr[5];
-            transmit_data->ProcotolType = 0xD002;
-            transmit_data->PayloadLength = 128+6;
-            transmit_data->Payload[0] = easy_upgrade_version;
-            transmit_data->Payload[1] = easy_upgradeCmd_transFiles;
-            transmit_data->Payload[2] = 0x00;
-            transmit_data->Payload[3] = 0x00;
-            transmit_data->Payload[4] = device_quety_fileNumber_ae >> 8;
-            transmit_data->Payload[5] = device_quety_fileNumber_ae;
-
-            SPI_FLASH_BufferRead(&transmit_data->Payload[6+i],(AE_UPDATA_TUF_ADDRESS+device_quety_fileNumber_ae*128),128);
-            push_active_one_message_transmit(SYSTEM_MASTER,false);
-            ae_upgrade_stateMachine = ugdsm_transFlies_answer;
-            pbc_reload_timerClock(&timer_answerTimeout,1500);
+            if(pbc_pull_timerIsCompleted(&timer_transmit))
+            {
+                transmit_data = pull_bough_message_pBuff(SYSTEM_MASTER);
+                logList = app_link_log_pull_device_list(SYSTEM_MASTER);
+                transmit_data->LinkDstAddr[0] = logList[aePort].DeviceID[0];
+                transmit_data->LinkDstAddr[1] = logList[aePort].DeviceID[1];
+                transmit_data->LinkDstAddr[2] = logList[aePort].DeviceID[2];
+                transmit_data->LinkDstAddr[3] = logList[aePort].DeviceID[3];
+                transmit_data->LinkDstAddr[4] = logList[aePort].DeviceID[4];
+                transmit_data->LinkDstAddr[5] = logList[aePort].DeviceID[5];
+                local_addr = app_pull_local_id();
+                transmit_data->LinkSrcAddr[0] = local_addr[0];
+                transmit_data->LinkSrcAddr[1] = local_addr[1];
+                transmit_data->LinkSrcAddr[2] = local_addr[2];
+                transmit_data->LinkSrcAddr[3] = local_addr[3];
+                transmit_data->LinkSrcAddr[4] = local_addr[4];
+                transmit_data->LinkSrcAddr[5] = local_addr[5];
+                transmit_data->ProcotolType = 0xD002;
+                transmit_data->PayloadLength = 128+6;
+                transmit_data->Payload[0] = easy_upgrade_version;
+                transmit_data->Payload[1] = easy_upgradeCmd_transFiles;
+                transmit_data->Payload[2] = 0x00;
+                transmit_data->Payload[3] = 0x00;
+                transmit_data->Payload[4] = device_quety_fileNumber_ae >> 8;
+                transmit_data->Payload[5] = device_quety_fileNumber_ae;
+                SPI_FLASH_BufferRead(&transmit_data->Payload[6+i],(AE_UPDATA_TUF_ADDRESS+device_quety_fileNumber_ae*128),128);
+                push_active_one_message_transmit(SYSTEM_MASTER,false);
+                ae_upgrade_stateMachine = ugdsm_transFlies_answer;
+                pbc_reload_timerClock(&timer_answerTimeout,1500);
+                }        
             break;
         }
         case ugdsm_transFlies_answer:
@@ -1058,12 +1067,14 @@ void app_bough_update_master_ae_task(void)
                         device_quety_fileNumber_ae = device_quety_fileNumber_ae<<8;
                         device_quety_fileNumber_ae |= aepReceive_date->Payload[5];
                         ae_upgrade_stateMachine = ugdsm_transFlies;
+                        pbc_reload_timerClock(&timer_transmit,300);
                     }
                 }
             }
             if(pbc_pull_timerIsCompleted(&timer_answerTimeout))
             {
                 ae_upgrade_stateMachine = ugdsm_transFlies;
+                pbc_reload_timerClock(&timer_transmit,10000);
             }
             break;
         }

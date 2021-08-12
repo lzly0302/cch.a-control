@@ -21,7 +21,7 @@
 #define RELAY_PORT8    7
 #define RELAY_PORT9    8
 #define RELAY_PORT10   9
-#define RELAY_AIRCOD   8
+#define RELAY_AIRCOD   11
 #define RELAY_PUMP     14
 typedef enum
 {

@@ -116,8 +116,8 @@
 #define REG_ADDR_MIXWATER_INWATER_TEMP                   0X2C40//预留
 #define REG_ADDR_MIXWATER_BACKWATER_TEMP                 0X2C41//输配二次侧回水温度
 #define REG_ADDR_MIXWATER_TEMP                           0X2C42//输配混水温度
-#define REG_ADDR_OUTPUT_PUMP                             0X2C43//
-#define REG_ADDR_OUTPUT_THREE_VAVLE                      0X2C44//
+#define REG_ADDR_OUTPUT_PUMP                             0X2C43//输配水泵状态
+#define REG_ADDR_OUTPUT_THREE_VAVLE                      0X2C44//输配三通阀门输出状态
 #define REG_ADDR_MIXWATER_AI_DEST_TEMP                   0X2C45//
 #define REG_ADDR_MIXWATER_AI_ENABLE                      0X2C46//
 #define REG_ADDR_MIXWATER_LOW_TEMP_PROTECT               0X2C47//输配防冻保护
@@ -157,6 +157,13 @@
 #define REG_ADRESS_REMOTE_RELAY6				 	     0x2D06//远程继电器6
 #define REG_ADRESS_REMOTE_RELAY7				 	     0x2D07//远程继电器7
 #define REG_ADRESS_REMOTE_RELAY8				 	     0x2D08//远程继电器8
+#define REG_ADRESS_REMOTE_RELAY9				 	     0x2D09//远程继电器9
+#define REG_ADRESS_REMOTE_RELAY10				 	     0x2D0A//远程继电器10
+#define REG_ADRESS_REMOTE_RELAY11				 	     0x2D0B//远程继电器11
+#define REG_ADRESS_REMOTE_PUMP				 	         0x2D0C//远程水泵
+#define REG_ADRESS_REMOTE_THREEVAVLE				 	 0x2D0D//远程三通阀
+#define REG_ADRESS_REMOTE_VAVLEDUTY				 	     0x2D0E//远程三通阀开度
+#define REG_ADRESS_REMOTE_BY_PASS				 	     0x2D0F//远程旁通
 
 #define REG_ADDR_PAD_START                               0X3000//
 #define REG_ADDR_PAD1_ERROR_WORD                         0X3000//

@@ -161,7 +161,7 @@ void BSP_Relay10_Enable(void)
 }
 void BSP_Relay11_Enable(void)
 {
-    GPIO_BOP(RELAY10_PORT) = RELAY10_PIN;
+    GPIO_BOP(RELAY11_PORT) = RELAY11_PIN;
 }
 void BSP_Relay12_Enable(void)
 {
