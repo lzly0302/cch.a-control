@@ -12,23 +12,16 @@ StoRunParamter_Def  StoRunParameter =
 };
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 static sdt_bool cfged = sdt_false;
-//uint16_t padVersion;
-/*uint16_t app_storage_pull_pad_version(void)
-{
-    return padVersion;
-}*/
+
 //-------------------------------------------------------------------------------
 static void sto_run_parameter_cfg(void)
 { 
      uint32_t in_w25q64_id; 
      SPI_FLASH_Init();
-   //  uint8_t buff[2];
      in_w25q64_id = SPI_FLASH_ReadID();
      if(in_w25q64_id == sFLASH_ID)
      {
         mde_storage_block_set_length_w(0,sizeof(StoRunParameter));
-       // SPI_FLASH_BufferRead(&buff[0],PAD_UPDATA_VERSION_ADDRESS,2);
-      //  padVersion = pbc_arrayToInt16u_bigEndian(buff);
      }
 }
 uint8_t * app_pull_local_id(void)
@@ -68,6 +61,9 @@ void RestoreFactoryStorage(void)
     StoRunParameter.heat_wind_max_temp_set = 300;
     StoRunParameter.lew_status_open_diff = 0;
     StoRunParameter.lew_status_close_diff = 10;
+    StoRunParameter.set_cold_water_temp = 100;
+    StoRunParameter.set_heat_water_temp = 400;
+    StoRunParameter.set_living_water_temp = 550; //生活热水
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 void app_read_run_parameter(void)

@@ -19,9 +19,11 @@
 #include "..\.\mde\mde_upgradeFiles\mde_upgradeFiles.h"
 #include "..\.\mde\mde_sd3078\mde_sd3078.h"
 #include "..\.\mde\mde_bough_link\mde_bough_link_half.h"
+#include "..\.\mde\mde_mRtuMaster\mde_mRtuMaster.h"
 #include "..\.\mde\mde_w25q64\mde_w25q64.h"
 
 #include ".\app_storage.h"
+#include ".\app_master_comp.h"
 #include ".\app_modbus_register.h"
 #include ".\app_modbus_onewire.h"
 #include ".\app_pwm_control.h"

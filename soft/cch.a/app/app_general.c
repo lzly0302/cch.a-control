@@ -617,10 +617,11 @@ void app_general_push_set_cold_water_temp(int16_t in_set_temp)
 {
 	//if((in_set_temp >= 50) && (in_set_temp <= 350)&&(in_set_temp%5==0))
 	//{
-		if(s_sysPara.set_cold_water_temp != in_set_temp)
+		if(StoRunParameter.set_cold_water_temp != in_set_temp)
 		{
-			s_sysPara.set_cold_water_temp = in_set_temp;
-             app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WATER_SET_CLOD_TEMP);
+			StoRunParameter.set_cold_water_temp = in_set_temp;
+            app_push_once_save_sto_parameter();
+            app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WATER_SET_CLOD_TEMP);
 		}
 	//}
 }
@@ -629,9 +630,10 @@ void app_general_push_set_heat_water_temp(int16_t in_set_temp)
 {
 	//if((in_set_temp >= 50) && (in_set_temp <= 350)&&(in_set_temp%5==0))
 	//{
-		if(s_sysPara.set_heat_water_temp != in_set_temp)
+		if(StoRunParameter.set_heat_water_temp != in_set_temp)
 		{
-			s_sysPara.set_heat_water_temp = in_set_temp;
+			StoRunParameter.set_heat_water_temp = in_set_temp;
+            app_push_once_save_sto_parameter();
             app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WATER_SET_HEAT_TEMP); 
 		}        
 	//}
@@ -641,9 +643,10 @@ void app_general_push_set_living_water_temp(int16_t in_set_temp)
 { 
 	//if((in_set_temp >= 50) && (in_set_temp <= 350)&&(in_set_temp%5==0))
 	//{
-		if(s_sysPara.set_living_water_temp != in_set_temp)
+		if(StoRunParameter.set_living_water_temp != in_set_temp)
 		{
-			s_sysPara.set_living_water_temp = in_set_temp; 
+			StoRunParameter.set_living_water_temp = in_set_temp;
+            app_push_once_save_sto_parameter(); 
             app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WATER_SET_LIVING_TEMP);
 		}        
 	//}
@@ -651,15 +654,15 @@ void app_general_push_set_living_water_temp(int16_t in_set_temp)
 
 int16_t app_general_pull_set_cold_water_temp(void)
 {
-    return s_sysPara.set_cold_water_temp;
+    return StoRunParameter.set_cold_water_temp;
 }
 int16_t app_general_pull_set_heat_water_temp(void)
 {
-    return s_sysPara.set_heat_water_temp;
+    return StoRunParameter.set_heat_water_temp;
 }
 int16_t app_general_pull_set_living_water_temp(void)
 {
-    return s_sysPara.set_living_water_temp;
+    return StoRunParameter.set_living_water_temp;
 }
 
 /*户外进风/氟盘前/氟盘后/回风/排风温湿度*/
@@ -3615,6 +3618,8 @@ void app_general_mix_water_task(void)
         static uint8_t   pump_status = 0;    //水泵输出
         if(StoRunParameter.systemPower)
         {
+            APP_push_aricod_message(DRIVE_BOARD_POWER_ON_OFF,1);//空调开机
+            APP_push_aricod_message(DRIVE_BOARD_LIFE_HOTWATER_SET_TEMP,app_general_pull_set_living_water_temp());//设定生活热水温度 
             if(StoRunParameter.airRunmode == AIR_MODE_FAN)
             {//通风模式
                 if(StoRunParameter.lowTempProtectConfig)
@@ -3631,9 +3636,20 @@ void app_general_mix_water_task(void)
                         output_terminal_backup[i] = false;
                     }
                 }
+                APP_push_aricod_message(DRIVE_BOARD_SET_MODE,AIR_MODE_STOP);//停机模式
             }
             else
-            {//制冷、制热、除湿    
+            {//制冷、制热、除湿   
+                if((StoRunParameter.airRunmode == AIR_MODE_COOL) || (StoRunParameter.airRunmode == AIR_MODE_AUTO_COOL) ||(StoRunParameter.airRunmode == AIR_MODE_HUMIDITY))
+                {
+                     APP_push_aricod_message(DRIVE_BOARD_SET_MODE,AIR_MODE_COOL);//制冷模式
+                     APP_push_aricod_message(DRIVE_BOARD_COOL_OUTWATER_SETTEMP,app_general_pull_set_cold_water_temp());//制冷出水设置温度
+                }
+                else
+                {
+                    APP_push_aricod_message(DRIVE_BOARD_SET_MODE,AIR_MODE_HEAT);//制热模式
+                    APP_push_aricod_message(DRIVE_BOARD_HOT_OUTWATER_SETTEMP,app_general_pull_set_heat_water_temp());//制热出水设置温度
+                }
                 switch(StoRunParameter.control_method)
                 {
                     case METHOD_BASIC:
@@ -3641,7 +3657,7 @@ void app_general_mix_water_task(void)
                         output_aircod_backup = s_sysPara.energyNeed;
                         if((system_need & ENGER_NEED_LEW_TEMP_PROTECT_BIT))
                         {//露点保护内循环
-                            s_sysPara.output_threeWayValve = false;//关闭混水阀
+                            s_sysPara.output_threeWayValve = false;//关闭混水阀 
                             if(inloop_checkFlag == false)
                             {
                                 inloop_checkFlag = true;
@@ -4165,7 +4181,8 @@ void app_general_mix_water_task(void)
                 {
                     output_terminal_backup[i] = false;
                 }
-            }    
+            } 
+            APP_push_aricod_message(DRIVE_BOARD_POWER_ON_OFF,0);//空调关机
         }
         if(s_sysPara.word_error&ERROR_THREE_WAY_VAVLE)
         {//三通阀故障关闭水泵跟执行器
@@ -4240,15 +4257,23 @@ void app_general_mix_water_task(void)
             /*6二次侧+5一次侧继电器输出*/
             for(i = 0; i <  (MASTER_PAD_NUM-1);i++)
             {
-                if(output_terminal_backup[i])
+                if(i != 8)
                 {
-                    mde_relay_on(i,(10+delay_count*10));
-                    delay_count++;
+                    if(output_terminal_backup[i])
+                    {
+                        mde_relay_on(i,(10+delay_count*10));
+                        delay_count++;
+                    }
+                    else
+                    {
+                        mde_relay_off(i,0);
+                    }     
                 }
                 else
                 {
-                    mde_relay_off(i,0);
-                }     
+                    mde_relay_on(8,(10+delay_count*10));
+                    delay_count++;
+                }
             }
             /*水泵输出*/
             if(s_sysPara.output_pump)
@@ -4294,50 +4319,50 @@ void app_general_mix_water_task(void)
         }       
     }   
 }
-uint16_t aircodMesBuff_1[ARICOD_READ_ONLY_REG_NUM]={
-            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //0-15
-            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,//16-31
-            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //32-47
-            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //48-63
-            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //64-79
-            0x0000,0x0000,0x0000,0x0000,                                                                                     //80-83
-                            };
-
-uint16_t aircodMesBuff_5001[ARICOD_READ_WRITE_REG_NUM]={
-            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //0-15
-            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,//16-31
-            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //32-47
-            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,//48-63
-            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,                                                 //64-72
-                                };
-bool APP_pull_aricod_message(uint16_t in_reg_add,uint16_t *out_reg_value)
-{
-    if((in_reg_add >= 1) && (in_reg_add <= ARICOD_READ_ONLY_REG_NUM))
-    {
-        *out_reg_value = aircodMesBuff_1[(in_reg_add-1)];
-        return true;
-    }  
-    else if((in_reg_add >= 5001) && (in_reg_add <= (5000+ARICOD_READ_WRITE_REG_NUM)))
-    {
-        *out_reg_value = aircodMesBuff_5001[(in_reg_add-5001)];
-        return true;
-    }  
-    return false;
-}
-bool APP_push_aricod_message(uint16_t in_reg_add,uint16_t in_reg_value)
-{
-    if((in_reg_add >= 1) && (in_reg_add <= ARICOD_READ_ONLY_REG_NUM))
-    {     
-       aircodMesBuff_1[(in_reg_add-1)] = in_reg_value;
-       return true;
-    } 
-    else if((in_reg_add >= 5001) && (in_reg_add <= (5000+ARICOD_READ_WRITE_REG_NUM)))
-    {
-		aircodMesBuff_5001[(in_reg_add-5001)] = in_reg_value;       
-        return true;
-    } 
-    return false;
-}
+//uint16_t aircodMesBuff_1[ARICOD_READ_ONLY_REG_NUM]={
+//            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //0-15
+//            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,//16-31
+//            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //32-47
+//            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //48-63
+//            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //64-79
+//            0x0000,0x0000,0x0000,0x0000,                                                                                     //80-83
+//                            };
+//
+//uint16_t aircodMesBuff_5001[ARICOD_READ_WRITE_REG_NUM]={
+//            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //0-15
+//            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,//16-31
+//            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //32-47
+//            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,//48-63
+//            0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,                                                 //64-72
+//                                };
+//bool APP_pull_aricod_message(uint16_t in_reg_add,uint16_t *out_reg_value)
+//{
+//    if((in_reg_add >= 1) && (in_reg_add <= ARICOD_READ_ONLY_REG_NUM))
+//    {
+//        *out_reg_value = aircodMesBuff_1[(in_reg_add-1)];
+//        return true;
+//    }  
+//    else if((in_reg_add >= 5001) && (in_reg_add <= (5000+ARICOD_READ_WRITE_REG_NUM)))
+//    {
+//        *out_reg_value = aircodMesBuff_5001[(in_reg_add-5001)];
+//        return true;
+//    }  
+//    return false;
+//}
+//bool APP_push_aricod_message(uint16_t in_reg_add,uint16_t in_reg_value)
+//{
+//    if((in_reg_add >= 1) && (in_reg_add <= ARICOD_READ_ONLY_REG_NUM))
+//    {     
+//       aircodMesBuff_1[(in_reg_add-1)] = in_reg_value;
+//       return true;
+//    } 
+//    else if((in_reg_add >= 5001) && (in_reg_add <= (5000+ARICOD_READ_WRITE_REG_NUM)))
+//    {
+//		aircodMesBuff_5001[(in_reg_add-5001)] = in_reg_value;       
+//        return true;
+//    } 
+//    return false;
+//}
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //name: 通用应用task
 //-----------------------------------------------------------------------------
@@ -4347,7 +4372,7 @@ void app_general_task(void)
     mde_IWDG_FeedDog();
     if(sys_cfged)
     {   
-        //mde_upgrade_files_task();
+        app_master_comp_task();
         app_sto_run_parameter_task();
 		app_pwm_control_task();      
         app_logic_realy_task();

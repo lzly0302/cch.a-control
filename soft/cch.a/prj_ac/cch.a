@@ -1982,6 +1982,12 @@
       <name>$PROJ_DIR$\..\app\app_logic_relay.h</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\app\app_master_comp.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\app\app_master_comp.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\app\app_modbus_onewire.c</name>
     </file>
     <file>
@@ -2129,6 +2135,27 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\mde\mde_mRtuSlave\sod_mRtuSlave.h</name>
+      </file>
+    </group>
+    <group>
+      <name>mde_mRtuMaster</name>
+      <group>
+        <name>depend</name>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_mRtuMaster\depend\bsp_mRtuMaster.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\mde\mde_mRtuMaster\depend\bsp_mRtuMaster.h</name>
+        </file>
+      </group>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_mRtuMaster\mde_mRtuMaster.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_mRtuMaster\mde_mRtuMaster.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\mde\mde_mRtuMaster\sod_mRtuMaster.h</name>
       </file>
     </group>
     <group>

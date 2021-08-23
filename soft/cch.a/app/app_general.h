@@ -39,8 +39,8 @@
 #define  SYS_ERROR_FIRST_SUPPLY_WATER    0X0800//一次侧供水故障
 #define  SYS_ERROR_FIRST_BACK_WATER      0X0100//一次侧回水故障
 
-#define ARICOD_READ_ONLY_REG_NUM            84
-#define ARICOD_READ_WRITE_REG_NUM           74
+#define ARICOD_READ_ONLY_REG_NUM            72
+#define ARICOD_READ_WRITE_REG_NUM           60
 enum
 {
     Power_OFF               =0x0000,  //关机
@@ -471,8 +471,8 @@ void app_general_clear_error_word(uint16_t in_errorBit);
 uint16_t app_general_pull_error_word(void);
 uint16_t GetRandomDelayTime(void);
 void check_rebind_list(void);
-bool APP_pull_aricod_message(uint16_t in_reg_add,uint16_t *out_reg_value);
-bool APP_push_aricod_message(uint16_t in_reg_add,uint16_t in_reg_value);
+//bool APP_pull_aricod_message(uint16_t in_reg_add,uint16_t *out_reg_value);
+//bool APP_push_aricod_message(uint16_t in_reg_add,uint16_t in_reg_value);
 /*系统能需*/
 uint8_t app_pull_system_energy_need(void);
 /*新风效率*/

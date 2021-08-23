@@ -5,8 +5,8 @@
     #include ".\depend\snail_data_types.h"
 #endif
 //-----------------------------------------------------------------------------
-#define  MODBUS_REMOTE_1      1
-#define  MODBUS_ONEWIRE       2
+//#define  MODBUS_REMOTE_1      1
+#define  MODBUS_ONEWIRE       1
 #define  MODBUS_REMOTE        0
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //

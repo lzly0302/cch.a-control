@@ -4,12 +4,15 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 typedef enum
 {
+    AIR_MODE_STOP             =0x00,  //停机
     AIR_MODE_COOL             =0x01,  //制冷
     AIR_MODE_HEAT             =0x02,  //制热
     AIR_MODE_HUMIDITY         =0x03,  //除湿
 	AIR_MODE_FAN              =0x04,  //通风(热水)
 	AIR_MODE_AUTO_COOL        =0x05,  //夏季自动
 	AIR_MODE_AUTO_HEAT        =0x06,  //冬季自动
+    AIR_MODE_WATER            =0x07,  //热水  
+    AIR_MODE_NONE             =0XFF,
 }AirRunMode_Def;
 
 
@@ -63,11 +66,16 @@ typedef union
         int16_t                    heat_fan_need_temp_set;  //风盘能需设定温度   
         int16_t                    heat_warm_need_temp_set;  //辐射能需设定温度   
         int16_t                    config_back_wind_temp_set; //回风温度配置   
-        int16_t                  lew_status_open_diff;//露点开启带宽
-        int16_t                  lew_status_close_diff;//露点关闭带宽
+        int16_t                    lew_status_open_diff;//露点开启带宽
+        int16_t                    lew_status_close_diff;//露点关闭带宽
+        int16_t                    set_living_water_temp; //主机生活热水设定水温
+        int16_t                    set_cold_water_temp;   //主机制冷模式出水设定水温
+        int16_t                    set_heat_water_temp;   //主机制热模式出水设定水温
         bool                       powerOffStatus;          //上电关机功能
         bool                       aiEnable;                 //ai使能
         bool                       systemPower;              //开关机
+        bool                       debug_enable;         //调试使能
+        bool                       hotwater_enable;       //热水使能
     };
 }StoRunParamter_Def;
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
