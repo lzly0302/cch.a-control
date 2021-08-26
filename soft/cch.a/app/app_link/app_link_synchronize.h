@@ -7,13 +7,28 @@
 #define OCCUPY_PAD_CHILD_LOCK                0X08
 #define OCCUPY_PAD_SET_FAN                   0X10
 #define OCCUPY_PAD_TWO_CNONTROL_MODE         0X20
-
 #define OCCUPY_PAD_BIND_MESSAGE              0X40
 #define OCCUPY_PAD_STATUS_MESSAGE            0X80
 #define OCCUPY_PAD_MEASURE_MESSAGE           0X0100
 #define OCCUPY_PAD_ADV_MESSAGE               0X0200//末端高级设置
 #define OCCUPY_PAD_SYSTEM_MESSAGE            0X0400
 #define OCCUPY_PAD_SYSTEM_RTC                0X0800
+
+#define OCCUPY_DHM_POWER                             0X0001//系统开关机
+#define OCCUPY_DHM_WIND_SET_HUM                      0X0002//通风制冷/除湿模式设定相对湿度  
+#define OCCUPY_DHM_RUN_MODE                          0X0004//系统运行模式
+#define OCCUPY_DHM_WIND_SET_SPEED                    0X0008//通风设定风速 
+#define OCCUPY_DHM_NEED_DHM_OUTPUT                   0X0010//通风设定风速
+#define OCCUPY_DHM_NEED_DHM_STATUS                   0X0020//通风设定风速
+#define OCCUPY_DHM_LIS_NEW_AIR_PWM                   0X0040//新风PWM值
+#define OCCUPY_DHM_LIS_BACK_AIR_PWM                  0X0080//回风PWM值
+#define OCCUPY_DHM_LIS_OUTDOOR_WEATHER               0X0100//户外温湿度
+#define OCCUPY_DHM_LIS_BEFORE_FU_WEATHER             0X0200//氟盘前温湿度
+#define OCCUPY_DHM_LIS_AFTER_FU_WEATHER              0X0400//氟盘后温湿度
+#define OCCUPY_DHM_LIS_BACK_AIR_WEATHER              0X0800//回风口综合传感器
+#define OCCUPY_DHM_LIS_EXHAST_AIR_WEATHER            0X1000//排风口温湿度
+#define OCCUPY_DHM_LIS_RTC                           0X2000//系统RTC
+#define OCCUPY_DHM_LIS_485_PAREMETER                 0X4000//485参数
 
 #define OCCUPY_SYSTEM_POWER                             0X0001//系统开关机
 #define OCCUPY_SYSTEM_RUN_MODE                          0X0002//系统运行模式 
@@ -45,6 +60,7 @@
 #define OCCUPY_SYSTEM_LIS_RTC                           0X08000000//系统RTC
 #define OCCUPY_SYSTEM_LIS_485_PAREMETER                 0X10000000//485参数
 #define OCCUPY_SYSTEM_COLD_WARM_BACK_WATER              0X80000000
+
 #define DELAY_OCCPUY              900
 #define MAX_FAIL_COUNT            10
 //-----------------------------------------------------------------------------

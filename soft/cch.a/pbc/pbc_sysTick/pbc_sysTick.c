@@ -110,7 +110,7 @@ void pbc_timerClockRun_task(timerClock_def* in_timer)
 {
     sdt_int16u currentTick;
     sdt_int16u goRunTick;
-    sdt_int8u timer_type;
+    static sdt_int8u timer_type;
     
     pbc_sysTick_run();
     timer_type = in_timer->timStatusBits & timStatusBits_typeMask;

@@ -2135,7 +2135,7 @@ void _control_pad_syn_task(void)
                 }
                 else
                 {
-                    for(i = 0; i < MAX_DEVICE_NUM; i++)
+                    for(i = 0; i < MASTER_PAD_NUM; i++)
                     {
                         if(app_general_pull_devive_online(i))
                         {//在线
