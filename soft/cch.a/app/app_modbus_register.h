@@ -1251,11 +1251,15 @@
 #define DP_ADDR_SYSTEM_AIRCOD_WARM_BACK_WATER            0X0120
 #define DP_ADDR_WRITE_DEVICE_ID                          0X1000
 
+#define DP_ADDR_DHM_START                                0X0200
+
+
 #define DEVICE_TYPE                                      0x8522
 #define DEVICE_TYPE_HC                                   0x8521//环控
 #define DEVICE_TYPE_CC                                   0x8522//输配
-#define DEVICE_TYPE_FAN                                  0x9521
-#define DEVICE_TYPE_ROMM                                 0x9522
+#define DEVICE_TYPE_FAN                                  0x9521//风盘
+#define DEVICE_TYPE_ROMM                                 0x9522//面板
+#define DEVICE_TYPE_DHM                                  0x9523//除湿模块
 #define SOURCE_OUTSIDE                                   0x0001
 #define SOURCE_INSIDE                                    0x0002
 #define DEVICE_VERSION                                   0x2103

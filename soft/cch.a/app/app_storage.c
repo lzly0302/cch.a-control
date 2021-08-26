@@ -33,8 +33,6 @@ void RestoreFactoryStorage(void)
 {
     StoRunParameter.systemPower = false;
     StoRunParameter.airRunmode = AIR_MODE_AUTO_COOL;
-    StoRunParameter.NewAirLevelSet = MiddleFanSet;
-    StoRunParameter.humidity_set = 60;
     StoRunParameter.humidity_DeadZone =3;
     StoRunParameter.temp_DeadZone = 10;
     StoRunParameter.mixColdSetTemp = 160;

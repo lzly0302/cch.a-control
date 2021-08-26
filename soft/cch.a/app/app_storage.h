@@ -44,10 +44,8 @@ typedef union
         uint8_t                    stopBit;                  //停止位    
         uint8_t                    coldDropDiff;             //冷凝带宽	  
         uint8_t                    lowTempProtectConfig;     //防冻温度，0为关闭
-        control_method_Def         control_method;             //控制策略
+        control_method_Def         control_method;           //控制策略
         AirRunMode_Def             airRunmode;               //模式
-        NewAirLevelSet_Def         NewAirLevelSet;           //设定风速
-		sdt_int16s                 humidity_set;             //设定湿度
 		sdt_int16s                 hotTemp_set;              //制冷设定温度
 		sdt_int16s                 coldTemp_set;             //制热设定温度	
         sdt_int16s                 humidity_DeadZone;        //湿度带宽

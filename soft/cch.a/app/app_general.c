@@ -10,8 +10,6 @@ typedef struct
 {//面板数据   
         uint32_t   dpStamp[MAX_DATA_POINT_LEN_PAD];
         uint16_t   padErrorWord;//面板故障字
-        uint16_t   deviceType;//设备类型 
-        uint16_t   version_pad;//面板版本號
         uint16_t   outputFanSpeed;//转速
         int16_t    measureTemp;//测量温度
         uint16_t   humility;//湿度
@@ -34,8 +32,6 @@ typedef struct
         uint16_t   warmNedd;//辐射阀门需求
         uint16_t   fanNedd;//风机阀门需求
         uint8_t    type_warm_choose;//辐射类型
-        timerClock_def  id_ocupy_delay;//ID占用
-        uint8_t    deviceId[6]; 
         uint8_t    lowFanPwm;//
         uint8_t    midFanPwm;
         uint8_t    highFanPwm;   
@@ -50,39 +46,28 @@ typedef struct
         uint8_t    two_output_mode;//双末端模式选择 
         uint8_t    room_area;//房间面积 
         bool       coldCollaEnable;//制冷协同使能
-        bool       warmCollaEnable;//采暖协同使能
-        bool       output_terminal;   //终端输出
-        bool       onlineFlag;//在线状态
+        bool       warmCollaEnable;//采暖协同使能 
         bool       sensorErrorFlag;//传感器错误
         bool       fanControlFalg;//风机受控
         bool       lockFlag;//锁键
         bool       powerOffFlag;//上电关机
         bool       lowTempProtectFlag;//防冻保护
         bool       lewDropProtect;//露点保护
-        bool       idUsedFlag;//id使用标志
-        bool       output_remote;//远程输出
-}control_masterPara_t;
+        
+}control_padPara_t;
+
 
 typedef struct
-{//共用数据    
-       
-        uint16_t                   word_error;              //故障字   
-        uint16_t                   system_ntc_error;       //系统传感器故障  
+{//除湿模块数据   
+        uint32_t                   dhm_dpStamp[MAX_DATA_POINT_LEN_DHM];       		
         uint16_t                   ae_ntc_error;            //环控传感器故障  
-        uint16_t                   ac_ntc_error;            //输配传感器故障  
-        int16_t                    dewPointTemp;            //露点温度   
-        int16_t                    destTemp;                //目标温度  
-        uint16_t                   system_error_word;       //主机集成故障字
-        uint16_t                   ac_error_word;           //输配故障字
         uint16_t                   ae_error_word;           //环控故障字
-        uint16_t                   unbind_warm;             //辐射未绑定列表
-        uint16_t                   unbind_fan;              //风盘未绑定列表
-        uint16_t                   repeat_bind;             //辐射重复绑定列表
-        uint16_t                   system_status_word;      //系统状态字
-        uint16_t                   pad_output_status;       //末端输出状态
-        int16_t                    set_cold_water_temp;
-        int16_t                    set_heat_water_temp;
-        int16_t                    set_living_water_temp;
+        uint16_t				   filter_time;             //滤芯更换周期
+		uint16_t				   filter_usetime;           //滤芯使用时间
+        uint16_t                   dhm_status;               //除湿输出状态
+        int16_t                    humidity_set;             //设定湿度
+        int16_t                    ptc_temp;                //再热温度
+        int16_t                    iec_temp;                //房间温度
         int16_t                    outdoor_temp;
         int16_t                    outdoor_hum;
         int16_t                    before_fu_temp;
@@ -97,13 +82,6 @@ typedef struct
         int16_t                    back_air_pm25;
         int16_t                    deadzone_fan_hum;
         int16_t                    deadzone_fan_temp;
-        uint16_t                   new_air_speed;
-        uint16_t                   back_air_speed;
-        uint16_t                   water_machine_fre;
-        uint16_t                   fu_machine_fre;
-        int16_t                    master_supply_temp;
-        int16_t                    master_living_temp;
-        int16_t                    master_outdoor_temp;
         int16_t                    adjust_outdoor_hum;
         int16_t                    adjust_outdoor_temp;
         int16_t                    adjust_outdoor_co2;
@@ -124,33 +102,75 @@ typedef struct
         int16_t                    adjust_exhast_air_temp;
         int16_t                    adjust_exhast_air_co2;
         int16_t                    adjust_exhast_air_pm25;
-		int16_t                    hot_backwater_settemp; 
-		int16_t                    cool_backwater_settemp;
-        uint16_t                   lewTempStatus;//露点状态
-        uint16_t                   hotwater_enable;//热水使能
-        uint16_t				   filter_time;//滤芯更换周期
-		uint16_t				   filter_usetime;//滤芯使用时间
-        uint16_t                   system_reset_word;//系统复位字
-        uint8_t                    valveOpenDegree;         //阀门开度          
         uint8_t                    newAirLowPwm;
         uint8_t                    newAirMidPwm;
         uint8_t                    newAirHighPwm;
         uint8_t                    backAirLowPwm;
         uint8_t                    backAirMidPwm;
         uint8_t                    backAirHighPwm;
+        uint8_t                    new_air_speed;
+        uint8_t                    back_air_speed;
+        NewAirLevelSet_Def         NewAirLevelSet;           //设定风速
+        bool                       wind_value; //风阀切换   
+        bool                       dhm_need;//除湿需求
+        uint8_t                    publicUsePort;//公共占用端口
+        bool                       occpuFlag;//占用标志
+}control_dhmModePara_t;
+
+typedef struct
+{//共用数据  
+        timerClock_def          id_ocupy_delay;//ID占用
+        uint8_t                 deviceId[6];   	
+        bool                    idUsedFlag;	
+        bool                    onlineFlag;//在线状态
+        bool                    output_terminal;   //终端输出
+        bool                    output_remote;//远程输出
+        uint16_t                deviceType;//设备类型 
+        uint16_t                version;//版本号
+}control_publicPara_t;
+
+typedef struct
+{//共用数据          
+        uint16_t                   word_error;              //故障字   
+        uint16_t                   system_ntc_error;       //系统传感器故障         
+        uint16_t                   ac_ntc_error;            //输配传感器故障  
+        int16_t                    dewPointTemp;            //露点温度   
+        int16_t                    destTemp;                //目标温度  
+        uint16_t                   system_error_word;       //主机集成故障字
+        uint16_t                   ac_error_word;           //输配故障字     
+        uint16_t                   unbind_warm;             //辐射未绑定列表
+        uint16_t                   unbind_fan;              //风盘未绑定列表
+        uint16_t                   repeat_bind;             //辐射重复绑定列表
+        uint16_t                   system_status_word;      //系统状态字
+        uint16_t                   pad_output_status;       //末端输出状态
+        int16_t                    set_cold_water_temp;
+        int16_t                    set_heat_water_temp;
+        int16_t                    set_living_water_temp;   
+        uint16_t                   water_machine_fre;
+        uint16_t                   fu_machine_fre;
+        int16_t                    master_supply_temp;
+        int16_t                    master_living_temp;
+        int16_t                    master_outdoor_temp;   
+		int16_t                    hot_backwater_settemp; 
+		int16_t                    cool_backwater_settemp;
+        uint16_t                   lewTempStatus;          //露点状态
+        uint16_t                   hotwater_enable;       //热水使能     
+        uint16_t                   system_reset_word;     //系统复位字
+        uint8_t                    valveOpenDegree;       //阀门开度              
         uint8_t                    remote_degree;        //远程开度
-        bool                       output_pump;          //水泵输出
+        bool                       output_pump;           //水泵输出
         bool                       output_threeWayValve;  //三通阀输出
         bool                       energyNeed;            //环控能需预冷阀
-        bool                       remoteControlFlag;     //远程受控
-        bool                       wind_value; //风阀切换
-        bool                       debug_enable;//调试使能
+        bool                       remoteControlFlag;     //远程受控   
+        bool                       debug_enable;         //调试使能
         bool                       indoor_dehum_status;//户外除湿状态 
         bool                       water_machine_status;//水机状态
         bool                       remote_pump;         //远程水泵
         bool                       remote_threeVavle;   //远程三通阀
         bool                       remote_bypass;       //远程旁通
-        control_masterPara_t       padPara[MASTER_PAD_NUM];//面板参数      
+        control_publicPara_t       publicPara[MASTER_PAD_NUM]; //共用参数
+        control_padPara_t          padPara[MASTER_PAD_NUM];//面板参数  
+        control_dhmModePara_t      dhmPara[MASTER_DHM_NUM];//除湿模块参数
         uint32_t                   dpStamp[MAX_DATA_POINT_LEN_SYSTEM];
 }SysPara_t;
 
@@ -158,27 +178,27 @@ SysPara_t s_sysPara = {
     .destTemp = 200,
     .unbind_warm = 0x0fff,             //辐射未绑定列表
     .unbind_fan = 0x0fc0,              //风盘未绑定列表
-    .newAirLowPwm = 30,
-    .newAirMidPwm = 60,
-    .newAirHighPwm = 90,
-    .backAirLowPwm = 30,
-    .backAirMidPwm = 60,
-    .backAirHighPwm = 90,
+    .dhmPara[0].newAirLowPwm = 30,
+    .dhmPara[0].newAirMidPwm = 60,
+    .dhmPara[0].newAirHighPwm = 90,
+    .dhmPara[0].backAirLowPwm = 30,
+    .dhmPara[0].backAirMidPwm = 60,
+    .dhmPara[0].backAirHighPwm = 90,
     .set_cold_water_temp = 100,
     .set_heat_water_temp = 400,
     .set_living_water_temp = 500,
-    .outdoor_temp = 220,
-    .outdoor_hum = 60,
-    .before_fu_temp = 220, 
-    .before_fu_hum = 60,
-    .after_fu_temp = 220,
-    .after_fu_hum = 60,
-    .back_air_temp = 220,
-    .back_air_hum = 60,
-    .exhast_air_temp = 220,
-    .exhast_air_hum = 60,
-    .back_air_co2 = 2000,
-    .back_air_pm25 = 500,
+    .dhmPara[0].outdoor_temp = 220,
+    .dhmPara[0].outdoor_hum = 60,
+    .dhmPara[0].before_fu_temp = 220, 
+    .dhmPara[0].before_fu_hum = 60,
+    .dhmPara[0].after_fu_temp = 220,
+    .dhmPara[0].after_fu_hum = 60,
+    .dhmPara[0].back_air_temp = 220,
+    .dhmPara[0].back_air_hum = 60,
+    .dhmPara[0].exhast_air_temp = 220,
+    .dhmPara[0].exhast_air_hum = 60,
+    .dhmPara[0].back_air_co2 = 2000,
+    .dhmPara[0].back_air_pm25 = 500,
     .master_supply_temp = 220,
     .master_living_temp = 220,
     .debug_enable = false,
@@ -339,11 +359,11 @@ void app_general_clear_master_error_word(uint16_t in_error)
 /*环控故障字*/
 uint16_t app_general_pull_ae_error_word(void)
 {
-    return s_sysPara.ae_error_word;
+    return s_sysPara.dhmPara[0].ae_error_word;
 }
 void app_general_push_ae_error_word(uint16_t in_error)
 {
-    s_sysPara.ae_error_word =  in_error;
+    s_sysPara.dhmPara[0].ae_error_word =  in_error;
     s_sysPara.system_error_word &= 0xd807;
     s_sysPara.system_error_word |= in_error;
 }
@@ -433,9 +453,9 @@ void app_general_push_aircod_humidity(int16_t in_set_humidity)
 {
 	if((in_set_humidity > 0) && (in_set_humidity<=100))
 	{
-		if(StoRunParameter.humidity_set != in_set_humidity)
+		if(s_sysPara.dhmPara[0].humidity_set != in_set_humidity)
 		{
-			StoRunParameter.humidity_set = in_set_humidity;
+			s_sysPara.dhmPara[0].humidity_set = in_set_humidity;
             app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
 			app_push_once_save_sto_parameter();
 		}
@@ -443,7 +463,7 @@ void app_general_push_aircod_humidity(int16_t in_set_humidity)
 }
 int16_t app_general_pull_aircod_humidity(void)
 {
-    return StoRunParameter.humidity_set;
+    return s_sysPara.dhmPara[0].humidity_set;
 }
 /*设定风速*/
 void app_general_push_aircod_fanSpeed(NewAirLevelSet_Def in_speed)
@@ -451,9 +471,9 @@ void app_general_push_aircod_fanSpeed(NewAirLevelSet_Def in_speed)
     if((in_speed ==LowFanSet)||
 	   (in_speed ==MiddleFanSet)||(in_speed ==HighFanSet))
 	{
-		if(StoRunParameter.NewAirLevelSet != in_speed)
+		if(s_sysPara.dhmPara[0].NewAirLevelSet != in_speed)
 		{
-			StoRunParameter.NewAirLevelSet = in_speed;
+			s_sysPara.dhmPara[0].NewAirLevelSet = in_speed;
             app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_SPEED);
 			app_push_once_save_sto_parameter();
 		}
@@ -461,7 +481,7 @@ void app_general_push_aircod_fanSpeed(NewAirLevelSet_Def in_speed)
 }
 NewAirLevelSet_Def app_general_pull_aircod_fanSpeed(void)
 {
-    return StoRunParameter.NewAirLevelSet;
+    return s_sysPara.dhmPara[0].NewAirLevelSet;
 }
 /*通风制冷设定温度、制热设定温度*/
 void app_general_push_aircod_cold_temp(int16_t in_set_temp)
@@ -520,23 +540,23 @@ int16_t app_general_pull_aircod_heat_temp(void)
 /*新风PWM*/
 uint8_t app_general_pull_new_air_pwm_low(void)
 {
-    return s_sysPara.newAirLowPwm;
+    return s_sysPara.dhmPara[0].newAirLowPwm;
 }
 uint8_t app_general_pull_new_air_pwm_mid(void)
 {
-    return s_sysPara.newAirMidPwm;
+    return s_sysPara.dhmPara[0].newAirMidPwm;
 }
 uint8_t app_general_pull_new_air_pwm_high(void)
 {
-    return s_sysPara.newAirHighPwm;
+    return s_sysPara.dhmPara[0].newAirHighPwm;
 }
 void app_general_push_new_air_pwm_low(uint8_t in_pwm)
 {
     if(in_pwm<=100)
     {
-        if(in_pwm != s_sysPara.newAirLowPwm)
+        if(in_pwm != s_sysPara.dhmPara[0].newAirLowPwm)
         {
-            s_sysPara.newAirLowPwm = in_pwm;
+            s_sysPara.dhmPara[0].newAirLowPwm = in_pwm;
             app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_NEW_AIR_PWM);
         }
         
@@ -546,9 +566,9 @@ void app_general_push_new_air_pwm_mid(uint8_t in_pwm)
 {
     if(in_pwm<=100)
     {
-        if(in_pwm != s_sysPara.newAirMidPwm)
+        if(in_pwm != s_sysPara.dhmPara[0].newAirMidPwm)
         {
-            s_sysPara.newAirMidPwm = in_pwm;
+            s_sysPara.dhmPara[0].newAirMidPwm = in_pwm;
             app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_NEW_AIR_PWM);
         }        
     }
@@ -557,9 +577,9 @@ void app_general_push_new_air_pwm_high(uint8_t in_pwm)
 {
     if(in_pwm<=100)
     {
-        if(in_pwm != s_sysPara.newAirHighPwm)
+        if(in_pwm != s_sysPara.dhmPara[0].newAirHighPwm)
         {
-            s_sysPara.newAirHighPwm = in_pwm;
+            s_sysPara.dhmPara[0].newAirHighPwm = in_pwm;
             app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_NEW_AIR_PWM);
         }        
     }
@@ -568,23 +588,23 @@ void app_general_push_new_air_pwm_high(uint8_t in_pwm)
 /*回风风PWM*/
 uint8_t app_general_pull_back_air_pwm_low(void)
 {
-    return s_sysPara.backAirLowPwm;
+    return s_sysPara.dhmPara[0].backAirLowPwm;
 }
 uint8_t app_general_pull_back_air_pwm_mid(void)
 {
-    return s_sysPara.backAirMidPwm;
+    return s_sysPara.dhmPara[0].backAirMidPwm;
 }
 uint8_t app_general_pull_back_air_pwm_high(void)
 {
-    return s_sysPara.backAirHighPwm;
+    return s_sysPara.dhmPara[0].backAirHighPwm;
 }
 void app_general_push_back_air_pwm_low(uint8_t in_pwm)
 {
     if(in_pwm<=100)
     {
-        if(in_pwm != s_sysPara.backAirLowPwm)
+        if(in_pwm != s_sysPara.dhmPara[0].backAirLowPwm)
         {
-            s_sysPara.backAirLowPwm = in_pwm;
+            s_sysPara.dhmPara[0].backAirLowPwm = in_pwm;
             app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BACK_AIR_PWM);
         }  
     }
@@ -593,9 +613,9 @@ void app_general_push_back_air_pwm_mid(uint8_t in_pwm)
 {
     if(in_pwm<=100)
     {
-        if(in_pwm != s_sysPara.backAirMidPwm)
+        if(in_pwm != s_sysPara.dhmPara[0].backAirMidPwm)
         {
-            s_sysPara.backAirMidPwm = in_pwm;
+            s_sysPara.dhmPara[0].backAirMidPwm = in_pwm;
             app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BACK_AIR_PWM);
         } 
     }
@@ -604,9 +624,9 @@ void app_general_push_back_air_pwm_high(uint8_t in_pwm)
 {
     if(in_pwm<=100)
     {
-        if(in_pwm != s_sysPara.backAirHighPwm)
+        if(in_pwm != s_sysPara.dhmPara[0].backAirHighPwm)
         {
-            s_sysPara.backAirHighPwm = in_pwm;
+            s_sysPara.dhmPara[0].backAirHighPwm = in_pwm;
             app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BACK_AIR_PWM);
         } 
     }
@@ -668,151 +688,151 @@ int16_t app_general_pull_set_living_water_temp(void)
 /*户外进风/氟盘前/氟盘后/回风/排风温湿度*/
 void app_general_push_outdoor_temp(int16_t in_temp)
 {
-    if(in_temp != s_sysPara.outdoor_temp)
+    if(in_temp != s_sysPara.dhmPara[0].outdoor_temp)
     {
-        s_sysPara.outdoor_temp = in_temp;
+        s_sysPara.dhmPara[0].outdoor_temp = in_temp;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUTDOOR_WEATHER);
     }
     
 }
 int16_t app_general_pull_outdoor_temp(void)
 {
-    return s_sysPara.outdoor_temp;
+    return s_sysPara.dhmPara[0].outdoor_temp;
 }
 void app_general_push_outdoor_hum(int16_t in_hum)
 {
-    if(in_hum != s_sysPara.outdoor_hum)
+    if(in_hum != s_sysPara.dhmPara[0].outdoor_hum)
     {
-        s_sysPara.outdoor_hum = in_hum;
+        s_sysPara.dhmPara[0].outdoor_hum = in_hum;
          app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUTDOOR_WEATHER);
     }
 }
 int16_t app_general_pull_outdoor_hum(void)
 {
-    return s_sysPara.outdoor_hum;
+    return s_sysPara.dhmPara[0].outdoor_hum;
 }
 void app_general_push_before_fu_temp(int16_t in_temp)
 {
-    if(in_temp != s_sysPara.before_fu_temp)
+    if(in_temp != s_sysPara.dhmPara[0].before_fu_temp)
     {
-        s_sysPara.before_fu_temp = in_temp;
+        s_sysPara.dhmPara[0].before_fu_temp = in_temp;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BEFORE_FU_WEATHER);
     }
 }
 int16_t app_general_pull_before_fu_temp(void)
 {
-    return s_sysPara.before_fu_temp;
+    return s_sysPara.dhmPara[0].before_fu_temp;
 }
 void app_general_push_before_fu_hum(int16_t in_hum)
 {
-    if(in_hum != s_sysPara.before_fu_hum)
+    if(in_hum != s_sysPara.dhmPara[0].before_fu_hum)
     {
-        s_sysPara.before_fu_hum = in_hum;
+        s_sysPara.dhmPara[0].before_fu_hum = in_hum;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BEFORE_FU_WEATHER);
     }
 }
 int16_t app_general_pull_before_fu_hum(void)
 {
-    return s_sysPara.before_fu_hum;
+    return s_sysPara.dhmPara[0].before_fu_hum;
 }
 void app_general_push_after_fu_temp(int16_t in_temp)
 {
-    if(in_temp != s_sysPara.after_fu_temp)
+    if(in_temp != s_sysPara.dhmPara[0].after_fu_temp)
     {
-        s_sysPara.after_fu_temp = in_temp;
+        s_sysPara.dhmPara[0].after_fu_temp = in_temp;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_AFTER_FU_WEATHER);
     }
 }
 int16_t app_general_pull_after_fu_temp(void)
 {
-    return s_sysPara.after_fu_temp;
+    return s_sysPara.dhmPara[0].after_fu_temp;
 }
 void app_general_push_after_fu_hum(int16_t in_hum)
 {
-    if(in_hum != s_sysPara.after_fu_hum)
+    if(in_hum != s_sysPara.dhmPara[0].after_fu_hum)
     {
-        s_sysPara.after_fu_hum = in_hum;
+        s_sysPara.dhmPara[0].after_fu_hum = in_hum;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_AFTER_FU_WEATHER);
     }
 }
 int16_t app_general_pull_after_fu_hum(void)
 {
-    return s_sysPara.after_fu_hum;
+    return s_sysPara.dhmPara[0].after_fu_hum;
 }
 void app_general_push_backair_temp(int16_t in_temp)
 {
-    if(in_temp != s_sysPara.back_air_temp)
+    if(in_temp != s_sysPara.dhmPara[0].back_air_temp)
     {
-        s_sysPara.back_air_temp = in_temp;
+        s_sysPara.dhmPara[0].back_air_temp = in_temp;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BACK_AIR_WEATHER);
     }
 }
 int16_t app_general_pull_backair_temp(void)
 {
-    return s_sysPara.back_air_temp;
+    return s_sysPara.dhmPara[0].back_air_temp;
 }
 void app_general_push_backair_hum(int16_t in_hum)
 {
-    if(in_hum != s_sysPara.back_air_hum)
+    if(in_hum != s_sysPara.dhmPara[0].back_air_hum)
     {
-        s_sysPara.back_air_hum = in_hum;
+        s_sysPara.dhmPara[0].back_air_hum = in_hum;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BACK_AIR_WEATHER); 
     }
 }
 int16_t app_general_pull_backair_hum(void)
 {
-    return s_sysPara.back_air_hum;
+    return s_sysPara.dhmPara[0].back_air_hum;
 }
 void app_general_push_exhastair_temp(int16_t in_temp)
 {
-    if(in_temp != s_sysPara.exhast_air_temp)
+    if(in_temp != s_sysPara.dhmPara[0].exhast_air_temp)
     {
-        s_sysPara.exhast_air_temp = in_temp;
+        s_sysPara.dhmPara[0].exhast_air_temp = in_temp;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_EXHAST_AIR_WEATHER);
     }
 }
 int16_t app_general_pull_exhastair_temp(void)
 {
-    return s_sysPara.exhast_air_temp;
+    return s_sysPara.dhmPara[0].exhast_air_temp;
 }
 void app_general_push_exhastair_hum(int16_t in_hum)
 {
-    if(in_hum != s_sysPara.exhast_air_hum)
+    if(in_hum != s_sysPara.dhmPara[0].exhast_air_hum)
     {
-        s_sysPara.exhast_air_hum = in_hum;
+        s_sysPara.dhmPara[0].exhast_air_hum = in_hum;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_EXHAST_AIR_WEATHER);
     }
 }
 int16_t app_general_pull_exhastair_hum(void)
 {
-    return s_sysPara.exhast_air_hum;
+    return s_sysPara.dhmPara[0].exhast_air_hum;
 }
 
 /*回风co2 pm25*/
 void app_general_push_backair_co2(int16_t in_set_co2)
 {
-    if(in_set_co2 != s_sysPara.back_air_co2)
+    if(in_set_co2 != s_sysPara.dhmPara[0].back_air_co2)
     {
-        s_sysPara.back_air_co2 = in_set_co2;
+        s_sysPara.dhmPara[0].back_air_co2 = in_set_co2;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BACK_AIR_WEATHER);
     }   
 }
 int16_t app_general_pull_backair_co2(void)
 {
-    return s_sysPara.back_air_co2;
+    return s_sysPara.dhmPara[0].back_air_co2;
 }
 void app_general_push_backair_pm25(int16_t in_set_pm25)
 {
-    if(in_set_pm25 != s_sysPara.back_air_pm25)
+    if(in_set_pm25 != s_sysPara.dhmPara[0].back_air_pm25)
     {
-        s_sysPara.back_air_pm25 = in_set_pm25;
+        s_sysPara.dhmPara[0].back_air_pm25 = in_set_pm25;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BACK_AIR_WEATHER);
     }
     
 }
 int16_t app_general_pull_backair_pm25(void)
 {
-    return s_sysPara.back_air_pm25;
+    return s_sysPara.dhmPara[0].back_air_pm25;
 }
 
 /*设定温度带宽*/
@@ -853,13 +873,13 @@ int16_t app_general_pull_aircod_setHum_deadZone(void)
 /*新风风机转速*/
 uint16_t app_general_pull_aircod_newair_speed(void)
 {
-    return s_sysPara.new_air_speed;
+    return s_sysPara.dhmPara[0].new_air_speed;
 }
 void app_general_push_aircod_newair_speed(uint16_t in_speed)
 {
-    if(in_speed != s_sysPara.new_air_speed)
+    if(in_speed != s_sysPara.dhmPara[0].new_air_speed)
     {
-        s_sysPara.new_air_speed = in_speed;
+        s_sysPara.dhmPara[0].new_air_speed = in_speed;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUT_VALVE); 
     }
     
@@ -867,13 +887,13 @@ void app_general_push_aircod_newair_speed(uint16_t in_speed)
 /*回风风机转速*/
 uint16_t app_general_pull_aircod_backair_speed(void)
 {	
-	return s_sysPara.back_air_speed;
+	return s_sysPara.dhmPara[0].back_air_speed;
 }
 void app_general_push_aircod_backair_speed(uint16_t in_speed)
 {
-    if(in_speed != s_sysPara.back_air_speed)
+    if(in_speed != s_sysPara.dhmPara[0].back_air_speed)
     {
-        s_sysPara.back_air_speed = in_speed;
+        s_sysPara.dhmPara[0].back_air_speed = in_speed;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUT_VALVE);
     }
 }
@@ -943,116 +963,116 @@ void app_general_push_master_outdoor_temp(int16_t in_temp)
 /*湿度温度co2pm25修正系数  户外 氟盘前 氟盘后 回风 排风*/
 int16_t app_general_pull_adjust_outdoor_hum(void)
 {
-    return s_sysPara.adjust_outdoor_hum;
+    return s_sysPara.dhmPara[0].adjust_outdoor_hum;
 }
 int16_t app_general_pull_adjust_outdoor_temp(void)
 {
-    return s_sysPara.adjust_outdoor_temp;
+    return s_sysPara.dhmPara[0].adjust_outdoor_temp;
 }
 int16_t app_general_pull_adjust_outdoor_co2(void)
 {
-    return s_sysPara.adjust_outdoor_co2;
+    return s_sysPara.dhmPara[0].adjust_outdoor_co2;
 }
 
 int16_t app_general_pull_adjust_outdoor_pm25(void)
 {
-    return s_sysPara.adjust_outdoor_pm25;
+    return s_sysPara.dhmPara[0].adjust_outdoor_pm25;
 }
 int16_t app_general_pull_adjust_beforfu_hum(void)
 {
-    return s_sysPara.adjust_befor_fu_hum;
+    return s_sysPara.dhmPara[0].adjust_befor_fu_hum;
 }
 int16_t app_general_pull_adjust_beforfu_temp(void)
 {
-    return s_sysPara.adjust_befor_fu_temp;
+    return s_sysPara.dhmPara[0].adjust_befor_fu_temp;
 }
 int16_t app_general_pull_adjust_beforfu_co2(void)
 {
-    return s_sysPara.adjust_befor_fu_co2;
+    return s_sysPara.dhmPara[0].adjust_befor_fu_co2;
 }
 int16_t app_general_pull_adjust_beforfu_pm25(void)
 {
-    return s_sysPara.adjust_befor_fu_pm25;
+    return s_sysPara.dhmPara[0].adjust_befor_fu_pm25;
 }
 int16_t app_general_pull_adjust_afterfu_hum(void)
 {
-    return s_sysPara.adjust_after_fu_hum;
+    return s_sysPara.dhmPara[0].adjust_after_fu_hum;
 }
 int16_t app_general_pull_adjust_afterfu_temp(void)
 {
-    return s_sysPara.adjust_after_fu_temp;
+    return s_sysPara.dhmPara[0].adjust_after_fu_temp;
 }
 int16_t app_general_pull_adjust_afterfu_co2(void)
 {
-    return s_sysPara.adjust_after_fu_co2;
+    return s_sysPara.dhmPara[0].adjust_after_fu_co2;
 }
 int16_t app_general_pull_adjust_afterfu_pm25(void)
 {
-    return s_sysPara.adjust_after_fu_pm25;
+    return s_sysPara.dhmPara[0].adjust_after_fu_pm25;
 }
 
 int16_t app_general_pull_adjust_backair_hum(void)
 {
-    return s_sysPara.adjust_back_air_hum;
+    return s_sysPara.dhmPara[0].adjust_back_air_hum;
 }
 int16_t app_general_pull_adjust_backair_temp(void)
 {
-    return s_sysPara.adjust_back_air_temp;
+    return s_sysPara.dhmPara[0].adjust_back_air_temp;
 }
 int16_t app_general_pull_adjust_backair_co2(void)
 {
-    return s_sysPara.adjust_back_air_co2;
+    return s_sysPara.dhmPara[0].adjust_back_air_co2;
 }
 int16_t app_general_pull_adjust_backair_pm25(void)
 {
-    return s_sysPara.adjust_back_air_pm25;
+    return s_sysPara.dhmPara[0].adjust_back_air_pm25;
 }
 int16_t app_general_pull_adjust_exhastair_hum(void)
 {
-    return s_sysPara.adjust_exhast_air_hum;
+    return s_sysPara.dhmPara[0].adjust_exhast_air_hum;
 }
 int16_t app_general_pull_adjust_exhastair_temp(void)
 {
-    return s_sysPara.adjust_exhast_air_temp;
+    return s_sysPara.dhmPara[0].adjust_exhast_air_temp;
 }
 int16_t app_general_pull_adjust_exhastair_co2(void)
 {
-    return s_sysPara.adjust_exhast_air_co2;
+    return s_sysPara.dhmPara[0].adjust_exhast_air_co2;
 }
 int16_t app_general_pull_adjust_exhastair_pm25(void)
 {
-    return s_sysPara.adjust_exhast_air_pm25;
+    return s_sysPara.dhmPara[0].adjust_exhast_air_pm25;
 }
 
 void app_general_push_adjust_outdoor_hum(int16_t in_hum)
 {
-    if(s_sysPara.adjust_outdoor_hum != in_hum)
+    if(s_sysPara.dhmPara[0].adjust_outdoor_hum != in_hum)
     {
-        s_sysPara.adjust_outdoor_hum = in_hum;
+        s_sysPara.dhmPara[0].adjust_outdoor_hum = in_hum;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUTDOOR_WEATHER);
     } 
 }
 void app_general_push_adjust_outdoor_temp(int16_t in_temp)
 {
-    if(s_sysPara.adjust_outdoor_temp != in_temp)
+    if(s_sysPara.dhmPara[0].adjust_outdoor_temp != in_temp)
     {
-        s_sysPara.adjust_outdoor_temp = in_temp;
+        s_sysPara.dhmPara[0].adjust_outdoor_temp = in_temp;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUTDOOR_WEATHER);
     } 
 }
 void app_general_push_adjust_outdoor_co2(int16_t in_co2)
 {
-    if(s_sysPara.adjust_outdoor_co2 != in_co2)
+    if(s_sysPara.dhmPara[0].adjust_outdoor_co2 != in_co2)
     {
-        s_sysPara.adjust_outdoor_co2 = in_co2;
+        s_sysPara.dhmPara[0].adjust_outdoor_co2 = in_co2;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUTDOOR_WEATHER);
     } 
 }
 void app_general_push_adjust_outdoor_pm25(int16_t in_pm25)
 {
-    if(s_sysPara.adjust_outdoor_pm25 != in_pm25)
+    if(s_sysPara.dhmPara[0].adjust_outdoor_pm25 != in_pm25)
     {
-        s_sysPara.adjust_outdoor_pm25 = in_pm25;
+        s_sysPara.dhmPara[0].adjust_outdoor_pm25 = in_pm25;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUTDOOR_WEATHER);
     }
     
@@ -1060,34 +1080,34 @@ void app_general_push_adjust_outdoor_pm25(int16_t in_pm25)
 
 void app_general_push_adjust_beforfu_hum(int16_t in_hum)
 {
-    if(s_sysPara.adjust_befor_fu_hum != in_hum)
+    if(s_sysPara.dhmPara[0].adjust_befor_fu_hum != in_hum)
     {
-        s_sysPara.adjust_befor_fu_hum = in_hum;
+        s_sysPara.dhmPara[0].adjust_befor_fu_hum = in_hum;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BEFORE_FU_WEATHER);
     }
     
 }
 void app_general_push_adjust_beforfu_temp(int16_t in_temp)
 {
-    if(s_sysPara.adjust_befor_fu_temp != in_temp)
+    if(s_sysPara.dhmPara[0].adjust_befor_fu_temp != in_temp)
     {
-        s_sysPara.adjust_befor_fu_temp = in_temp;
+        s_sysPara.dhmPara[0].adjust_befor_fu_temp = in_temp;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BEFORE_FU_WEATHER);
     }  
 }
 void app_general_push_adjust_beforfu_co2(int16_t in_co2)
 {
-    if(s_sysPara.adjust_befor_fu_co2 != in_co2)
+    if(s_sysPara.dhmPara[0].adjust_befor_fu_co2 != in_co2)
     {
-        s_sysPara.adjust_befor_fu_co2 = in_co2;
+        s_sysPara.dhmPara[0].adjust_befor_fu_co2 = in_co2;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BEFORE_FU_WEATHER);
     }    
 }
 void app_general_push_adjust_beforfu_pm25(int16_t in_pm25)
 {
-    if(s_sysPara.adjust_befor_fu_pm25 != in_pm25)
+    if(s_sysPara.dhmPara[0].adjust_befor_fu_pm25 != in_pm25)
     {
-        s_sysPara.adjust_befor_fu_pm25 = in_pm25;
+        s_sysPara.dhmPara[0].adjust_befor_fu_pm25 = in_pm25;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BEFORE_FU_WEATHER);
     }
     
@@ -1095,34 +1115,34 @@ void app_general_push_adjust_beforfu_pm25(int16_t in_pm25)
 
 void app_general_push_adjust_afterfu_hum(int16_t in_hum)
 {
-    if(s_sysPara.adjust_after_fu_hum != in_hum)
+    if(s_sysPara.dhmPara[0].adjust_after_fu_hum != in_hum)
     {
-        s_sysPara.adjust_after_fu_hum = in_hum;
+        s_sysPara.dhmPara[0].adjust_after_fu_hum = in_hum;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_AFTER_FU_WEATHER);
     } 
 }
 void app_general_push_adjust_afterfu_temp(int16_t in_temp)
 {
-    if(s_sysPara.adjust_after_fu_temp != in_temp)
+    if(s_sysPara.dhmPara[0].adjust_after_fu_temp != in_temp)
     {
-        s_sysPara.adjust_after_fu_temp = in_temp;
+        s_sysPara.dhmPara[0].adjust_after_fu_temp = in_temp;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_AFTER_FU_WEATHER);
     }   
 }
 void app_general_push_adjust_afterfu_co2(int16_t in_co2)
 {
-    if(s_sysPara.adjust_after_fu_co2 != in_co2)
+    if(s_sysPara.dhmPara[0].adjust_after_fu_co2 != in_co2)
     {
-        s_sysPara.adjust_after_fu_co2 = in_co2;
+        s_sysPara.dhmPara[0].adjust_after_fu_co2 = in_co2;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_AFTER_FU_WEATHER);
     }
     
 }
 void app_general_push_adjust_afterfu_pm25(int16_t in_pm25)
 {
-    if(s_sysPara.adjust_after_fu_pm25 != in_pm25)
+    if(s_sysPara.dhmPara[0].adjust_after_fu_pm25 != in_pm25)
     {
-        s_sysPara.adjust_after_fu_pm25 = in_pm25;
+        s_sysPara.dhmPara[0].dhmPara[0].adjust_after_fu_pm25 = in_pm25;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_AFTER_FU_WEATHER);
     }
     
@@ -1130,36 +1150,36 @@ void app_general_push_adjust_afterfu_pm25(int16_t in_pm25)
 
 void app_general_push_adjust_backair_hum(int16_t in_hum)
 {
-    if(s_sysPara.adjust_back_air_hum != in_hum)
+    if(s_sysPara.dhmPara[0].adjust_back_air_hum != in_hum)
     {
-        s_sysPara.adjust_back_air_hum = in_hum;
+        s_sysPara.dhmPara[0].adjust_back_air_hum = in_hum;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BACK_AIR_WEATHER);
     }
     
 }
 void app_general_push_adjust_backair_temp(int16_t in_temp)
 {
-    if(s_sysPara.adjust_back_air_temp != in_temp)
+    if(s_sysPara.dhmPara[0].adjust_back_air_temp != in_temp)
     {
-        s_sysPara.adjust_back_air_temp = in_temp;
+        s_sysPara.dhmPara[0].adjust_back_air_temp = in_temp;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BACK_AIR_WEATHER);
     }
     
 }
 void app_general_push_adjust_backair_co2(int16_t in_co2)
 {
-    if(s_sysPara.adjust_back_air_co2 != in_co2)
+    if(s_sysPara.dhmPara[0].adjust_back_air_co2 != in_co2)
     {
-        s_sysPara.adjust_back_air_co2 = in_co2;
+        s_sysPara.dhmPara[0].adjust_back_air_co2 = in_co2;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BACK_AIR_WEATHER);
     }
     
 }
 void app_general_push_adjust_backair_pm25(int16_t in_pm25)
 {
-    if(s_sysPara.adjust_back_air_pm25 != in_pm25)
+    if(s_sysPara.dhmPara[0].adjust_back_air_pm25 != in_pm25)
     {
-        s_sysPara.adjust_back_air_pm25 = in_pm25;
+        s_sysPara.dhmPara[0].adjust_back_air_pm25 = in_pm25;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BACK_AIR_WEATHER);
     }
     
@@ -1167,36 +1187,36 @@ void app_general_push_adjust_backair_pm25(int16_t in_pm25)
 
 void app_general_push_adjust_exhastair_hum(int16_t in_hum)
 {
-    if(s_sysPara.adjust_exhast_air_hum != in_hum)
+    if(s_sysPara.dhmPara[0].adjust_exhast_air_hum != in_hum)
     {
-        s_sysPara.adjust_exhast_air_hum = in_hum;
+        s_sysPara.dhmPara[0].adjust_exhast_air_hum = in_hum;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_EXHAST_AIR_WEATHER);
     }
     
 }
 void app_general_push_adjust_exhastair_temp(int16_t in_temp)
 {
-    if(s_sysPara.adjust_exhast_air_temp != in_temp)
+    if(s_sysPara.dhmPara[0].adjust_exhast_air_temp != in_temp)
     {
-        s_sysPara.adjust_exhast_air_temp = in_temp;    
+        s_sysPara.dhmPara[0].adjust_exhast_air_temp = in_temp;    
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_EXHAST_AIR_WEATHER);
     }
 
 }
 void app_general_push_adjust_exhastair_co2(int16_t in_co2)
 {
-    if(s_sysPara.adjust_exhast_air_co2 != in_co2)
+    if(s_sysPara.dhmPara[0].adjust_exhast_air_co2 != in_co2)
     {
-        s_sysPara.adjust_exhast_air_co2 = in_co2;
+        s_sysPara.dhmPara[0].adjust_exhast_air_co2 = in_co2;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_EXHAST_AIR_WEATHER);
     }   
     
 }
 void app_general_push_adjust_exhastair_pm25(int16_t in_pm25)
 {
-    if(s_sysPara.adjust_exhast_air_pm25 != in_pm25)
+    if(s_sysPara.dhmPara[0].adjust_exhast_air_pm25 != in_pm25)
     {
-        s_sysPara.adjust_exhast_air_pm25 = in_pm25;
+        s_sysPara.dhmPara[0].adjust_exhast_air_pm25 = in_pm25;
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_EXHAST_AIR_WEATHER);
     }
 
@@ -1239,11 +1259,11 @@ void app_general_push_ac_ntc_error_word(uint16_t in_error)
 /*环控传感器错误*/
 uint16_t app_general_pull_ae_ntc_error_word(void)
 {
-    return s_sysPara.ae_ntc_error;
+    return s_sysPara.dhmPara[0].ae_ntc_error;
 }
 void app_general_push_ae_ntc_error_word(uint16_t in_error)
 {
-    s_sysPara.ae_ntc_error =  in_error;
+    s_sysPara.dhmPara[0].ae_ntc_error =  in_error;
 }
 /*冷热运行状态*/
 
@@ -1469,22 +1489,21 @@ uint8_t  app_general_pull_pad_phy_port_bind_message(uint8_t in_solidNum)
 /*末端id占用信息*/
 void app_general_push_pad_id_use_message(uint8_t in_solidNum,bool in_status)
 {
-    s_sysPara.padPara[in_solidNum].idUsedFlag = in_status;
+    s_sysPara.publicPara[in_solidNum].idUsedFlag = in_status;
 }
 bool app_general_pull_pad_id_use_message(uint8_t in_solidNum)
 {
-    return s_sysPara.padPara[in_solidNum].idUsedFlag;
+    return s_sysPara.publicPara[in_solidNum].idUsedFlag;
 }
 void app_general_pad_iduse_task(void)
 {
-    uint8_t i;
-    
+    uint8_t i;  
     for(i = 0; i < MASTER_PAD_NUM;i++)
     {
-        pbc_timerClockRun_task(&s_sysPara.padPara[i].id_ocupy_delay);
-        if(pbc_pull_timerIsCompleted(&s_sysPara.padPara[i].id_ocupy_delay))
+        pbc_timerClockRun_task(&s_sysPara.publicPara[i].id_ocupy_delay);
+        if(pbc_pull_timerIsCompleted(&s_sysPara.publicPara[i].id_ocupy_delay))
         {
-            s_sysPara.padPara[i].idUsedFlag = false;
+            s_sysPara.publicPara[i].idUsedFlag = false;
             app_general_push_pad_warm_need(i,false);
             app_general_push_pad_fan_need(i,false);
         }
@@ -1525,39 +1544,39 @@ uint16_t app_general_pull_devive_error_word(uint8_t in_solidNum)
 /*在线状态*/
 void app_general_push_devive_online(uint8_t in_solidNum,bool in_status)
 {
-    s_sysPara.padPara[in_solidNum].onlineFlag = in_status;
+    s_sysPara.publicPara[in_solidNum].onlineFlag = in_status;
 }
 bool app_general_pull_devive_online(uint8_t in_solidNum)
 {
-    return s_sysPara.padPara[in_solidNum].onlineFlag;
+    return s_sysPara.publicPara[in_solidNum].onlineFlag;
 }
 
 /*设备类型*/
 void app_general_push_devive_type(uint8_t in_solidNum,uint16_t in_type)
 {
-    s_sysPara.padPara[in_solidNum].deviceType = in_type;
+    s_sysPara.publicPara[in_solidNum].deviceType = in_type;
 }
 uint16_t app_general_pull_devive_type(uint8_t in_solidNum)
 {
-    return s_sysPara.padPara[in_solidNum].deviceType;
+    return s_sysPara.publicPara[in_solidNum].deviceType;
 }
 /*版本號*/
 void app_general_push_pad_version(uint8_t in_solidNum,uint16_t in_type)
 {
-    s_sysPara.padPara[in_solidNum].version_pad = in_type;
+    s_sysPara.publicPara[in_solidNum].version_pad = in_type;
 }
 uint16_t app_general_pull_pad_version(uint8_t in_solidNum)
 {
-    return s_sysPara.padPara[in_solidNum].version_pad;
+    return s_sysPara.publicPara[in_solidNum].version_pad;
 }
 /*设备ID*/
 void app_general_push_devive_id0(uint8_t in_solidNum,uint16_t in_id)
 {
-    pbc_int16uToArray_bigEndian(in_id,&s_sysPara.padPara[in_solidNum].deviceId[0]);
+    pbc_int16uToArray_bigEndian(in_id,&s_sysPara.publicPara[in_solidNum].deviceId[0]);
 }
 uint16_t app_general_pull_devive_id0(uint8_t in_solidNum)
 {
-    return pbc_arrayToInt16u_bigEndian(&s_sysPara.padPara[in_solidNum].deviceId[0]);
+    return pbc_arrayToInt16u_bigEndian(&s_sysPara.publicPara[in_solidNum].deviceId[0]);
 }
 
 void app_general_push_devive_id1(uint8_t in_solidNum,uint16_t in_id)
@@ -2493,6 +2512,45 @@ void app_general_push_water_machine_status(bool in_status)
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUT_STATUS);
     }   
 }
+
+
+
+/*末端id占用信息*/
+void app_general_push_dhm_id_use_message(uint8_t in_port,bool in_status)
+{
+    s_sysPara.dhmPara[in_port].occpuFlag = in_status;
+}
+bool app_general_pull_dhm_id_use_message(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].occpuFlag;
+}
+/*公共占用端口*/
+uint8_t app_general_pull_dhm_use_port(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].publicUsePort;
+}
+void app_general_push_dhm_use_port(uint8_t in_port,uint8_t in_com)
+{
+    s_sysPara.dhmPara[in_port].publicUsePort = in_com;
+}
+
+/*除湿模块时间戳*/
+void app_general_push_dhm_dp_stamp(uint8_t in_solidNum,uint16_t in_index,uint32_t in_stamp)
+{
+    if(in_index > DP_ADDR_DHM_START)
+    {
+        s_sysPara.dhmPara[in_solidNum].dpStamp[in_index-DP_ADDR_DHM_START] = in_stamp;
+    }
+}
+uint32_t app_general_pull_dhm_dp_stamp(uint8_t in_solidNum,uint16_t in_index)
+{
+    if(in_index > DP_ADDR_DHM_START)
+    {
+        return s_sysPara.dhmPara[in_solidNum].dpStamp[in_index-DP_ADDR_DHM_START];
+    }
+    return 0;
+}
+
 //-----------------------------------------------------------------------------
 //除湿逻辑
 //BN_TRUE 输出

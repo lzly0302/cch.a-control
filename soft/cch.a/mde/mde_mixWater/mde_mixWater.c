@@ -145,7 +145,8 @@ void mod_mixWater_adjust(mixWater_set_mode_t mode,int16_t _in_mixMeasureTemp,int
         if(needAdjustFlag)
         {
             value = PID_get_pid_value(&pidValue,mode);
-            hal_mixWater.currentDegree = (100 - value/100);//阀门特性 0V全开，10V全关，逻辑需要反一下
+            //hal_mixWater.currentDegree = (100 - value/100);//阀门特性 0V全开，10V全关，逻辑需要反一下
+            hal_mixWater.currentDegree = (value/100);
             uint16_t duty = ((uint32_t)hal_mixWater.currentDegree )*10000/13140;
             mde_SetInFanPwm(0,duty);
         }

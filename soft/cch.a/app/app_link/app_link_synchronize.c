@@ -1637,27 +1637,187 @@ uint8_t pull_syn_main_status(void)
 {
     return appModbusSyn[0].mainSynStatsus;
 }
+
+void _pad_dispose_receive_data(void)
+{
+    uint8_t blockNum = 0;
+    static synBlock_t  padSynBlock;
+    uint8_t startIndex = 0;
+    uint8_t i = 0;
+    uint8_t j = 0;
+    uint8_t k = 0;
+    uint8_t num = 0;
+    uint16_t id0,id1,id2;
+    bool newIdFlag = true;
+    uint16_t regAdd = 0;
+    uint32_t receiveStamp = 0;
+    uint32_t occupyWord_backup;
+    uint32_t padOccupy_backup;
+    linkDeviceList_t* logList;
+    uint8_t blockLen = 0;
+    if(appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[3] != 0x00)
+    {//数据块不为0处理数据
+        if(_syn_pull_local_id(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkDstAddr[0]))
+        {//自己地址
+            blockNum = appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[3];//数据块
+            padSynBlock.blockNum = 0;
+            startIndex = 4;
+            for(j = 0;j < blockNum;j++)
+            {
+                regAdd = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+5]);
+                id0 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[0]);
+                id1 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[2]);
+                id2 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[4]);
+                for(i = 0; i < MASTER_PAD_NUM;i++)
+                {//已在末端列表内
+                    if((app_general_pull_devive_id0(i) == id0) &&
+                    (app_general_pull_devive_id1(i) == id1) && 
+                    (app_general_pull_devive_id2(i) == id2))
+                    {//找到ID
+                        newIdFlag = false;
+                        pbc_reload_timerClock(app_general_pull_pad_id_ocupy_time(i),DELAY_OCCPUY);//占用5分钟
+                        app_general_push_pad_id_use_message(i,true);
+                        app_general_push_devive_online(i,true);
+                        receiveStamp = pbc_arrayToInt32u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex]);//发起方时间戳  
+                        if(appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[0] == 0xF3)
+                        {//除湿模块
+                            for(num = 0; num < MASTER_DHM_NUM;num++)
+                            {
+                                if(app_general_pull_dhm_use_port(num) == i)
+                                {
+                                    if(receiveStamp >= app_general_pull_dhm_dp_stamp(num,regAdd))
+                                    {//压入数据
+                                        app_general_push_dhm_dp_stamp(num,regAdd,receiveStamp);
+                                        occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场  
+                                        app_push_data_point_message_pad(num,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
+                                        appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
+                                    }
+                                    else
+                                    {
+                                        padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
+                                        padSynBlock.blockNum++;                           
+                                    }    
+                                    break;
+                                }
+                            }   
+                        }
+                        else
+                        {                  
+                            if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
+                            {//压入数据
+                                app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
+                                occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场 
+                                padOccupy_backup = padOccupyWord[i];
+                                app_push_data_point_message_pad(i,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
+                                appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
+                                padOccupyWord[i] = padOccupy_backup;
+                            }
+                            else
+                            {                           
+                                padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
+                                padSynBlock.blockNum++;
+                            }    
+                        }
+                        break;                    
+                    }
+                }
+                if(newIdFlag)
+                {//新的数据
+                    for(i = 0; i < MASTER_PAD_NUM;i++)
+                    {
+                        if(app_general_pull_pad_id_use_message(i) == false)
+                        {//端口未使用，压入ID
+                            app_general_push_pad_id_use_message(i,true);
+                            app_general_push_devive_id0(i,id0);
+                            app_general_push_devive_id1(i,id1);
+                            app_general_push_devive_id2(i,id2);
+                            app_general_push_devive_online(i,true);
+                            logList = app_link_log_pull_device_list(SYSTEM_PAD);
+                            for(k = 0; k < MAX_DEVICE_NUM;k++)
+                            {
+                                if((logList[k].DeviceID[0] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[0])&&
+                                    (logList[k].DeviceID[1] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[1])&&
+                                        (logList[k].DeviceID[2] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[2]) &&
+                                        (logList[k].DeviceID[3] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[3])&&
+                                            (logList[k].DeviceID[4] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[4])&&
+                                            (logList[k].DeviceID[5] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[5]))
+                                {
+                                    app_general_push_devive_type(i,logList[k].deviceType);
+                                    break;
+                                }
+                            }
+                            pbc_reload_timerClock(app_general_pull_pad_id_ocupy_time(i),DELAY_OCCPUY);
+                            receiveStamp = pbc_arrayToInt32u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex]);//发起方时间戳
+                            if(appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[0] == 0xF3)
+                            {//除湿模块
+                                for(num = 0; num < MASTER_DHM_NUM;num++)
+                                {
+                                    if(app_general_pull_dhm_id_use_message(num) == false)
+                                    {
+                                        app_general_push_dhm_id_use_message(num,true);
+                                        app_general_push_dhm_use_port(num,i);//公共端占用端口
+                                        if(receiveStamp >= app_general_pull_dhm_dp_stamp(num,regAdd))
+                                        {//压入数据
+                                            app_general_push_dhm_dp_stamp(num,regAdd,receiveStamp);
+                                            occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场  
+                                            app_push_data_point_message_pad(num,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
+                                            appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
+                                        }
+                                        else
+                                        {
+                                            padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
+                                            padSynBlock.blockNum++;                           
+                                        }    
+                                        break;
+                                    }
+                                }
+                            }  
+                            else
+                            {
+                                if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
+                                {//压入数据
+                                    app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
+                                    occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场  
+                                    app_push_data_point_message_pad(i,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
+                                    appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
+                                }
+                                else
+                                {
+                                    padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
+                                    padSynBlock.blockNum++;                           
+                                }    
+                            }                                                  
+                            break;
+                        }
+                    }
+                }
+                blockLen = (appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+4]+4);   //数据长度  
+                startIndex += blockLen;   
+            }                  
+        }
+    }
+}
 void _control_pad_syn_task(void)
 {//输配面板同步任务
+    // uint8_t startIndex = 0;
+   // uint8_t blockLen = 0;
+   //  uint8_t k = 0;
+   // uint8_t blockNum = 0;
+   // uint16_t id0,id1,id2;
+   // uint32_t receiveStamp = 0;
+   // bool newIdFlag = true;
+   // uint32_t occupyWord_backup;
+   // uint32_t padOccupy_backup;
     synStatus_def mainSynStatsu_backup;
     static synBlock_t  padSynBlock;
     static uint8_t failCount = 0;
     uint16_t regAdd = 0;
-    uint8_t startIndex = 0;
-    uint8_t blockLen = 0;
     uint8_t i = 0;
     uint8_t j = 0;
-    uint8_t k = 0;
-    uint8_t blockNum = 0;
-    uint16_t id0,id1,id2;
-    uint32_t receiveStamp = 0;
-    bool newIdFlag = true;
     static uint8_t updata_port = 0;
     static uint8_t list_port = 0;
     uint8_t idBuff[6];
     linkDeviceList_t* logList;
-    uint32_t occupyWord_backup;
-    uint32_t padOccupy_backup;
     pbc_timerMillRun_task(&appModbusSyn[SYSTEM_PAD].receive_timeout_delay);//接收超时
     pbc_timerMillRun_task(&appModbusSyn[SYSTEM_PAD].roll_back_delay);//发送回退
     pbc_timerMillRun_task(&appModbusSyn[SYSTEM_PAD].answer_delay);//响应延时
@@ -1677,117 +1837,31 @@ void _control_pad_syn_task(void)
                 if(appModbusSyn[SYSTEM_PAD].receiveOneMessage)
                 {
                     appModbusSyn[SYSTEM_PAD].receiveOneMessage = false;
-                    if(appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[3] != 0x00)
-                    {//数据块不为0处理数据
-                        if(_syn_pull_local_id(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkDstAddr[0]))
-                        {//自己地址
-                            blockNum = appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[3];//数据块
-                            padSynBlock.blockNum = 0;
-                            startIndex = 4;
-                            for(j = 0;j < blockNum;j++)
+                    if(_syn_pull_write_device_id(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkDstAddr[0]))
+                    {
+                        regAdd = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[9]);
+                        app_push_data_point_message_sys(regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[11]); 
+                        padSynBlock.control_answer = 0x41; 
+                        appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_ANSWER;
+                        pbc_reload_timerClock(&appModbusSyn[SYSTEM_PAD].answer_delay,ANSWER_DELAY);
+                    }
+                    else
+                    {
+                        _pad_dispose_receive_data(); 
+                        if(appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[1] == 0x01)
+                        {//确定是否需要应答
+                            if(padSynBlock.blockNum)
                             {
-                                regAdd = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+5]);
-                                id0 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[0]);
-                                id1 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[2]);
-                                id2 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[4]);
-                                for(i = 0; i < MASTER_PAD_NUM;i++)
-                                {//已在末端列表内
-                                    if((app_general_pull_devive_id0(i) == id0) &&
-                                    (app_general_pull_devive_id1(i) == id1) && 
-                                    (app_general_pull_devive_id2(i) == id2))
-                                    {//找到ID
-                                        newIdFlag = false;
-                                        pbc_reload_timerClock(app_general_pull_pad_id_ocupy_time(i),DELAY_OCCPUY);//占用5分钟
-                                        app_general_push_pad_id_use_message(i,true);
-                                        app_general_push_devive_online(i,true);
-                                        receiveStamp = pbc_arrayToInt32u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex]);//发起方时间戳  
-                                        if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
-                                        {//压入数据
-                                            app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
-                                            occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场 
-                                            padOccupy_backup = padOccupyWord[i];
-                                            app_push_data_point_message_pad(i,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
-                                            appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
-                                            padOccupyWord[i] = padOccupy_backup;
-                                        }
-                                        else
-                                        {                           
-                                            padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
-                                            padSynBlock.blockNum++;
-                                        }    
-                                        break;                    
-                                    }
-                                }
-                                if(newIdFlag)
-                                {
-                                    for(i = 0; i < MASTER_PAD_NUM;i++)
-                                    {
-                                        if(app_general_pull_pad_id_use_message(i) == false)
-                                        {//端口未使用，压入ID
-                                            app_general_push_devive_id0(i,id0);
-                                            app_general_push_devive_id1(i,id1);
-                                            app_general_push_devive_id2(i,id2);
-                                            app_general_push_devive_online(i,true);
-                                            logList = app_link_log_pull_device_list(SYSTEM_PAD);
-                                            for(k = 0; k < MAX_DEVICE_NUM;k++)
-                                            {
-                                                if((logList[k].DeviceID[0] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[0])&&
-                                                   (logList[k].DeviceID[1] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[1])&&
-                                                     (logList[k].DeviceID[2] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[2]) &&
-                                                       (logList[k].DeviceID[3] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[3])&&
-                                                         (logList[k].DeviceID[4] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[4])&&
-                                                           (logList[k].DeviceID[5] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[5]))
-                                                {
-                                                    app_general_push_devive_type(i,logList[k].deviceType);
-                                                    break;
-                                                }
-                                            }
-                                            
-                                            pbc_reload_timerClock(app_general_pull_pad_id_ocupy_time(i),DELAY_OCCPUY);
-                                            app_general_push_pad_id_use_message(i,true);
-                                            receiveStamp = pbc_arrayToInt32u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex]);//发起方时间戳  
-                                            if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
-                                            {//压入数据
-                                                app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
-                                                occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场  
-                                                app_push_data_point_message_pad(i,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
-                                                appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
-                                            }
-                                            else
-                                            {
-                                                padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
-                                                padSynBlock.blockNum++;                           
-                                            }    
-                                            break;
-                                        }
-                                    }
-                                }
-                                blockLen = (appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+4]+4);   //数据长度  
-                                startIndex += blockLen;   
+                                padSynBlock.control_answer = 0x81;
                             }
-                            if(appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[1] == 0x01)
-                            {//确定是否需要应答
-                                if(padSynBlock.blockNum)
-                                {
-                                    padSynBlock.control_answer = 0x81;
-                                }
-                                else
-                                {
-                                    padSynBlock.control_answer = 0x41;    
-                                }  
-                                appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_ANSWER;
-                                pbc_reload_timerClock(&appModbusSyn[SYSTEM_PAD].answer_delay,ANSWER_DELAY);      
-                            }                    
-                        }
-                        else if(_syn_pull_write_device_id(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkDstAddr[0]))
-                        {
-                            regAdd = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[9]);
-                            app_push_data_point_message_sys(regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[11]); 
-                            padSynBlock.control_answer = 0x41; 
+                            else
+                            {
+                                padSynBlock.control_answer = 0x41;    
+                            }  
                             appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_ANSWER;
-							pbc_reload_timerClock(&appModbusSyn[SYSTEM_PAD].answer_delay,ANSWER_DELAY);
-                        }
-                    }                   
+                            pbc_reload_timerClock(&appModbusSyn[SYSTEM_PAD].answer_delay,ANSWER_DELAY);      
+                        }           
+                    }                             
                 }
                 else if(appModbusSyn[SYSTEM_PAD].updataWord)
                 {
@@ -1993,78 +2067,7 @@ void _control_pad_syn_task(void)
                 if(appModbusSyn[SYSTEM_PAD].receiveOneMessage)
                 {
                     appModbusSyn[SYSTEM_PAD].receiveOneMessage = false;
-                    if(_syn_pull_local_id(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkDstAddr[0]))
-                    {
-                        blockNum = appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[3];//数据块
-                        padSynBlock.blockNum = 0;
-                        startIndex = 4;
-                        for(j = 0;j < blockNum;j++)
-                        {
-                            regAdd = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+5]);
-                            id0 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[0]);
-                            id1 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[2]);
-                            id2 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[4]);
-                            for(i = 0; i < MASTER_PAD_NUM;i++)
-                            {//已在末端列表内
-                                if((app_general_pull_devive_id0(i) == id0) &&
-                                (app_general_pull_devive_id1(i) == id1) && 
-                                (app_general_pull_devive_id2(i) == id2))
-                                {//找到ID
-                                    newIdFlag = false;
-                                    pbc_reload_timerClock(app_general_pull_pad_id_ocupy_time(i),DELAY_OCCPUY);//占用15分钟
-                                    app_general_push_pad_id_use_message(i,true);
-                                    app_general_push_devive_online(i,true);
-                                    receiveStamp = pbc_arrayToInt32u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex]);//发起方时间戳  
-                                    if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
-                                    {//压入数据
-                                        app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
-                                        occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场 
-                                        padOccupy_backup = padOccupyWord[i];
-                                        app_push_data_point_message_pad(i,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
-                                        appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
-                                        padOccupyWord[i] = padOccupy_backup;
-                                    }
-                                    else
-                                    {                           
-                                        padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
-                                        padSynBlock.blockNum++;
-                                    }    
-                                    break;                    
-                                }
-                            }
-                            if(newIdFlag)
-                            {
-                                for(i = 0; i < MASTER_PAD_NUM;i++)
-                                {
-                                    if(app_general_pull_pad_id_use_message(i) == false)
-                                    {//端口未使用，压入ID
-                                        app_general_push_devive_id0(i,id0);
-                                        app_general_push_devive_id1(i,id1);
-                                        app_general_push_devive_id2(i,id2);
-                                        app_general_push_devive_online(i,true);
-                                        pbc_reload_timerClock(app_general_pull_pad_id_ocupy_time(i),DELAY_OCCPUY);
-                                        app_general_push_pad_id_use_message(i,true);
-                                        receiveStamp = pbc_arrayToInt32u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex]);//发起方时间戳  
-                                        if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
-                                        {//压入数据
-                                            app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
-                                            occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场  
-                                            app_push_data_point_message_pad(i,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
-                                            appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
-                                        }
-                                        else
-                                        {
-                                            padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
-                                            padSynBlock.blockNum++;                           
-                                        }    
-                                        break;
-                                    }
-                                }
-                            }
-                            blockLen = (appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+4]+4);   //数据长度  
-                            startIndex += blockLen;   
-                        }
-                    }         
+                    _pad_dispose_receive_data();   
                     padOccupyWord[updata_port] = 0;
                     appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_WAIT_RECEIVE;                     
                 }
@@ -2093,117 +2096,31 @@ void _control_pad_syn_task(void)
                     if(appModbusSyn[SYSTEM_PAD].receiveOneMessage)
                     {
                         appModbusSyn[SYSTEM_PAD].receiveOneMessage = false;
-                        if(appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[3] != 0x00)
-                        {//数据块不为0处理数据
-                            if(_syn_pull_local_id(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkDstAddr[0]))
-                            {//自己地址
-                                blockNum = appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[3];//数据块
-                                padSynBlock.blockNum = 0;
-                                startIndex = 4;
-                                for(j = 0;j < blockNum;j++)
+                        if(_syn_pull_write_device_id(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkDstAddr[0]))
+                        {
+                            regAdd = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[9]);
+                            app_push_data_point_message_sys(regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[11]); 
+                            padSynBlock.control_answer = 0x41; 
+                            appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_ANSWER;
+                            pbc_reload_timerClock(&appModbusSyn[SYSTEM_PAD].answer_delay,ANSWER_DELAY);
+                        }
+                        else
+                        {
+                            _pad_dispose_receive_data();
+                            if(appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[1] == 0x01)
+                            {//确定是否需要应答
+                                if(padSynBlock.blockNum)
                                 {
-                                    regAdd = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+5]);
-                                    id0 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[0]);
-                                    id1 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[2]);
-                                    id2 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[4]);
-                                    for(i = 0; i < MASTER_PAD_NUM;i++)
-                                    {//已在末端列表内
-                                        if((app_general_pull_devive_id0(i) == id0) &&
-                                        (app_general_pull_devive_id1(i) == id1) && 
-                                        (app_general_pull_devive_id2(i) == id2))
-                                        {//找到ID
-                                            newIdFlag = false;
-                                            pbc_reload_timerClock(app_general_pull_pad_id_ocupy_time(i),DELAY_OCCPUY);//占用5分钟
-                                            app_general_push_pad_id_use_message(i,true);
-                                            app_general_push_devive_online(i,true);
-                                            receiveStamp = pbc_arrayToInt32u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex]);//发起方时间戳  
-                                            if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
-                                            {//压入数据
-                                                app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
-                                                occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场 
-                                                padOccupy_backup = padOccupyWord[i];
-                                                app_push_data_point_message_pad(i,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
-                                                appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
-                                                padOccupyWord[i] = padOccupy_backup;
-                                            }
-                                            else
-                                            {                           
-                                                padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
-                                                padSynBlock.blockNum++;
-                                            }    
-                                            break;                    
-                                        }
-                                    }
-                                    if(newIdFlag)
-                                    {
-                                        for(i = 0; i < MASTER_PAD_NUM;i++)
-                                        {
-                                            if(app_general_pull_pad_id_use_message(i) == false)
-                                            {//端口未使用，压入ID
-                                                app_general_push_devive_id0(i,id0);
-                                                app_general_push_devive_id1(i,id1);
-                                                app_general_push_devive_id2(i,id2);
-                                                app_general_push_devive_online(i,true);
-                                                logList = app_link_log_pull_device_list(SYSTEM_PAD);
-                                                for(k = 0; k < MAX_DEVICE_NUM;k++)
-                                                {
-                                                    if((logList[k].DeviceID[0] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[0])&&
-                                                       (logList[k].DeviceID[1] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[1])&&
-                                                         (logList[k].DeviceID[2] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[2]) &&
-                                                           (logList[k].DeviceID[3] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[3])&&
-                                                             (logList[k].DeviceID[4] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[4])&&
-                                                               (logList[k].DeviceID[5] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[5]))
-                                                    {
-                                                        app_general_push_devive_type(i,logList[k].deviceType);
-                                                        break;
-                                                    }
-                                                }
-                                                
-                                                pbc_reload_timerClock(app_general_pull_pad_id_ocupy_time(i),DELAY_OCCPUY);
-                                                app_general_push_pad_id_use_message(i,true);
-                                                receiveStamp = pbc_arrayToInt32u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex]);//发起方时间戳  
-                                                if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
-                                                {//压入数据
-                                                    app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
-                                                    occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场  
-                                                    app_push_data_point_message_pad(i,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
-                                                    appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
-                                                }
-                                                else
-                                                {
-                                                    padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
-                                                    padSynBlock.blockNum++;                           
-                                                }    
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    blockLen = (appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+4]+4);   //数据长度  
-                                    startIndex += blockLen;   
+                                    padSynBlock.control_answer = 0x81;
                                 }
-                                if(appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[1] == 0x01)
-                                {//确定是否需要应答
-                                    if(padSynBlock.blockNum)
-                                    {
-                                        padSynBlock.control_answer = 0x81;
-                                    }
-                                    else
-                                    {
-                                        padSynBlock.control_answer = 0x41;    
-                                    }  
-                                    appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_ANSWER;
-                                    pbc_reload_timerClock(&appModbusSyn[SYSTEM_PAD].answer_delay,ANSWER_DELAY);      
-                                }                    
-                            }
-                            else if(_syn_pull_write_device_id(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkDstAddr[0]))
-                            {
-                                regAdd = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[9]);
-                                app_push_data_point_message_sys(regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[11]); 
-                                padSynBlock.control_answer = 0x41; 
+                                else
+                                {
+                                    padSynBlock.control_answer = 0x41;    
+                                }  
                                 appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_ANSWER;
-                                pbc_reload_timerClock(&appModbusSyn[SYSTEM_PAD].answer_delay,ANSWER_DELAY);
-                            }
-                        }                   
+                                pbc_reload_timerClock(&appModbusSyn[SYSTEM_PAD].answer_delay,ANSWER_DELAY);      
+                            }         
+                        }                 
                     }
                 }   
                 break;
@@ -2298,78 +2215,7 @@ void _control_pad_syn_task(void)
                 if(appModbusSyn[SYSTEM_PAD].receiveOneMessage)
                 {
                     appModbusSyn[SYSTEM_PAD].receiveOneMessage = false;
-                    if(_syn_pull_local_id(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkDstAddr[0]))
-                    {
-                        blockNum = appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[3];//数据块
-                        padSynBlock.blockNum = 0;
-                        startIndex = 4;
-                        for(j = 0;j < blockNum;j++)
-                        {
-                            regAdd = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+5]);
-                            id0 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[0]);
-                            id1 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[2]);
-                            id2 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[4]);
-                            for(i = 0; i < MASTER_PAD_NUM;i++)
-                            {//已在末端列表内
-                                if((app_general_pull_devive_id0(i) == id0) &&
-                                (app_general_pull_devive_id1(i) == id1) && 
-                                (app_general_pull_devive_id2(i) == id2))
-                                {//找到ID
-                                    newIdFlag = false;
-                                    pbc_reload_timerClock(app_general_pull_pad_id_ocupy_time(i),DELAY_OCCPUY);//占用15分钟
-                                    app_general_push_pad_id_use_message(i,true);
-                                    app_general_push_devive_online(i,true);
-                                    receiveStamp = pbc_arrayToInt32u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex]);//发起方时间戳  
-                                    if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
-                                    {//压入数据
-                                        app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
-                                        occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场 
-                                        padOccupy_backup = padOccupyWord[i];
-                                        app_push_data_point_message_pad(i,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
-                                        appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
-                                        padOccupyWord[i] = padOccupy_backup;
-                                    }
-                                    else
-                                    {                           
-                                        padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
-                                        padSynBlock.blockNum++;
-                                    }    
-                                    break;                    
-                                }
-                            }
-                            if(newIdFlag)
-                            {
-                                for(i = 0; i < MASTER_PAD_NUM;i++)
-                                {
-                                    if(app_general_pull_pad_id_use_message(i) == false)
-                                    {//端口未使用，压入ID
-                                        app_general_push_devive_id0(i,id0);
-                                        app_general_push_devive_id1(i,id1);
-                                        app_general_push_devive_id2(i,id2);
-                                        app_general_push_devive_online(i,true);
-                                        pbc_reload_timerClock(app_general_pull_pad_id_ocupy_time(i),DELAY_OCCPUY);
-                                        app_general_push_pad_id_use_message(i,true);
-                                        receiveStamp = pbc_arrayToInt32u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex]);//发起方时间戳  
-                                        if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
-                                        {//压入数据
-                                            app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
-                                            occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场  
-                                            app_push_data_point_message_pad(i,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
-                                            appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
-                                        }
-                                        else
-                                        {
-                                            padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
-                                            padSynBlock.blockNum++;                           
-                                        }    
-                                        break;
-                                    }
-                                }
-                            }
-                            blockLen = (appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+4]+4);   //数据长度  
-                            startIndex += blockLen;   
-                        }
-                    }          
+                   _pad_dispose_receive_data(); 
                     padOccupyWord[updata_port] = 0;
                     appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_WAIT_RECEIVE; 
                     
@@ -2400,118 +2246,32 @@ void _control_pad_syn_task(void)
                     if(appModbusSyn[SYSTEM_PAD].receiveOneMessage)
                     {
                         appModbusSyn[SYSTEM_PAD].receiveOneMessage = false;
-                        if(appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[3] != 0x00)
-                        {//数据块不为0处理数据
-                            if(_syn_pull_local_id(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkDstAddr[0]))
-                            {//自己地址
-                                blockNum = appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[3];//数据块
-                                padSynBlock.blockNum = 0;
-                                startIndex = 4;
-                                for(j = 0;j < blockNum;j++)
+                        if(_syn_pull_write_device_id(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkDstAddr[0]))
+                        {
+                            regAdd = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[9]);
+                            app_push_data_point_message_sys(regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[11]); 
+                            padSynBlock.control_answer = 0x41; 
+                            appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_ANSWER;
+                            pbc_reload_timerClock(&appModbusSyn[SYSTEM_PAD].answer_delay,ANSWER_DELAY);
+                        }
+                        else
+                        {
+                            _pad_dispose_receive_data(); 
+                            if(appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[1] == 0x01)
+                            {//确定是否需要应答
+                                if(padSynBlock.blockNum)
                                 {
-                                    regAdd = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+5]);
-                                    id0 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[0]);
-                                    id1 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[2]);
-                                    id2 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[4]);
-                                    for(i = 0; i < MASTER_PAD_NUM;i++)
-                                    {//已在末端列表内
-                                        if((app_general_pull_devive_id0(i) == id0) &&
-                                        (app_general_pull_devive_id1(i) == id1) && 
-                                        (app_general_pull_devive_id2(i) == id2))
-                                        {//找到ID
-                                            newIdFlag = false;
-                                            pbc_reload_timerClock(app_general_pull_pad_id_ocupy_time(i),DELAY_OCCPUY);//占用5分钟
-                                            app_general_push_pad_id_use_message(i,true);
-                                            app_general_push_devive_online(i,true);
-                                            receiveStamp = pbc_arrayToInt32u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex]);//发起方时间戳  
-                                            if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
-                                            {//压入数据
-                                                app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
-                                                occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场 
-                                                padOccupy_backup = padOccupyWord[i];
-                                                app_push_data_point_message_pad(i,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
-                                                appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
-                                                padOccupyWord[i] = padOccupy_backup;
-                                            }
-                                            else
-                                            {                           
-                                                padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
-                                                padSynBlock.blockNum++;
-                                            }    
-                                            break;                    
-                                        }
-                                    }
-                                    if(newIdFlag)
-                                    {
-                                        for(i = 0; i < MASTER_PAD_NUM;i++)
-                                        {
-                                            if(app_general_pull_pad_id_use_message(i) == false)
-                                            {//端口未使用，压入ID
-                                                app_general_push_devive_id0(i,id0);
-                                                app_general_push_devive_id1(i,id1);
-                                                app_general_push_devive_id2(i,id2);
-                                                app_general_push_devive_online(i,true);
-                                                logList = app_link_log_pull_device_list(SYSTEM_PAD);
-                                                for(k = 0; k < MAX_DEVICE_NUM;k++)
-                                                {
-                                                    if((logList[k].DeviceID[0] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[0])&&
-                                                       (logList[k].DeviceID[1] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[1])&&
-                                                         (logList[k].DeviceID[2] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[2]) &&
-                                                           (logList[k].DeviceID[3] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[3])&&
-                                                             (logList[k].DeviceID[4] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[4])&&
-                                                               (logList[k].DeviceID[5] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[5]))
-                                                    {
-                                                        app_general_push_devive_type(i,logList[k].deviceType);
-                                                        break;
-                                                    }
-                                                }
-                                                
-                                                pbc_reload_timerClock(app_general_pull_pad_id_ocupy_time(i),DELAY_OCCPUY);
-                                                app_general_push_pad_id_use_message(i,true);
-                                                receiveStamp = pbc_arrayToInt32u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex]);//发起方时间戳  
-                                                if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
-                                                {//压入数据
-                                                    app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
-                                                    occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场  
-                                                    app_push_data_point_message_pad(i,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
-                                                    appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
-                                                }
-                                                else
-                                                {
-                                                    padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
-                                                    padSynBlock.blockNum++;                           
-                                                }    
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    blockLen = (appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+4]+4);   //数据长度  
-                                    startIndex += blockLen;   
+                                    padSynBlock.control_answer = 0x81;
                                 }
-                                if(appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[1] == 0x01)
-                                {//确定是否需要应答
-                                    if(padSynBlock.blockNum)
-                                    {
-                                        padSynBlock.control_answer = 0x81;
-                                    }
-                                    else
-                                    {
-                                        padSynBlock.control_answer = 0x41;    
-                                    }  
-                                    appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_ANSWER;
-                                    pbc_reload_timerClock(&appModbusSyn[SYSTEM_PAD].answer_delay,ANSWER_DELAY);      
-                                }                    
-                            }
-                            else if(_syn_pull_write_device_id(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkDstAddr[0]))
-                            {
-                                regAdd = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[9]);
-                                app_push_data_point_message_sys(regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[11]); 
-                                padSynBlock.control_answer = 0x41; 
+                                else
+                                {
+                                    padSynBlock.control_answer = 0x41;    
+                                }  
                                 appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_ANSWER;
-                                pbc_reload_timerClock(&appModbusSyn[SYSTEM_PAD].answer_delay,ANSWER_DELAY);
-                            }
-                        }                   
-                    }
+                                pbc_reload_timerClock(&appModbusSyn[SYSTEM_PAD].answer_delay,ANSWER_DELAY);      
+                            }           
+                        } 
+                    }                 
                 }   
                 break;
             }
@@ -2614,75 +2374,7 @@ void _control_pad_syn_task(void)
                     if(_syn_pull_local_id(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkDstAddr[0])) 
                     {//自己地址
                         appModbusSyn[SYSTEM_PAD].listWord &=  (~0x01<<list_port); 
-                        blockNum = appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[3];//数据块
-                        padSynBlock.blockNum = 0;
-                        startIndex = 4;
-                        for(j = 0;j < blockNum;j++)
-                        {
-                            regAdd = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+5]);
-                            id0 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[0]);
-                            id1 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[2]);
-                            id2 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[4]);
-                            for(i = 0; i < MASTER_PAD_NUM;i++)
-                            {//已在末端列表内
-                                if((app_general_pull_devive_id0(i) == id0) &&
-                                (app_general_pull_devive_id1(i) == id1) && 
-                                (app_general_pull_devive_id2(i) == id2))
-                                {//找到ID
-                                    newIdFlag = false;
-                                    pbc_reload_timerClock(app_general_pull_pad_id_ocupy_time(i),DELAY_OCCPUY);//占用5分钟
-                                    app_general_push_pad_id_use_message(i,true);
-                                    app_general_push_devive_online(i,true);
-                                    receiveStamp = pbc_arrayToInt32u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex]);//发起方时间戳  
-                                    if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
-                                    {//压入数据
-                                        app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
-                                        occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场 
-                                        padOccupy_backup = padOccupyWord[i];
-                                        app_push_data_point_message_pad(i,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
-                                        appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
-                                        padOccupyWord[i] = padOccupy_backup;
-                                    }
-                                    else
-                                    {                           
-                                        padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
-                                        padSynBlock.blockNum++;
-                                    }    
-                                    break;                    
-                                }
-                            }
-                            if(newIdFlag)
-                            {
-                                for(i = 0; i < MASTER_PAD_NUM;i++)
-                                {
-                                    if(app_general_pull_pad_id_use_message(i) == false)
-                                    {//端口未使用，压入ID
-                                        app_general_push_devive_id0(i,id0);
-                                        app_general_push_devive_id1(i,id1);
-                                        app_general_push_devive_id2(i,id2);
-                                        app_general_push_devive_online(i,true);
-                                        pbc_reload_timerClock(app_general_pull_pad_id_ocupy_time(i),DELAY_OCCPUY);
-                                        app_general_push_pad_id_use_message(i,true);
-                                        receiveStamp = pbc_arrayToInt32u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex]);//发起方时间戳  
-                                        if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
-                                        {//压入数据
-                                            app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
-                                            occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场  
-                                            app_push_data_point_message_pad(i,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
-                                            appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
-                                        }
-                                        else
-                                        {
-                                            padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
-                                            padSynBlock.blockNum++;                           
-                                        }    
-                                        break;
-                                    }
-                                }
-                            }
-                            blockLen = (appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+4]+4);   //数据长度  
-                            startIndex += blockLen;   
-                        }
+                        _pad_dispose_receive_data();
                         if(appModbusSyn[SYSTEM_PAD].listWord == 0)
                         {
                             appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_WAIT_RECEIVE;
@@ -2691,8 +2383,7 @@ void _control_pad_syn_task(void)
                         else
                         {
                             appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_SEND_LIST_ACTIVE;
-                        }
-                                                    
+                        }                                
                     }
                 }
                 else if(pbc_pull_timerIsCompleted(&appModbusSyn[SYSTEM_PAD].receive_timeout_delay))
@@ -2712,117 +2403,31 @@ void _control_pad_syn_task(void)
                     if(appModbusSyn[SYSTEM_PAD].receiveOneMessage)
                     {
                         appModbusSyn[SYSTEM_PAD].receiveOneMessage = false;
-                        if(appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[3] != 0x00)
-                        {//数据块不为0处理数据
-                            if(_syn_pull_local_id(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkDstAddr[0]))
-                            {//自己地址
-                                blockNum = appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[3];//数据块
-                                padSynBlock.blockNum = 0;
-                                startIndex = 4;
-                                for(j = 0;j < blockNum;j++)
+                        if(_syn_pull_write_device_id(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkDstAddr[0]))
+                        {
+                            regAdd = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[9]);
+                            app_push_data_point_message_sys(regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[11]); 
+                            padSynBlock.control_answer = 0x41; 
+                            appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_ANSWER;
+                            pbc_reload_timerClock(&appModbusSyn[SYSTEM_PAD].answer_delay,ANSWER_DELAY);
+                        }
+                        else
+                        {
+                            _pad_dispose_receive_data(); 
+                            if(appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[1] == 0x01)
+                            {//确定是否需要应答
+                                if(padSynBlock.blockNum)
                                 {
-                                    regAdd = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+5]);
-                                    id0 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[0]);
-                                    id1 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[2]);
-                                    id2 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[4]);
-                                    for(i = 0; i < MASTER_PAD_NUM;i++)
-                                    {//已在末端列表内
-                                        if((app_general_pull_devive_id0(i) == id0) &&
-                                        (app_general_pull_devive_id1(i) == id1) && 
-                                        (app_general_pull_devive_id2(i) == id2))
-                                        {//找到ID
-                                            newIdFlag = false;
-                                            pbc_reload_timerClock(app_general_pull_pad_id_ocupy_time(i),DELAY_OCCPUY);//占用5分钟
-                                            app_general_push_pad_id_use_message(i,true);
-                                            app_general_push_devive_online(i,true);
-                                            receiveStamp = pbc_arrayToInt32u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex]);//发起方时间戳  
-                                            if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
-                                            {//压入数据
-                                                app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
-                                                occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场 
-                                                padOccupy_backup = padOccupyWord[i];
-                                                app_push_data_point_message_pad(i,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
-                                                appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
-                                                padOccupyWord[i] = padOccupy_backup;
-                                            }
-                                            else
-                                            {                           
-                                                padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
-                                                padSynBlock.blockNum++;
-                                            }    
-                                            break;                    
-                                        }
-                                    }
-                                    if(newIdFlag)
-                                    {
-                                        for(i = 0; i < MASTER_PAD_NUM;i++)
-                                        {
-                                            if(app_general_pull_pad_id_use_message(i) == false)
-                                            {//端口未使用，压入ID
-                                                app_general_push_devive_id0(i,id0);
-                                                app_general_push_devive_id1(i,id1);
-                                                app_general_push_devive_id2(i,id2);
-                                                app_general_push_devive_online(i,true);
-                                                logList = app_link_log_pull_device_list(SYSTEM_PAD);
-                                                for(k = 0; k < MAX_DEVICE_NUM;k++)
-                                                {
-                                                    if((logList[k].DeviceID[0] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[0])&&
-                                                       (logList[k].DeviceID[1] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[1])&&
-                                                         (logList[k].DeviceID[2] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[2]) &&
-                                                           (logList[k].DeviceID[3] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[3])&&
-                                                             (logList[k].DeviceID[4] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[4])&&
-                                                               (logList[k].DeviceID[5] == appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[5]))
-                                                    {
-                                                        app_general_push_devive_type(i,logList[k].deviceType);
-                                                        break;
-                                                    }
-                                                }
-                                                
-                                                pbc_reload_timerClock(app_general_pull_pad_id_ocupy_time(i),DELAY_OCCPUY);
-                                                app_general_push_pad_id_use_message(i,true);
-                                                receiveStamp = pbc_arrayToInt32u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex]);//发起方时间戳  
-                                                if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
-                                                {//压入数据
-                                                    app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
-                                                    occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场  
-                                                    app_push_data_point_message_pad(i,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
-                                                    appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
-                                                }
-                                                else
-                                                {
-                                                    padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
-                                                    padSynBlock.blockNum++;                           
-                                                }    
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    blockLen = (appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+4]+4);   //数据长度  
-                                    startIndex += blockLen;   
+                                    padSynBlock.control_answer = 0x81;
                                 }
-                                if(appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[1] == 0x01)
-                                {//确定是否需要应答
-                                    if(padSynBlock.blockNum)
-                                    {
-                                        padSynBlock.control_answer = 0x81;
-                                    }
-                                    else
-                                    {
-                                        padSynBlock.control_answer = 0x41;    
-                                    }  
-                                    appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_ANSWER;
-                                    pbc_reload_timerClock(&appModbusSyn[SYSTEM_PAD].answer_delay,ANSWER_DELAY);      
-                                }                    
-                            }
-                            else if(_syn_pull_write_device_id(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkDstAddr[0]))
-                            {
-                                regAdd = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[9]);
-                                app_push_data_point_message_sys(regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[11]); 
-                                padSynBlock.control_answer = 0x41; 
+                                else
+                                {
+                                    padSynBlock.control_answer = 0x41;    
+                                }  
                                 appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_ANSWER;
-                                pbc_reload_timerClock(&appModbusSyn[SYSTEM_PAD].answer_delay,ANSWER_DELAY);
-                            }
-                        }                   
+                                pbc_reload_timerClock(&appModbusSyn[SYSTEM_PAD].answer_delay,ANSWER_DELAY);      
+                            }           
+                        }                       
                     }
                 }   
                 break;
@@ -2912,81 +2517,13 @@ void _control_pad_syn_task(void)
             }
             case SYN_STATUS_RERECEIVE_LIST:
             {
-               if(appModbusSyn[SYSTEM_PAD].receiveOneMessage)
+                if(appModbusSyn[SYSTEM_PAD].receiveOneMessage)
                 {
                     appModbusSyn[SYSTEM_PAD].receiveOneMessage = false;
                     if(_syn_pull_local_id(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkDstAddr[0])) 
                     {//自己地址
                         appModbusSyn[SYSTEM_PAD].listWord &=  (~0x01<<list_port); 
-                        blockNum = appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[3];//数据块
-                        padSynBlock.blockNum = 0;
-                        startIndex = 4;
-                        for(j = 0;j < blockNum;j++)
-                        {
-                            regAdd = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+5]);
-                            id0 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[0]);
-                            id1 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[2]);
-                            id2 = pbc_arrayToInt16u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->LinkSrcAddr[4]);
-                            for(i = 0; i < MASTER_PAD_NUM;i++)
-                            {//已在末端列表内
-                                if((app_general_pull_devive_id0(i) == id0) &&
-                                (app_general_pull_devive_id1(i) == id1) && 
-                                (app_general_pull_devive_id2(i) == id2))
-                                {//找到ID
-                                    newIdFlag = false;
-                                    pbc_reload_timerClock(app_general_pull_pad_id_ocupy_time(i),DELAY_OCCPUY);//占用5分钟
-                                    app_general_push_pad_id_use_message(i,true);
-                                    app_general_push_devive_online(i,true);
-                                    receiveStamp = pbc_arrayToInt32u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex]);//发起方时间戳  
-                                    if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
-                                    {//压入数据
-                                        app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
-                                        occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场 
-                                        padOccupy_backup = padOccupyWord[i];
-                                        app_push_data_point_message_pad(i,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
-                                        appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
-                                        padOccupyWord[i] = padOccupy_backup;
-                                    }
-                                    else
-                                    {                           
-                                        padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
-                                        padSynBlock.blockNum++;
-                                    }    
-                                    break;                    
-                                }
-                            }
-                            if(newIdFlag)
-                            {
-                                for(i = 0; i < MASTER_PAD_NUM;i++)
-                                {
-                                    if(app_general_pull_pad_id_use_message(i) == false)
-                                    {//端口未使用，压入ID
-                                        app_general_push_devive_id0(i,id0);
-                                        app_general_push_devive_id1(i,id1);
-                                        app_general_push_devive_id2(i,id2);
-                                        app_general_push_devive_online(i,true);
-                                        pbc_reload_timerClock(app_general_pull_pad_id_ocupy_time(i),DELAY_OCCPUY);
-                                        app_general_push_pad_id_use_message(i,true);
-                                        receiveStamp = pbc_arrayToInt32u_bigEndian(&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex]);//发起方时间戳  
-                                        if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
-                                        {//压入数据
-                                            app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
-                                            occupyWord_backup =  appModbusSyn[SYSTEM_PAD].updataWord; //保存现场  
-                                            app_push_data_point_message_pad(i,regAdd,&appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+7]);     
-                                            appModbusSyn[SYSTEM_PAD].updataWord =   occupyWord_backup;//恢复现场
-                                        }
-                                        else
-                                        {
-                                            padSynBlock.regAddr_pad[padSynBlock.blockNum] = regAdd;
-                                            padSynBlock.blockNum++;                           
-                                        }    
-                                        break;
-                                    }
-                                }
-                            }
-                            blockLen = (appModbusSyn[SYSTEM_PAD].in_rev_data->Payload[startIndex+4]+4);   //数据长度  
-                            startIndex += blockLen;   
-                        }
+                        _pad_dispose_receive_data();
                         if(appModbusSyn[SYSTEM_PAD].listWord == 0)
                         {
                             appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_WAIT_RECEIVE;
@@ -2995,7 +2532,7 @@ void _control_pad_syn_task(void)
                         else
                         {
                             appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_SEND_LIST_ACTIVE;
-                        }                                             
+                        }                                           
                     }                                           
                 }
                 else if(pbc_pull_timerIsCompleted(&appModbusSyn[SYSTEM_PAD].receive_timeout_delay))

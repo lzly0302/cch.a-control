@@ -8,13 +8,13 @@ uint16_t app_modbus_read_reg_data(uint16_t reg_addr,uint8_t in_src)
 {
     uint16_t reg_detailes = 0;
     uint8_t virtualPort = PAD_NO_PHY_BIND;
-	if((reg_addr >= 0x3A01) && (reg_addr <= (0x3A01+ARICOD_READ_ONLY_REG_NUM)))
+	if((reg_addr >= 1) && (reg_addr <= (ARICOD_READ_ONLY_REG_NUM)))
     {
-        APP_pull_aricod_message((reg_addr-0x3a01+1),&reg_detailes);
+        APP_pull_aricod_message(reg_addr,&reg_detailes);
     }
-    else if((reg_addr >= 0x3b01) && (reg_addr <= (0x3b01+ARICOD_READ_WRITE_REG_NUM)))
+    else if((reg_addr >= 5001) && (reg_addr <= (5000+ARICOD_READ_WRITE_REG_NUM)))
     {
-        APP_pull_aricod_message((reg_addr-0x3b01+5001),&reg_detailes);
+        APP_pull_aricod_message(reg_addr,&reg_detailes);
     }
     else if((reg_addr == MRegaddr_SlaveStatusW) || (reg_addr == MRegaddr_RequestNumber))
     {

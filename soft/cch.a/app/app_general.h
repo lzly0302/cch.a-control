@@ -4,10 +4,12 @@
 #include ".\app_cfg.h"
 
 #define  MAX_DATA_POINT_LEN_PAD                15//DP最大长度
+#define  MAX_DATA_POINT_LEN_DHM                14//DP最大长度
 #define  MAX_DATA_POINT_LEN_SYSTEM             32//DP最大长度
 
 #define  MASTER_PAD_NUM                 12//最大末端数量
 #define  MASTER_PAD_VIRTUAL_NUM         4//虚拟末端数量
+#define  MASTER_DHM_NUM                 2//最大除湿数量
 #define  ERROR_NTC_MIX_WATER            0X0001
 #define  ERROR_NTC_IN_WATER             0X0002
 #define  ERROR_NTC_BACK_WATER           0X0002
@@ -248,8 +250,6 @@ void app_general_push_unbind_list_fan(uint16_t in_unbind);
 uint16_t app_general_pull_unbind_list_warm(void);
 void app_general_push_unbind_list_warm(uint16_t in_unbind);
 
-
-
 /*重复绑定信息*/
 void app_general_push_pad_repeat_bind_list(uint16_t in_list);
 uint16_t app_general_pull_pad_repeat_bind_list(void);
@@ -270,8 +270,8 @@ void app_general_push_filter_usetime_inside(int16_t in_time);
 void app_general_push_wind_value(bool reg_dat);
 bool app_general_pull_wind_value(void);
 
-/*末端接口*/
 
+/*末端接口*/
 timerClock_def* app_general_pull_pad_id_ocupy_time(uint8_t in_solidNum);
 /*物理端口绑定信息*/
 uint8_t  app_general_pull_pad_phy_port_bind_message(uint8_t in_solidNum);
@@ -281,7 +281,6 @@ bool app_general_pull_pad_id_use_message(uint8_t in_solidNum);
 /*末端时间戳*/
 void app_general_push_pad_dp_stamp(uint8_t in_solidNum,uint8_t in_index,uint32_t in_stamp);
 uint32_t app_general_pull_pad_dp_stamp(uint8_t in_solidNum,uint8_t in_index);
-
 void app_general_pad_iduse_task(void);
 /*设备故障字*/
 void app_general_push_devive_error_word(uint8_t in_solidNum,uint16_t in_error);
@@ -453,6 +452,10 @@ uint8_t app_general_pull_pad_type_warm_choose(uint8_t in_solidNum);
 void app_general_push_pad_room_area(uint8_t in_solidNum,uint8_t in_mode);
 uint8_t app_general_pull_pad_room_area(uint8_t in_solidNum);
 
+//除湿模块接口
+
+
+
 /*绑定故障*/
 void app_general_push_pad_bind_error(uint8_t in_solidNum,uint16_t in_error);
 uint16_t app_general_pull_pad_bind_error(uint8_t in_solidNum);
@@ -471,8 +474,6 @@ void app_general_clear_error_word(uint16_t in_errorBit);
 uint16_t app_general_pull_error_word(void);
 uint16_t GetRandomDelayTime(void);
 void check_rebind_list(void);
-//bool APP_pull_aricod_message(uint16_t in_reg_add,uint16_t *out_reg_value);
-//bool APP_push_aricod_message(uint16_t in_reg_add,uint16_t in_reg_value);
 /*系统能需*/
 uint8_t app_pull_system_energy_need(void);
 /*新风效率*/
