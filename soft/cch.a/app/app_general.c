@@ -84,24 +84,16 @@ typedef struct
         int16_t                    deadzone_fan_temp;
         int16_t                    adjust_outdoor_hum;
         int16_t                    adjust_outdoor_temp;
-        int16_t                    adjust_outdoor_co2;
-        int16_t                    adjust_outdoor_pm25;
         int16_t                    adjust_befor_fu_hum;
         int16_t                    adjust_befor_fu_temp;
-        int16_t                    adjust_befor_fu_co2;
-        int16_t                    adjust_befor_fu_pm25;
         int16_t                    adjust_after_fu_hum;
         int16_t                    adjust_after_fu_temp;
-        int16_t                    adjust_after_fu_co2;
-        int16_t                    adjust_after_fu_pm25;
         int16_t                    adjust_back_air_hum;
         int16_t                    adjust_back_air_temp;
         int16_t                    adjust_back_air_co2;
         int16_t                    adjust_back_air_pm25;
         int16_t                    adjust_exhast_air_hum;
         int16_t                    adjust_exhast_air_temp;
-        int16_t                    adjust_exhast_air_co2;
-        int16_t                    adjust_exhast_air_pm25;
         uint8_t                    newAirLowPwm;
         uint8_t                    newAirMidPwm;
         uint8_t                    newAirHighPwm;
@@ -281,7 +273,7 @@ void remote_control_task(void)
         s_sysPara.remoteControlFlag = false;
         for(i = 0; i <  MASTER_PAD_NUM;i++)
         {
-            s_sysPara.padPara[i].output_remote = false;
+            s_sysPara.publicPara[i].output_remote = false;
         }
     }
 }
@@ -291,16 +283,16 @@ void app_general_push_remote_relay(uint8_t in_port,bool in_remote_control)
 { 
     if(in_remote_control)
     {
-        s_sysPara.padPara[in_port].output_remote = true;
+        s_sysPara.publicPara[in_port].output_remote = true;
     }
     else
     {
-        s_sysPara.padPara[in_port].output_remote = false;
+        s_sysPara.publicPara[in_port].output_remote = false;
     }
 }
 bool  app_general_pull_remote_relay(uint8_t in_port)
 {
-    if(s_sysPara.padPara[in_port].output_remote)
+    if(s_sysPara.publicPara[in_port].output_remote)
     {
         return true;
     }
@@ -971,12 +963,12 @@ int16_t app_general_pull_adjust_outdoor_temp(void)
 }
 int16_t app_general_pull_adjust_outdoor_co2(void)
 {
-    return s_sysPara.dhmPara[0].adjust_outdoor_co2;
+    return 0;
 }
 
 int16_t app_general_pull_adjust_outdoor_pm25(void)
 {
-    return s_sysPara.dhmPara[0].adjust_outdoor_pm25;
+    return 0;
 }
 int16_t app_general_pull_adjust_beforfu_hum(void)
 {
@@ -988,11 +980,11 @@ int16_t app_general_pull_adjust_beforfu_temp(void)
 }
 int16_t app_general_pull_adjust_beforfu_co2(void)
 {
-    return s_sysPara.dhmPara[0].adjust_befor_fu_co2;
+    return 0;
 }
 int16_t app_general_pull_adjust_beforfu_pm25(void)
 {
-    return s_sysPara.dhmPara[0].adjust_befor_fu_pm25;
+    return 0;
 }
 int16_t app_general_pull_adjust_afterfu_hum(void)
 {
@@ -1004,11 +996,11 @@ int16_t app_general_pull_adjust_afterfu_temp(void)
 }
 int16_t app_general_pull_adjust_afterfu_co2(void)
 {
-    return s_sysPara.dhmPara[0].adjust_after_fu_co2;
+    return 0;
 }
 int16_t app_general_pull_adjust_afterfu_pm25(void)
 {
-    return s_sysPara.dhmPara[0].adjust_after_fu_pm25;
+    return 0;
 }
 
 int16_t app_general_pull_adjust_backair_hum(void)
@@ -1037,11 +1029,11 @@ int16_t app_general_pull_adjust_exhastair_temp(void)
 }
 int16_t app_general_pull_adjust_exhastair_co2(void)
 {
-    return s_sysPara.dhmPara[0].adjust_exhast_air_co2;
+    return 0;
 }
 int16_t app_general_pull_adjust_exhastair_pm25(void)
 {
-    return s_sysPara.dhmPara[0].adjust_exhast_air_pm25;
+    return 0;
 }
 
 void app_general_push_adjust_outdoor_hum(int16_t in_hum)
@@ -1062,19 +1054,19 @@ void app_general_push_adjust_outdoor_temp(int16_t in_temp)
 }
 void app_general_push_adjust_outdoor_co2(int16_t in_co2)
 {
-    if(s_sysPara.dhmPara[0].adjust_outdoor_co2 != in_co2)
-    {
-        s_sysPara.dhmPara[0].adjust_outdoor_co2 = in_co2;
-        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUTDOOR_WEATHER);
-    } 
+//    if(s_sysPara.dhmPara[0].adjust_outdoor_co2 != in_co2)
+//    {
+//        s_sysPara.dhmPara[0].adjust_outdoor_co2 = in_co2;
+//        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUTDOOR_WEATHER);
+//    } 
 }
 void app_general_push_adjust_outdoor_pm25(int16_t in_pm25)
 {
-    if(s_sysPara.dhmPara[0].adjust_outdoor_pm25 != in_pm25)
-    {
-        s_sysPara.dhmPara[0].adjust_outdoor_pm25 = in_pm25;
-        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUTDOOR_WEATHER);
-    }
+//    if(s_sysPara.dhmPara[0].adjust_outdoor_pm25 != in_pm25)
+//    {
+//        s_sysPara.dhmPara[0].adjust_outdoor_pm25 = in_pm25;
+//        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUTDOOR_WEATHER);
+//    }
     
 }
 
@@ -1097,19 +1089,19 @@ void app_general_push_adjust_beforfu_temp(int16_t in_temp)
 }
 void app_general_push_adjust_beforfu_co2(int16_t in_co2)
 {
-    if(s_sysPara.dhmPara[0].adjust_befor_fu_co2 != in_co2)
-    {
-        s_sysPara.dhmPara[0].adjust_befor_fu_co2 = in_co2;
-        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BEFORE_FU_WEATHER);
-    }    
+//    if(s_sysPara.dhmPara[0].adjust_befor_fu_co2 != in_co2)
+//    {
+//        s_sysPara.dhmPara[0].adjust_befor_fu_co2 = in_co2;
+//        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BEFORE_FU_WEATHER);
+//    }    
 }
 void app_general_push_adjust_beforfu_pm25(int16_t in_pm25)
 {
-    if(s_sysPara.dhmPara[0].adjust_befor_fu_pm25 != in_pm25)
-    {
-        s_sysPara.dhmPara[0].adjust_befor_fu_pm25 = in_pm25;
-        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BEFORE_FU_WEATHER);
-    }
+//    if(s_sysPara.dhmPara[0].adjust_befor_fu_pm25 != in_pm25)
+//    {
+//        s_sysPara.dhmPara[0].adjust_befor_fu_pm25 = in_pm25;
+//        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BEFORE_FU_WEATHER);
+//    }
     
 }
 
@@ -1131,21 +1123,21 @@ void app_general_push_adjust_afterfu_temp(int16_t in_temp)
 }
 void app_general_push_adjust_afterfu_co2(int16_t in_co2)
 {
-    if(s_sysPara.dhmPara[0].adjust_after_fu_co2 != in_co2)
-    {
-        s_sysPara.dhmPara[0].adjust_after_fu_co2 = in_co2;
-        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_AFTER_FU_WEATHER);
-    }
+//    if(s_sysPara.dhmPara[0].adjust_after_fu_co2 != in_co2)
+//    {
+//        s_sysPara.dhmPara[0].adjust_after_fu_co2 = in_co2;
+//        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_AFTER_FU_WEATHER);
+//    }
     
 }
 void app_general_push_adjust_afterfu_pm25(int16_t in_pm25)
 {
-    if(s_sysPara.dhmPara[0].adjust_after_fu_pm25 != in_pm25)
-    {
-        s_sysPara.dhmPara[0].dhmPara[0].adjust_after_fu_pm25 = in_pm25;
-        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_AFTER_FU_WEATHER);
-    }
-    
+//    if(s_sysPara.dhmPara[0].adjust_after_fu_pm25 != in_pm25)
+//    {
+//        s_sysPara.dhmPara[0].dhmPara[0].adjust_after_fu_pm25 = in_pm25;
+//        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_AFTER_FU_WEATHER);
+//    }
+//    
 }
 
 void app_general_push_adjust_backair_hum(int16_t in_hum)
@@ -1205,20 +1197,20 @@ void app_general_push_adjust_exhastair_temp(int16_t in_temp)
 }
 void app_general_push_adjust_exhastair_co2(int16_t in_co2)
 {
-    if(s_sysPara.dhmPara[0].adjust_exhast_air_co2 != in_co2)
-    {
-        s_sysPara.dhmPara[0].adjust_exhast_air_co2 = in_co2;
-        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_EXHAST_AIR_WEATHER);
-    }   
+//    if(s_sysPara.dhmPara[0].adjust_exhast_air_co2 != in_co2)
+//    {
+//        s_sysPara.dhmPara[0].adjust_exhast_air_co2 = in_co2;
+//        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_EXHAST_AIR_WEATHER);
+//    }   
     
 }
 void app_general_push_adjust_exhastair_pm25(int16_t in_pm25)
 {
-    if(s_sysPara.dhmPara[0].adjust_exhast_air_pm25 != in_pm25)
-    {
-        s_sysPara.dhmPara[0].adjust_exhast_air_pm25 = in_pm25;
-        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_EXHAST_AIR_WEATHER);
-    }
+//    if(s_sysPara.dhmPara[0].adjust_exhast_air_pm25 != in_pm25)
+//    {
+//        s_sysPara.dhmPara[0].adjust_exhast_air_pm25 = in_pm25;
+//        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_EXHAST_AIR_WEATHER);
+//    }
 
 }
 /*环控能需预冷预热输出*/
@@ -1402,16 +1394,16 @@ void app_general_push_unbind_list_warm(uint16_t in_unbind)
 //读取风阀设置
 void app_general_push_wind_value(bool reg_dat)
 {
-	if(reg_dat <= 1)
-	{
-		s_sysPara.wind_value = reg_dat;
-        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUT_STATUS);
-	}
+//	if(reg_dat <= 1)
+//	{
+//		s_sysPara.wind_value = reg_dat;
+//        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUT_STATUS);
+//	}
 }
 
 bool app_general_pull_wind_value(void)
 {
-	return s_sysPara.wind_value;
+	return 0;
 }
 
 //读取热水使能
@@ -1430,40 +1422,40 @@ void app_general_push_hotwater_enable(uint16_t reg_dat)
 /*滤芯更换周期*/
 void app_general_push_filter_time(int16_t in_time)
 {
-	if(s_sysPara.filter_time != in_time)
-	{
-		s_sysPara.filter_time = in_time;
-        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUT_STATUS);
-	}
+//	if(s_sysPara.filter_time != in_time)
+//	{
+//		s_sysPara.filter_time = in_time;
+//        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUT_STATUS);
+//	}
 }
 int16_t app_general_pull_filter_time(void)
 {
-    return s_sysPara.filter_time;
+    return 0;
 }
 
 /*滤芯使用时间*/
 void app_general_push_filter_usetime(int16_t in_time)
 {
-	if(0x00 == in_time)
-	{
-		s_sysPara.filter_usetime = 0;
-        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUT_STATUS);
-	}
+//	if(0x00 == in_time)
+//	{
+//		s_sysPara.filter_usetime = 0;
+//        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUT_STATUS);
+//	}
 }
 void app_general_push_filter_usetime_inside(int16_t in_time)
 {
-    s_sysPara.filter_usetime = in_time;
+   // s_sysPara.filter_usetime = in_time;
 }
 int16_t app_general_pull_filter_usetime(void)
 {
-    return s_sysPara.filter_usetime;
+    return 0;
 }
 
 /*末端接口*/
 
 timerClock_def* app_general_pull_pad_id_ocupy_time(uint8_t in_solidNum)
 {
-    return &s_sysPara.padPara[in_solidNum].id_ocupy_delay;
+    return &s_sysPara.publicPara[in_solidNum].id_ocupy_delay;
 }
 
 /*物理端口绑定信息*/
@@ -1472,7 +1464,7 @@ uint8_t  app_general_pull_pad_phy_port_bind_message(uint8_t in_solidNum)
     uint8_t i = 0;
     for(i = 0; i < MASTER_PAD_NUM;i++)
     {
-        if(s_sysPara.padPara[i].idUsedFlag)
+        if(s_sysPara.publicPara[i].idUsedFlag)
         {
             if(s_sysPara.padPara[i].pad_bind_warm & (0x01<< in_solidNum))
             {//辐射列表
@@ -1494,20 +1486,6 @@ void app_general_push_pad_id_use_message(uint8_t in_solidNum,bool in_status)
 bool app_general_pull_pad_id_use_message(uint8_t in_solidNum)
 {
     return s_sysPara.publicPara[in_solidNum].idUsedFlag;
-}
-void app_general_pad_iduse_task(void)
-{
-    uint8_t i;  
-    for(i = 0; i < MASTER_PAD_NUM;i++)
-    {
-        pbc_timerClockRun_task(&s_sysPara.publicPara[i].id_ocupy_delay);
-        if(pbc_pull_timerIsCompleted(&s_sysPara.publicPara[i].id_ocupy_delay))
-        {
-            s_sysPara.publicPara[i].idUsedFlag = false;
-            app_general_push_pad_warm_need(i,false);
-            app_general_push_pad_fan_need(i,false);
-        }
-    }
 }
 
 /*末端时间戳*/
@@ -1563,11 +1541,11 @@ uint16_t app_general_pull_devive_type(uint8_t in_solidNum)
 /*版本號*/
 void app_general_push_pad_version(uint8_t in_solidNum,uint16_t in_type)
 {
-    s_sysPara.publicPara[in_solidNum].version_pad = in_type;
+    s_sysPara.publicPara[in_solidNum].version = in_type;
 }
 uint16_t app_general_pull_pad_version(uint8_t in_solidNum)
 {
-    return s_sysPara.publicPara[in_solidNum].version_pad;
+    return s_sysPara.publicPara[in_solidNum].version;
 }
 /*设备ID*/
 void app_general_push_devive_id0(uint8_t in_solidNum,uint16_t in_id)
@@ -1581,20 +1559,20 @@ uint16_t app_general_pull_devive_id0(uint8_t in_solidNum)
 
 void app_general_push_devive_id1(uint8_t in_solidNum,uint16_t in_id)
 {
-    pbc_int16uToArray_bigEndian(in_id,&s_sysPara.padPara[in_solidNum].deviceId[2]);
+    pbc_int16uToArray_bigEndian(in_id,&s_sysPara.publicPara[in_solidNum].deviceId[2]);
 }
 uint16_t app_general_pull_devive_id1(uint8_t in_solidNum)
 {
-    return pbc_arrayToInt16u_bigEndian(&s_sysPara.padPara[in_solidNum].deviceId[2]);
+    return pbc_arrayToInt16u_bigEndian(&s_sysPara.publicPara[in_solidNum].deviceId[2]);
 }
 
 void app_general_push_devive_id2(uint8_t in_solidNum,uint16_t in_id)
 {
-    pbc_int16uToArray_bigEndian(in_id,&s_sysPara.padPara[in_solidNum].deviceId[4]);
+    pbc_int16uToArray_bigEndian(in_id,&s_sysPara.publicPara[in_solidNum].deviceId[4]);
 }
 uint16_t app_general_pull_devive_id2(uint8_t in_solidNum)
 {
-    return pbc_arrayToInt16u_bigEndian(&s_sysPara.padPara[in_solidNum].deviceId[4]);
+    return pbc_arrayToInt16u_bigEndian(&s_sysPara.publicPara[in_solidNum].deviceId[4]);
 }
 
 
@@ -1847,7 +1825,7 @@ void app_general_push_pad_warm_need(uint8_t in_solidNum,uint16_t in_status)
             if(s_sysPara.padPara[in_solidNum].pad_bind_warm & (0x01<<i))
             {
                // s_sysPara.padPara[i].output_terminal = in_status;
-                s_sysPara.padPara[i].output_terminal = (in_status & (0x01<<i));
+                s_sysPara.publicPara[i].output_terminal = (in_status & (0x01<<i));
             }
         }     
    // } 
@@ -2000,7 +1978,7 @@ void app_general_push_pad_fan_need(uint8_t in_solidNum,uint16_t in_status)
         if(s_sysPara.padPara[in_solidNum].pad_bind_fan & (0x01<<i))
         {
             // s_sysPara.padPara[i].output_terminal = in_status;
-            s_sysPara.padPara[i].output_terminal = (in_status & (0x01<<i));
+            s_sysPara.publicPara[i].output_terminal = (in_status & (0x01<<i));
         }
     }         
 }
@@ -2539,16 +2517,477 @@ void app_general_push_dhm_dp_stamp(uint8_t in_solidNum,uint16_t in_index,uint32_
 {
     if(in_index > DP_ADDR_DHM_START)
     {
-        s_sysPara.dhmPara[in_solidNum].dpStamp[in_index-DP_ADDR_DHM_START] = in_stamp;
+        s_sysPara.dhmPara[in_solidNum].dhm_dpStamp[in_index-DP_ADDR_DHM_START] = in_stamp;
     }
 }
 uint32_t app_general_pull_dhm_dp_stamp(uint8_t in_solidNum,uint16_t in_index)
 {
     if(in_index > DP_ADDR_DHM_START)
     {
-        return s_sysPara.dhmPara[in_solidNum].dpStamp[in_index-DP_ADDR_DHM_START];
+        return s_sysPara.dhmPara[in_solidNum].dhm_dpStamp[in_index-DP_ADDR_DHM_START];
     }
     return 0;
+}
+
+/*设定湿度*/
+void app_general_push_dhm_aircod_humidity(uint8_t in_port,int16_t in_set_humidity)
+{
+    if((in_set_humidity > 0) && (in_set_humidity<=100))
+	{
+		if(s_sysPara.dhmPara[in_port].humidity_set != in_set_humidity)
+		{
+			s_sysPara.dhmPara[in_port].humidity_set = in_set_humidity;
+           // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+		}
+	}
+}
+int16_t app_general_pull_dhm_aircod_humidity(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].humidity_set;
+}
+/*除湿需求*/
+bool app_general_pull_dhm_dehum_request(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].dhm_need;
+}
+void app_general_push_dhm_dehum_request(uint8_t in_port,bool in_status)
+{
+    if(s_sysPara.dhmPara[in_port].dhm_need != in_status)
+    {
+        s_sysPara.dhmPara[in_port].dhm_need = in_status;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+
+/*设定风速*/
+void app_general_push_dhm_fanSpeed(uint8_t in_port,NewAirLevelSet_Def in_speed)
+{
+    if((in_speed ==LowFanSet)||
+	   (in_speed ==MiddleFanSet)||(in_speed ==HighFanSet))
+	{
+		if(s_sysPara.dhmPara[in_port].NewAirLevelSet != in_speed)
+		{
+			s_sysPara.dhmPara[in_port].NewAirLevelSet = in_speed;
+           // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_SPEED);
+		}
+    }
+}
+
+NewAirLevelSet_Def app_general_pull_dhm_fanSpeed(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].NewAirLevelSet;
+}
+
+//ptc测量温度
+int16_t app_general_pull_dhm_ptc_temp(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].ptc_temp;
+}
+void  app_general_push_dhm_ptc_temp(uint8_t in_port,int16_t in_temp)
+{
+    if(s_sysPara.dhmPara[in_port].ptc_temp != in_temp)
+    {
+        s_sysPara.dhmPara[in_port].ptc_temp = in_temp;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+//iec5测量温度
+int16_t app_general_pull_dhm_iec5_temp(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].iec_temp;
+}
+
+void  app_general_push_dhm_iec5_temp(uint8_t in_port,int16_t in_temp)
+{
+    if(s_sysPara.dhmPara[in_port].iec_temp != in_temp)
+    {
+        s_sysPara.dhmPara[in_port].iec_temp = in_temp;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+/*除湿输出状态*/
+uint16_t app_general_pull_dhm_dm_output_status(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].dhm_status;
+}
+void  app_general_push_dhm_dm_output_status(uint8_t in_port,uint16_t in_status)
+{
+    if(s_sysPara.dhmPara[in_port].dhm_status != in_status)
+    {
+        s_sysPara.dhmPara[in_port].dhm_status = in_status;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+/*新风PWM*/
+uint8_t app_general_pull_dhm_new_air_pwm_low(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].newAirLowPwm;
+}
+uint8_t app_general_pull_dhm_new_air_pwm_mid(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].newAirMidPwm;
+}
+uint8_t app_general_pull_dhm_new_air_pwm_high(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].newAirHighPwm;
+}
+void app_general_push_dhm_new_air_pwm_low(uint8_t in_port,uint8_t in_pwm)
+{
+    if(s_sysPara.dhmPara[in_port].newAirLowPwm != in_pwm)
+    {
+        s_sysPara.dhmPara[in_port].newAirLowPwm = in_pwm;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+void app_general_push_dhm_new_air_pwm_mid(uint8_t in_port,uint8_t in_pwm)
+{
+    if(s_sysPara.dhmPara[in_port].newAirMidPwm != in_pwm)
+    {
+        s_sysPara.dhmPara[in_port].newAirMidPwm = in_pwm;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+void app_general_push_dhm_new_air_pwm_high(uint8_t in_port,uint8_t in_pwm)
+{
+    if(s_sysPara.dhmPara[in_port].newAirHighPwm != in_pwm)
+    {
+        s_sysPara.dhmPara[in_port].newAirHighPwm = in_pwm;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+/*回风风PWM*/
+uint8_t app_general_pull_dhm_back_air_pwm_low(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].backAirLowPwm;
+}
+uint8_t app_general_pull_dhm_back_air_pwm_mid(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].backAirMidPwm;
+}
+uint8_t app_general_pull_dhm_back_air_pwm_high(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].backAirHighPwm;
+}
+void app_general_push_dhm_back_air_pwm_low(uint8_t in_port,uint8_t in_pwm)
+{
+    if(s_sysPara.dhmPara[in_port].backAirLowPwm != in_pwm)
+    {
+        s_sysPara.dhmPara[in_port].backAirLowPwm = in_pwm;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+void app_general_push_dhm_back_air_pwm_mid(uint8_t in_port,uint8_t in_pwm)
+{
+    if(s_sysPara.dhmPara[in_port].backAirMidPwm != in_pwm)
+    {
+        s_sysPara.dhmPara[in_port].backAirMidPwm = in_pwm;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+void app_general_push_dhm_back_air_pwm_high(uint8_t in_port,uint8_t in_pwm)
+{
+    if(s_sysPara.dhmPara[in_port].backAirHighPwm != in_pwm)
+    {
+        s_sysPara.dhmPara[in_port].backAirHighPwm = in_pwm;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+/*户外进风/氟盘前/氟盘后/回风/排风温湿度*/
+void app_general_push_dhm_outdoor_temp(uint8_t in_port,int16_t in_temp)
+{
+    if(s_sysPara.dhmPara[in_port].outdoor_temp != in_temp)
+    {
+        s_sysPara.dhmPara[in_port].outdoor_temp = in_temp;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_outdoor_temp(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].outdoor_temp;
+}
+void app_general_push_dhm_outdoor_hum(uint8_t in_port,int16_t in_hum)
+{
+    if(s_sysPara.dhmPara[in_port].outdoor_hum != in_hum)
+    {
+        s_sysPara.dhmPara[in_port].outdoor_hum = in_hum;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_outdoor_hum(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].outdoor_hum;
+}
+int16_t app_general_pull_dhm_adjust_outdoor_hum(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].adjust_outdoor_hum;
+}
+void app_general_push_dhm_adjust_outdoor_hum(uint8_t in_port,int16_t in_hum)
+{
+    if(s_sysPara.dhmPara[in_port].adjust_outdoor_hum != in_hum)
+    {
+        s_sysPara.dhmPara[in_port].adjust_outdoor_hum = in_hum;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_adjust_outdoor_temp(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].adjust_outdoor_temp;
+}
+void app_general_push_dhm_adjust_outdoor_temp(uint8_t in_port,int16_t in_temp)
+{
+    if(s_sysPara.dhmPara[in_port].adjust_outdoor_temp != in_temp)
+    {
+        s_sysPara.dhmPara[in_port].adjust_outdoor_temp = in_temp;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+void app_general_push_dhm_before_fu_temp(uint8_t in_port,int16_t in_temp)
+{
+    if(s_sysPara.dhmPara[in_port].before_fu_temp != in_temp)
+    {
+        s_sysPara.dhmPara[in_port].before_fu_temp = in_temp;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_before_fu_temp(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].before_fu_temp;
+}
+void app_general_push_dhm_before_fu_hum(uint8_t in_port,int16_t in_hum)
+{
+    if(s_sysPara.dhmPara[in_port].before_fu_hum != in_hum)
+    {
+        s_sysPara.dhmPara[in_port].before_fu_hum = in_hum;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_before_fu_hum(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].before_fu_hum;
+}
+
+int16_t app_general_pull_dhm_adjust_beforfu_hum(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].adjust_befor_fu_hum;
+}
+void app_general_push_dhm_adjust_beforfu_hum(uint8_t in_port,int16_t in_hum)
+{
+    if(s_sysPara.dhmPara[in_port].adjust_befor_fu_hum != in_hum)
+    {
+        s_sysPara.dhmPara[in_port].adjust_befor_fu_hum = in_hum;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_adjust_beforfu_temp(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].adjust_befor_fu_temp;
+}
+void app_general_push_dhm_adjust_beforfu_temp(uint8_t in_port,int16_t in_temp)
+{
+    if(s_sysPara.dhmPara[in_port].adjust_befor_fu_temp != in_temp)
+    {
+        s_sysPara.dhmPara[in_port].adjust_befor_fu_temp = in_temp;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+
+void app_general_push_dhm_after_fu_temp(uint8_t in_port,int16_t in_temp)
+{
+    if(s_sysPara.dhmPara[in_port].after_fu_temp != in_temp)
+    {
+        s_sysPara.dhmPara[in_port].after_fu_temp = in_temp;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_after_fu_temp(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].after_fu_temp;
+}
+
+void app_general_push_dhm_after_fu_hum(uint8_t in_port,int16_t in_hum)
+{
+    if(s_sysPara.dhmPara[in_port].after_fu_hum != in_hum)
+    {
+        s_sysPara.dhmPara[in_port].after_fu_hum = in_hum;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_after_fu_hum(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].after_fu_hum;
+}
+
+int16_t app_general_pull_dhm_adjust_afterfu_hum(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].adjust_after_fu_hum;
+}
+void app_general_push_dhm_adjust_afterfu_hum(uint8_t in_port,int16_t in_hum)
+{
+    if(s_sysPara.dhmPara[in_port].adjust_after_fu_hum != in_hum)
+    {
+        s_sysPara.dhmPara[in_port].adjust_after_fu_hum = in_hum;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_adjust_afterfu_temp(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].adjust_after_fu_temp;
+}
+void app_general_push_dhm_adjust_afterfu_temp(uint8_t in_port,int16_t in_temp)
+{
+    if(s_sysPara.dhmPara[in_port].adjust_after_fu_temp != in_temp)
+    {
+        s_sysPara.dhmPara[in_port].adjust_after_fu_temp = in_temp;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+
+void app_general_push_dhm_backair_temp(uint8_t in_port,int16_t in_temp)
+{
+    if(s_sysPara.dhmPara[in_port].back_air_temp != in_temp)
+    {
+        s_sysPara.dhmPara[in_port].back_air_temp = in_temp;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_backair_temp(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].back_air_temp;
+}
+void app_general_push_dhm_backair_hum(uint8_t in_port,int16_t in_hum)
+{
+    if(s_sysPara.dhmPara[in_port].back_air_hum != in_hum)
+    {
+        s_sysPara.dhmPara[in_port].back_air_hum = in_hum;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_backair_hum(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].back_air_hum;
+}
+void app_general_push_dhm_backair_co2(uint8_t in_port,int16_t in_set_co2)
+{
+    if(s_sysPara.dhmPara[in_port].back_air_co2 != in_set_co2)
+    {
+        s_sysPara.dhmPara[in_port].back_air_co2 = in_set_co2;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_backair_co2(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].back_air_co2;
+}
+void app_general_push_dhm_backair_pm25(uint8_t in_port,int16_t in_set_pm25)
+{
+    if(s_sysPara.dhmPara[in_port].back_air_pm25 != in_set_pm25)
+    {
+        s_sysPara.dhmPara[in_port].back_air_pm25 = in_set_pm25;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_backair_pm25(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].back_air_pm25;
+}
+
+int16_t app_general_pull_dhm_adjust_backair_hum(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].adjust_back_air_hum;
+}
+void app_general_push_dhm_adjust_backair_hum(uint8_t in_port,int16_t in_hum)
+{
+    if(s_sysPara.dhmPara[in_port].adjust_back_air_hum != in_hum)
+    {
+        s_sysPara.dhmPara[in_port].adjust_back_air_hum = in_hum;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_adjust_backair_temp(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].adjust_back_air_temp;
+}
+void app_general_push_dhm_adjust_backair_temp(uint8_t in_port,int16_t in_temp)
+{
+    if(s_sysPara.dhmPara[in_port].adjust_back_air_temp != in_temp)
+    {
+        s_sysPara.dhmPara[in_port].adjust_back_air_temp = in_temp;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_adjust_backair_co2(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].adjust_back_air_co2;
+}
+int16_t app_general_pull_dhm_adjust_backair_pm25(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].adjust_back_air_pm25;
+}
+void app_general_push_dhm_adjust_backair_co2(uint8_t in_port,int16_t in_co2)
+{
+    if(s_sysPara.dhmPara[in_port].adjust_back_air_co2 != in_co2)
+    {
+        s_sysPara.dhmPara[in_port].adjust_back_air_co2 = in_co2;
+        //app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BACK_AIR_WEATHER);
+    }
+}
+void app_general_push_dhm_adjust_backair_pm25(uint8_t in_port,int16_t in_pm25)
+{
+    if(s_sysPara.dhmPara[in_port].adjust_back_air_pm25 != in_pm25)
+    {
+        s_sysPara.dhmPara[in_port].adjust_back_air_pm25 = in_pm25;
+      //  app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_BACK_AIR_WEATHER);
+    }
+    
+}
+
+void app_general_push_dhm_exhastair_temp(uint8_t in_port,int16_t in_temp)
+{
+    if(s_sysPara.dhmPara[in_port].exhast_air_temp != in_temp)
+    {
+        s_sysPara.dhmPara[in_port].exhast_air_temp = in_temp;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_exhastair_temp(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].exhast_air_temp;
+}
+void app_general_push_dhm_exhastair_hum(uint8_t in_port,int16_t in_hum)
+{
+    if(s_sysPara.dhmPara[in_port].exhast_air_hum != in_hum)
+    {
+        s_sysPara.dhmPara[in_port].exhast_air_hum = in_hum;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_exhastair_hum(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].exhast_air_hum;
+}
+void app_general_push_dhm_adjust_exhastair_hum(uint8_t in_port,int16_t in_hum)
+{
+    if(s_sysPara.dhmPara[in_port].adjust_exhast_air_hum != in_hum)
+    {
+        s_sysPara.dhmPara[in_port].adjust_exhast_air_hum = in_hum;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_adjust_exhastair_hum(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].adjust_exhast_air_hum;
+}
+void app_general_push_dhm_adjust_exhastair_temp(uint8_t in_port,int16_t in_temp)
+{
+    if(s_sysPara.dhmPara[in_port].adjust_exhast_air_temp != in_temp)
+    {
+        s_sysPara.dhmPara[in_port].adjust_exhast_air_temp = in_temp;
+        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+    }
+}
+int16_t app_general_pull_dhm_adjust_exhastair_temp(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].adjust_exhast_air_temp;
 }
 
 //-----------------------------------------------------------------------------
@@ -2673,7 +3112,7 @@ uint16_t control_cal_ai_set_warm_temp(void)
                 }
                 for(i = 0;i < MASTER_PAD_NUM;i++)
                 {
-                    if((s_sysPara.padPara[i].output_terminal) && (s_sysPara.padPara[i].onlineFlag))
+                    if((s_sysPara.publicPara[i].output_terminal) && (s_sysPara.publicPara[i].onlineFlag))
                     {
                         if(false == aiParameter[i].lastOutputFlag)
                         {
@@ -2694,7 +3133,7 @@ uint16_t control_cal_ai_set_warm_temp(void)
         {       
             for(i = 0;i < MASTER_PAD_NUM;i++)
             {
-                if((s_sysPara.padPara[i].output_terminal) && (s_sysPara.padPara[i].onlineFlag))
+                if((s_sysPara.publicPara[i].output_terminal) && (s_sysPara.publicPara[i].onlineFlag))
                 {//在线有加热需求
                     count++;
                     aiParameter[i].startOutputTemp = s_sysPara.padPara[i].measureTemp;
@@ -2719,7 +3158,7 @@ uint16_t control_cal_ai_set_warm_temp(void)
             aiStatus = AI_STATUS_DELAY;
             for(i = 0;i < MASTER_PAD_NUM;i++)
             {
-                if((s_sysPara.padPara[i].output_terminal) && (s_sysPara.padPara[i].onlineFlag))
+                if((s_sysPara.publicPara[i].output_terminal) && (s_sysPara.publicPara[i].onlineFlag))
                 {//在线有加热需求
                     count++;
                     total_temp+= s_sysPara.padPara[i].measureTemp;
@@ -2786,7 +3225,7 @@ uint16_t lewDropTemp_control(void)
     uint16_t minLewDropTemp = 900;
     for(i = 0;i < MASTER_PAD_NUM;i++)
     {                    
-        if((s_sysPara.padPara[i].output_terminal) && (s_sysPara.padPara[i].onlineFlag))
+        if((s_sysPara.publicPara[i].output_terminal) && (s_sysPara.publicPara[i].onlineFlag))
         {
             if(minLewDropTemp > (mde_pull_drop_temp(s_sysPara.padPara[i].measureTemp,s_sysPara.padPara[i].humility)+StoRunParameter.coldDropDiff))
             {
@@ -2824,7 +3263,7 @@ uint16_t control_cal_ai_set_cold_temp(void)
         {    
             for(i = 0;i < MASTER_PAD_NUM;i++)
             {
-                if((s_sysPara.padPara[i].output_terminal) && (s_sysPara.padPara[i].onlineFlag))
+                if((s_sysPara.publicPara[i].output_terminal) && (s_sysPara.publicPara[i].onlineFlag))
                 {//在线有加热需求
                     count++;
                     aiParameter[i].startOutputTemp = s_sysPara.padPara[i].measureTemp;
@@ -2848,7 +3287,7 @@ uint16_t control_cal_ai_set_cold_temp(void)
             aiStatus = AI_STATUS_DELAY;
             for(i = 0;i < MASTER_PAD_NUM;i++)
             {
-                if((s_sysPara.padPara[i].output_terminal) && (s_sysPara.padPara[i].onlineFlag))
+                if((s_sysPara.publicPara[i].output_terminal) && (s_sysPara.publicPara[i].onlineFlag))
                 {//在线有加热需求
                     count++;
                     total_temp+= s_sysPara.padPara[i].measureTemp;
@@ -2915,7 +3354,7 @@ uint16_t control_cal_ai_set_cold_temp(void)
                 }
                 for(i = 0;i < MASTER_PAD_NUM;i++)
                 {                    
-                    if((s_sysPara.padPara[i].output_terminal) && (s_sysPara.padPara[i].onlineFlag))
+                    if((s_sysPara.publicPara[i].output_terminal) && (s_sysPara.publicPara[i].onlineFlag))
                     {
                         if(false == aiParameter[i].lastOutputFlag)
                         {
@@ -3024,7 +3463,7 @@ bool app_pull_energy_need(void)
     {
         for(i = 0; i < (MASTER_PAD_NUM-2);i++)
         {
-            if(s_sysPara.padPara[i].output_remote)
+            if(s_sysPara.publicPara[i].output_remote)
             {
                 return true;
             }
@@ -3040,7 +3479,7 @@ bool app_pull_energy_need(void)
                 {
                     if(s_sysPara.padPara[i].pad_bind_warm & (0x01 << j))
                     {
-                        if((s_sysPara.padPara[j].output_terminal) && ((s_sysPara.lewTempStatus & (0x01<<j)) == 0))
+                        if((s_sysPara.publicPara[j].output_terminal) && ((s_sysPara.lewTempStatus & (0x01<<j)) == 0))
                         {//有输出同时没有露点状态
                             return true;
                         }
@@ -3105,7 +3544,7 @@ void app_lew_temp_protect(void)
     uint8_t warm_lew_protec_num = 0;
     for(i = 0; i < MASTER_PAD_NUM;i++)
     {
-        if((s_sysPara.padPara[i].onlineFlag) && (s_sysPara.padPara[i].chDevicePowerStatus))
+        if((s_sysPara.publicPara[i].onlineFlag) && (s_sysPara.padPara[i].chDevicePowerStatus))
         {//在线开机的情况下
             if(s_sysPara.padPara[i].pad_bind_warm)
             {//有辐射绑定输出
@@ -3213,9 +3652,9 @@ void app_general_id_ocupy_task(void)
         pbc_reload_timerClock(&check_list_delay,60);
         for(i = 0; i < MASTER_PAD_NUM;i++)
         {
-            if(false == app_pull_id_in_list(&s_sysPara.padPara[i].deviceId[0]))
+            if(false == app_pull_id_in_list(&s_sysPara.publicPara[i].deviceId[0]))
             {
-                s_sysPara.padPara[i].idUsedFlag = false;
+                s_sysPara.publicPara[i].idUsedFlag = false;
                 app_general_push_pad_warm_need(i,false);
                 app_general_push_pad_fan_need(i,false);
             }
@@ -3226,7 +3665,7 @@ void app_general_id_ocupy_task(void)
         pbc_timerClockRun_task(app_general_pull_pad_id_ocupy_time(i));
         if(pbc_pull_timerIsOnceTriggered(app_general_pull_pad_id_ocupy_time(i)))
         {//释放
-            s_sysPara.padPara[i].idUsedFlag = false;
+            s_sysPara.publicPara[i].idUsedFlag = false;
 			app_general_push_pad_warm_need(i,false);
             app_general_push_pad_fan_need(i,false);
         }
@@ -3286,11 +3725,11 @@ void check_rebind_list(void)
     uint8_t num = 0;
     for(i = 0; i < MASTER_PAD_NUM;i++)
     {//辐射端
-        if(s_sysPara.padPara[i].onlineFlag)
+        if(s_sysPara.publicPara[i].onlineFlag)
         {//在线
             for(j = (i+1);j < MASTER_PAD_NUM;j++)
             {   
-                if(s_sysPara.padPara[j].onlineFlag)
+                if(s_sysPara.publicPara[j].onlineFlag)
                 {
                     if(s_sysPara.padPara[i].pad_bind_warm & s_sysPara.padPara[j].pad_bind_warm)
                     {//辐射
@@ -3308,11 +3747,11 @@ void check_rebind_list(void)
     }
     for(i = 0; i < MASTER_PAD_NUM;i++)
     {//风盘端
-        if(s_sysPara.padPara[i].onlineFlag)
+        if(s_sysPara.publicPara[i].onlineFlag)
         {
             for(j = (i+1);j < MASTER_PAD_NUM;j++)
             {
-                if(s_sysPara.padPara[j].onlineFlag)
+                if(s_sysPara.publicPara[j].onlineFlag)
                 {
                     if(s_sysPara.padPara[i].pad_bind_fan & s_sysPara.padPara[j].pad_bind_fan)
                     {
@@ -3335,7 +3774,7 @@ void check_rebind_list(void)
             {
                 for(j = 0; j < MASTER_PAD_NUM;j++)
                 {
-                    if(s_sysPara.padPara[j].onlineFlag)
+                    if(s_sysPara.publicPara[j].onlineFlag)
                     {
                         if(s_sysPara.padPara[j].pad_bind_warm & (0x01 << i))
                         {
@@ -3365,7 +3804,7 @@ void app_general_check_system_lew_temp_status(void)
     {//制冷模式下
         for(i = 0; i < MASTER_PAD_NUM;i++)
         {
-            if((s_sysPara.padPara[i].chDevicePowerStatus) && (s_sysPara.padPara[i].onlineFlag) && (s_sysPara.padPara[i].pad_bind_warm))
+            if((s_sysPara.padPara[i].chDevicePowerStatus) && (s_sysPara.publicPara[i].onlineFlag) && (s_sysPara.padPara[i].pad_bind_warm))
             {//在线并处于开机状态
                 if(app_pull_mix_water_temp() <= (s_sysPara.padPara[i].lewDropTemp-StoRunParameter.lew_status_open_diff))
                 {
@@ -3438,7 +3877,7 @@ void app_general_clear_version_pad_flag(void)
 }
 void app_general_clear_port_version(uint8_t in_port)
 {
-    s_sysPara.padPara[in_port].version_pad = 0;
+    s_sysPara.publicPara[in_port].version = 0;
 }
 //风盘版本号升级
 bool fan_version_updata = false;
@@ -3479,9 +3918,9 @@ void app_general_check_pad_updata(void)
                 {      
                     for(i = 0; i <  MASTER_PAD_NUM;i++)
                     {
-                        if((s_sysPara.padPara[i].idUsedFlag) && (s_sysPara.padPara[i].deviceType == DEVICE_TYPE_ROMM))
+                        if((s_sysPara.publicPara[i].idUsedFlag) && (s_sysPara.publicPara[i].deviceType == DEVICE_TYPE_ROMM))
                         {
-                            if((s_sysPara.padPara[i].version_pad != 0) && (s_sysPara.padPara[i].version_pad < padVersion))
+                            if((s_sysPara.publicPara[i].version != 0) && (s_sysPara.publicPara[i].version < padVersion))
                             {
                                 padVersion_list |= (0x01<<i);
                             }
@@ -3499,9 +3938,9 @@ void app_general_check_pad_updata(void)
                 {
                     for(i = 0; i <  MASTER_PAD_NUM;i++)
                     {
-                        if((s_sysPara.padPara[i].idUsedFlag) && (s_sysPara.padPara[i].deviceType == DEVICE_TYPE_FAN))
+                        if((s_sysPara.publicPara[i].idUsedFlag) && (s_sysPara.publicPara[i].deviceType == DEVICE_TYPE_FAN))
                         {
-                            if((s_sysPara.padPara[i].version_pad != 0) && (s_sysPara.padPara[i].version_pad < padVersion))
+                            if((s_sysPara.publicPara[i].version != 0) && (s_sysPara.publicPara[i].version < padVersion))
                             {
                                 fanVersion_list |= (0x01<<i);
                             }
@@ -3551,8 +3990,8 @@ void app_general_para_updata_task(void)
         }
         if(s_sysPara.remoteControlFlag)
         {
-            if((s_sysPara.padPara[6].output_remote) ||
-            (s_sysPara.padPara[7].output_remote) )
+            if((s_sysPara.publicPara[6].output_remote) ||
+            (s_sysPara.publicPara[7].output_remote) )
             {//风盘能需
                 system_need |= ENGER_NEED_FAN_BIT;
                 s_sysPara.system_status_word |= 0x08;
@@ -3565,8 +4004,8 @@ void app_general_para_updata_task(void)
         }
         else
         {
-            if((s_sysPara.padPara[6].output_terminal) ||
-            (s_sysPara.padPara[7].output_terminal) )
+            if((s_sysPara.publicPara[6].output_terminal) ||
+            (s_sysPara.publicPara[7].output_terminal) )
             {
                 system_need |= ENGER_NEED_FAN_BIT;
                 s_sysPara.system_status_word |= 0x08;
@@ -3581,7 +4020,7 @@ void app_general_para_updata_task(void)
         int16_t max_lew_temp_backup = 0;
         for(i = 0; i < MASTER_PAD_NUM;i++)
         {
-            if((s_sysPara.padPara[i].chDevicePowerStatus) && (s_sysPara.padPara[i].pad_bind_warm) && (s_sysPara.padPara[i].onlineFlag))
+            if((s_sysPara.padPara[i].chDevicePowerStatus) && (s_sysPara.padPara[i].pad_bind_warm) && (s_sysPara.publicPara[i].onlineFlag))
             {//辐射开机              
                 if(s_sysPara.padPara[i].lewDropTemp > max_lew_temp_backup)
                 {
@@ -3599,7 +4038,7 @@ void app_general_para_updata_task(void)
         #define HUM_VALUE_CONFIG  60
         for(i = 0; i < MASTER_PAD_NUM;i++)
         {
-            if((s_sysPara.padPara[i].chDevicePowerStatus) && (s_sysPara.padPara[i].pad_bind_warm) && (s_sysPara.padPara[i].onlineFlag))
+            if((s_sysPara.padPara[i].chDevicePowerStatus) && (s_sysPara.padPara[i].pad_bind_warm) && (s_sysPara.publicPara[i].onlineFlag))
             {//辐射开机              
                 if(s_sysPara.padPara[i].humility > HUM_VALUE_CONFIG)
                 {
@@ -3621,7 +4060,7 @@ void app_general_para_updata_task(void)
         {//远程绝对控制
             for(i = 0; i <  MASTER_PAD_NUM;i++)
             {
-                if(s_sysPara.padPara[i].output_remote)
+                if(s_sysPara.publicPara[i].output_remote)
                 {
                     s_sysPara.pad_output_status |= (0x01<<i);
                 }
@@ -3725,7 +4164,7 @@ void app_general_mix_water_task(void)
                             s_sysPara.output_pump = true;
                             for(i = 0; i <  MASTER_PAD_NUM;i++)
                             {
-                                output_terminal_backup[i] = s_sysPara.padPara[i].output_terminal;
+                                output_terminal_backup[i] = s_sysPara.publicPara[i].output_terminal;
                             }
                         }
                         else
@@ -3760,7 +4199,7 @@ void app_general_mix_water_task(void)
                                     }
                                     for(i = 0; i <  MASTER_PAD_NUM;i++)
                                     {
-                                        if((s_sysPara.padPara[i].output_terminal) && ((s_sysPara.lewTempStatus & (0x01<<i)) == 0))
+                                        if((s_sysPara.publicPara[i].output_terminal) && ((s_sysPara.lewTempStatus & (0x01<<i)) == 0))
                                         {//不处于露点状态下
                                             output_terminal_backup[i] = true;
                                         }
@@ -3807,8 +4246,8 @@ void app_general_mix_water_task(void)
                                     output_terminal_backup[i] = false;
                                 }
                                 /*两路风盘保持不变*/
-                                output_terminal_backup[6] = s_sysPara.padPara[6].output_terminal;
-                                output_terminal_backup[7] = s_sysPara.padPara[7].output_terminal;
+                                output_terminal_backup[6] = s_sysPara.publicPara[6].output_terminal;
+                                output_terminal_backup[7] = s_sysPara.publicPara[7].output_terminal;
                             }   
                         } 
                         if(inloop_checkFlag)
@@ -3843,7 +4282,7 @@ void app_general_mix_water_task(void)
                             s_sysPara.output_pump = true;
                             for(i = 0; i <  MASTER_PAD_NUM;i++)
                             {
-                                output_terminal_backup[i] = s_sysPara.padPara[i].output_terminal;
+                                output_terminal_backup[i] = s_sysPara.publicPara[i].output_terminal;
                             }
                         }
                         else if(s_sysPara.indoor_dehum_status)
@@ -3897,7 +4336,7 @@ void app_general_mix_water_task(void)
                                    
                                     for(i = 0; i <  MASTER_PAD_NUM;i++)
                                     {
-                                        if((s_sysPara.padPara[i].output_terminal) && ((s_sysPara.lewTempStatus & (0x01<<i)) == 0))
+                                        if((s_sysPara.publicPara[i].output_terminal) && ((s_sysPara.lewTempStatus & (0x01<<i)) == 0))
                                         {//不处于露点状态下
                                             output_terminal_backup[i] = true;
                                         }
@@ -3944,8 +4383,8 @@ void app_general_mix_water_task(void)
                                     output_terminal_backup[i] = false;
                                 }
                                 /*两路风盘保持不变*/
-                                output_terminal_backup[6] = s_sysPara.padPara[6].output_terminal;
-                                output_terminal_backup[7] = s_sysPara.padPara[7].output_terminal;
+                                output_terminal_backup[6] = s_sysPara.publicPara[6].output_terminal;
+                                output_terminal_backup[7] = s_sysPara.publicPara[7].output_terminal;
                             }   
                         } 
                         if(inloop_checkFlag)
@@ -3980,7 +4419,7 @@ void app_general_mix_water_task(void)
                             s_sysPara.output_pump = true;
                             for(i = 0; i <  MASTER_PAD_NUM;i++)
                             {
-                                output_terminal_backup[i] = s_sysPara.padPara[i].output_terminal;
+                                output_terminal_backup[i] = s_sysPara.publicPara[i].output_terminal;
                             }
                         }
                         else if(s_sysPara.indoor_dehum_status)
@@ -4034,7 +4473,7 @@ void app_general_mix_water_task(void)
                                    
                                     for(i = 0; i <  MASTER_PAD_NUM;i++)
                                     {
-                                        if((s_sysPara.padPara[i].output_terminal) && ((s_sysPara.lewTempStatus & (0x01<<i)) == 0))
+                                        if((s_sysPara.publicPara[i].output_terminal) && ((s_sysPara.lewTempStatus & (0x01<<i)) == 0))
                                         {//不处于露点状态下
                                             output_terminal_backup[i] = true;
                                         }
@@ -4081,8 +4520,8 @@ void app_general_mix_water_task(void)
                                     output_terminal_backup[i] = false;
                                 }
                                 /*两路风盘保持不变*/
-                                output_terminal_backup[6] = s_sysPara.padPara[6].output_terminal;
-                                output_terminal_backup[7] = s_sysPara.padPara[7].output_terminal;
+                                output_terminal_backup[6] = s_sysPara.publicPara[6].output_terminal;
+                                output_terminal_backup[7] = s_sysPara.publicPara[7].output_terminal;
                             }   
                         } 
                         if(inloop_checkFlag)
@@ -4116,7 +4555,7 @@ void app_general_mix_water_task(void)
                             s_sysPara.output_pump = true;
                             for(i = 0; i <  MASTER_PAD_NUM;i++)
                             {
-                                output_terminal_backup[i] = s_sysPara.padPara[i].output_terminal;
+                                output_terminal_backup[i] = s_sysPara.publicPara[i].output_terminal;
                             }
                         }
                         else
@@ -4153,7 +4592,7 @@ void app_general_mix_water_task(void)
                                     
                                     for(i = 0; i <  MASTER_PAD_NUM;i++)
                                     {
-                                        if((s_sysPara.padPara[i].output_terminal) && ((s_sysPara.lewTempStatus & (0x01<<i)) == 0))
+                                        if((s_sysPara.publicPara[i].output_terminal) && ((s_sysPara.lewTempStatus & (0x01<<i)) == 0))
                                         {//不处于露点状态下
                                             output_terminal_backup[i] = true;
                                         }
@@ -4200,8 +4639,8 @@ void app_general_mix_water_task(void)
                                     output_terminal_backup[i] = false;
                                 }
                                 /*两路风盘保持不变*/
-                                output_terminal_backup[6] = s_sysPara.padPara[6].output_terminal;
-                                output_terminal_backup[7] = s_sysPara.padPara[7].output_terminal;
+                                output_terminal_backup[6] = s_sysPara.publicPara[6].output_terminal;
+                                output_terminal_backup[7] = s_sysPara.publicPara[7].output_terminal;
                             }   
                         } 
                         if(inloop_checkFlag)
@@ -4259,7 +4698,7 @@ void app_general_mix_water_task(void)
             /*6二次侧+5一次侧继电器输出*/
             for(i = 0; i < (MASTER_PAD_NUM-1);i++)
             {
-                if(s_sysPara.padPara[i].output_remote)
+                if(s_sysPara.publicPara[i].output_remote)
                 {
                     mde_relay_on(i,(10+delay_count*10));
                     delay_count++;
@@ -4373,7 +4812,7 @@ void app_general_mix_water_task(void)
         uint8_t  j;
         for(j = 0; j < MASTER_PAD_NUM;j++)
         {
-            s_sysPara.padPara[j].id_ocupy_delay.timStatusBits = timerType_second;
+            s_sysPara.publicPara[j].id_ocupy_delay.timStatusBits = timerType_second;
         }       
     }   
 }

@@ -4,7 +4,7 @@
 #include ".\app_cfg.h"
 
 #define  MAX_DATA_POINT_LEN_PAD                15//DP最大长度
-#define  MAX_DATA_POINT_LEN_DHM                14//DP最大长度
+#define  MAX_DATA_POINT_LEN_DHM                15//DP最大长度
 #define  MAX_DATA_POINT_LEN_SYSTEM             32//DP最大长度
 
 #define  MASTER_PAD_NUM                 12//最大末端数量
@@ -249,7 +249,6 @@ void app_general_push_unbind_list_fan(uint16_t in_unbind);
 /*输配未绑定的阀门列表(辐射)*/
 uint16_t app_general_pull_unbind_list_warm(void);
 void app_general_push_unbind_list_warm(uint16_t in_unbind);
-
 /*重复绑定信息*/
 void app_general_push_pad_repeat_bind_list(uint16_t in_list);
 uint16_t app_general_pull_pad_repeat_bind_list(void);
@@ -281,7 +280,7 @@ bool app_general_pull_pad_id_use_message(uint8_t in_solidNum);
 /*末端时间戳*/
 void app_general_push_pad_dp_stamp(uint8_t in_solidNum,uint8_t in_index,uint32_t in_stamp);
 uint32_t app_general_pull_pad_dp_stamp(uint8_t in_solidNum,uint8_t in_index);
-void app_general_pad_iduse_task(void);
+
 /*设备故障字*/
 void app_general_push_devive_error_word(uint8_t in_solidNum,uint16_t in_error);
 uint16_t app_general_pull_devive_error_word(uint8_t in_solidNum);
@@ -452,9 +451,6 @@ uint8_t app_general_pull_pad_type_warm_choose(uint8_t in_solidNum);
 void app_general_push_pad_room_area(uint8_t in_solidNum,uint8_t in_mode);
 uint8_t app_general_pull_pad_room_area(uint8_t in_solidNum);
 
-//除湿模块接口
-
-
 
 /*绑定故障*/
 void app_general_push_pad_bind_error(uint8_t in_solidNum,uint16_t in_error);
@@ -573,6 +569,110 @@ void app_general_clear_port_version(uint8_t in_port);
 uint16_t app_general_pull_version_fan_list(void);
 bool app_general_pull_version_fan_flag(void);
 void app_general_clear_version_fan_flag(void);
+
+
+/*除湿模块相关接口*/
+
+/*末端id占用信息*/
+void app_general_push_dhm_id_use_message(uint8_t in_port,bool in_status);
+bool app_general_pull_dhm_id_use_message(uint8_t in_port);
+/*公共占用端口*/
+uint8_t app_general_pull_dhm_use_port(uint8_t in_port);
+void app_general_push_dhm_use_port(uint8_t in_port,uint8_t in_com);
+
+/*除湿模块时间戳*/
+void app_general_push_dhm_dp_stamp(uint8_t in_solidNum,uint16_t in_index,uint32_t in_stamp);
+uint32_t app_general_pull_dhm_dp_stamp(uint8_t in_solidNum,uint16_t in_index);
+/*设定湿度*/
+void app_general_push_dhm_aircod_humidity(uint8_t in_port,int16_t in_set_humidity);
+int16_t app_general_pull_dhm_aircod_humidity(uint8_t in_port);
+/*除湿需求*/
+bool app_general_pull_dhm_dehum_request(uint8_t in_port);
+void app_general_push_dhm_dehum_request(uint8_t in_port,bool in_status);
+//ptc测量温度
+int16_t app_general_pull_dhm_ptc_temp(uint8_t in_port);
+void  app_general_push_dhm_ptc_temp(uint8_t in_port,int16_t in_temp);
+/*设定风速*/
+void app_general_push_dhm_fanSpeed(uint8_t in_port,NewAirLevelSet_Def in_speed);
+NewAirLevelSet_Def app_general_pull_dhm_fanSpeed(uint8_t in_port);
+//iec5测量温度
+int16_t app_general_pull_dhm_iec5_temp(uint8_t in_port);
+void  app_general_push_dhm_iec5_temp(uint8_t in_port,int16_t in_temp);
+/*除湿输出状态*/
+uint16_t app_general_pull_dhm_dm_output_status(uint8_t in_port);
+void  app_general_push_dhm_dm_output_status(uint8_t in_port,uint16_t in_status);
+/*新风PWM*/
+uint8_t app_general_pull_dhm_new_air_pwm_low(uint8_t in_port);
+uint8_t app_general_pull_dhm_new_air_pwm_mid(uint8_t in_port);
+uint8_t app_general_pull_dhm_new_air_pwm_high(uint8_t in_port);
+void app_general_push_dhm_new_air_pwm_low(uint8_t in_port,uint8_t in_pwm);
+void app_general_push_dhm_new_air_pwm_mid(uint8_t in_port,uint8_t in_pwm);
+void app_general_push_dhm_new_air_pwm_high(uint8_t in_port,uint8_t in_pwm);
+/*回风风PWM*/
+uint8_t app_general_pull_dhm_back_air_pwm_low(uint8_t in_port);
+uint8_t app_general_pull_dhm_back_air_pwm_mid(uint8_t in_port);
+uint8_t app_general_pull_dhm_back_air_pwm_high(uint8_t in_port);
+void app_general_push_dhm_back_air_pwm_low(uint8_t in_port,uint8_t in_pwm);
+void app_general_push_dhm_back_air_pwm_mid(uint8_t in_port,uint8_t in_pwm);
+void app_general_push_dhm_back_air_pwm_high(uint8_t in_port,uint8_t in_pwm);
+/*户外进风/氟盘前/氟盘后/回风/排风温湿度*/
+void app_general_push_dhm_outdoor_temp(uint8_t in_port,int16_t in_temp);
+int16_t app_general_pull_dhm_outdoor_temp(uint8_t in_port);
+void app_general_push_dhm_outdoor_hum(uint8_t in_port,int16_t in_hum);
+int16_t app_general_pull_dhm_outdoor_hum(uint8_t in_port);
+
+int16_t app_general_pull_dhm_adjust_outdoor_hum(uint8_t in_port);
+void app_general_push_dhm_adjust_outdoor_hum(uint8_t in_port,int16_t in_hum);
+int16_t app_general_pull_dhm_adjust_outdoor_temp(uint8_t in_port);
+void app_general_push_dhm_adjust_outdoor_temp(uint8_t in_port,int16_t in_temp);
+
+
+void app_general_push_dhm_before_fu_temp(uint8_t in_port,int16_t in_temp);
+int16_t app_general_pull_dhm_before_fu_temp(uint8_t in_port);
+void app_general_push_dhm_before_fu_hum(uint8_t in_port,int16_t in_hum);
+int16_t app_general_pull_dhm_before_fu_hum(uint8_t in_port);
+int16_t app_general_pull_dhm_adjust_beforfu_hum(uint8_t in_port);
+void app_general_push_dhm_adjust_beforfu_hum(uint8_t in_port,int16_t in_hum);
+int16_t app_general_pull_dhm_adjust_beforfu_temp(uint8_t in_port);
+void app_general_push_dhm_adjust_beforfu_temp(uint8_t in_port,int16_t in_temp);
+
+
+void app_general_push_dhm_after_fu_temp(uint8_t in_port,int16_t in_temp);
+int16_t app_general_pull_dhm_after_fu_temp(uint8_t in_port);
+void app_general_push_dhm_after_fu_hum(uint8_t in_port,int16_t in_hum);
+int16_t app_general_pull_dhm_after_fu_hum(uint8_t in_port);
+int16_t app_general_pull_dhm_adjust_afterfu_hum(uint8_t in_port);
+void app_general_push_dhm_adjust_afterfu_hum(uint8_t in_port,int16_t in_hum);
+int16_t app_general_pull_dhm_adjust_afterfu_temp(uint8_t in_port);
+void app_general_push_dhm_adjust_afterfu_temp(uint8_t in_port,int16_t in_temp);
+
+
+void app_general_push_dhm_backair_temp(uint8_t in_port,int16_t in_temp);
+int16_t app_general_pull_dhm_backair_temp(uint8_t in_port);
+void app_general_push_dhm_backair_hum(uint8_t in_port,int16_t in_hum);
+int16_t app_general_pull_dhm_backair_hum(uint8_t in_port);
+void app_general_push_dhm_backair_co2(uint8_t in_port,int16_t in_set_co2);
+int16_t app_general_pull_dhm_backair_co2(uint8_t in_port);
+void app_general_push_dhm_backair_pm25(uint8_t in_port,int16_t in_set_pm25);
+int16_t app_general_pull_dhm_backair_pm25(uint8_t in_port);
+int16_t app_general_pull_dhm_adjust_backair_hum(uint8_t in_port);
+void app_general_push_dhm_adjust_backair_hum(uint8_t in_port,int16_t in_hum);
+int16_t app_general_pull_dhm_adjust_backair_temp(uint8_t in_port);
+void app_general_push_dhm_adjust_backair_temp(uint8_t in_port,int16_t in_temp);
+int16_t app_general_pull_dhm_adjust_backair_co2(uint8_t in_port);
+int16_t app_general_pull_dhm_adjust_backair_pm25(uint8_t in_port);
+void app_general_push_dhm_adjust_backair_co2(uint8_t in_port,int16_t in_co2);
+void app_general_push_dhm_adjust_backair_pm25(uint8_t in_port,int16_t in_pm25);
+
+void app_general_push_dhm_exhastair_temp(uint8_t in_port,int16_t in_temp);
+int16_t app_general_pull_dhm_exhastair_temp(uint8_t in_port);
+void app_general_push_dhm_exhastair_hum(uint8_t in_port,int16_t in_hum);
+int16_t app_general_pull_dhm_exhastair_hum(uint8_t in_port);
+void app_general_push_dhm_adjust_exhastair_hum(uint8_t in_port,int16_t in_hum);
+int16_t app_general_pull_dhm_adjust_exhastair_hum(uint8_t in_port);
+void app_general_push_dhm_adjust_exhastair_temp(uint8_t in_port,int16_t in_temp);
+int16_t app_general_pull_dhm_adjust_exhastair_temp(uint8_t in_port);
+
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endif

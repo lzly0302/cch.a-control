@@ -95,7 +95,8 @@ void app_link_syn_push_receive_data(uint8_t in_solidNum,bgk_comm_buff_def *in_re
 void app_link_syn_push_outside_updata_word(uint8_t in_solidNum,uint32_t in_updataWord);
 /*发送面板数据*/
 void app_link_syn_push_pad_updata_word(uint8_t in_prot,uint32_t in_updataWord);
-
+//发送除湿机数据
+void app_link_syn_push_dhm_updata_word(uint8_t in_prot,uint32_t in_updataWord);
 uint8_t pull_syn_main_status(void);
 //------------------------------E N D-------------------------------------------
 

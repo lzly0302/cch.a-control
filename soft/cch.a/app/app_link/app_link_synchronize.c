@@ -34,12 +34,16 @@ typedef enum
     SYN_STATUS_RERECEIVE_LIST,                   //重发接收结果    
 }synStatus_def;
 
-uint32_t        padOccupyWord[MAX_DEVICE_NUM];   //末端抢占字
+uint32_t        padOccupyWord[MASTER_PAD_NUM];   //末端抢占字
+uint32_t        dhmOccupyWord[MASTER_DHM_NUM];//除湿机抢占字
+
 
 uint8_t deviceid_addr[6]={0xaa,0xaa,0xaa,0xaa,0xaa,0xaa};//写入设备ID时用的地址
 #define  DEVICE_KEY 0XFA3456AF//写入设备密匙
 const uint8_t dpPadLen_pad[MAX_DATA_POINT_LEN_PAD] = {1,2,2,1,1,1,4,10,5,32,14,7,4,4,6};//面板数据点长度
+const uint8_t dpPadLen_hm[MAX_DATA_POINT_LEN_DHM]  = {1,1,1,1,1,6,3,3,7,7,7,15,7,7,4};//除湿模块数据点长度
 const uint8_t dpPadLen_system[MAX_DATA_POINT_LEN_SYSTEM] = {1,1,2,2,1,1,2,2,2,2,2,1,1,2,3,3,11,11,11,15,11,2,10,43,8,6,6,7,4,168,148,4};//系统数据点长度
+
 
 typedef struct
 {
@@ -579,6 +583,96 @@ void app_pull_data_point_message_pad(uint8_t in_solidNum,uint16_t in_dpAddr,uint
 {//面板获取信息
     switch (in_dpAddr)
     {
+        case DP_ADDR_DHM_POWER:
+        {
+            out_buff[0] = app_general_pull_power_status();
+            break;
+        }   
+        case DP_ADDR_DHM_WIND_SET_HUM:
+        {
+            out_buff[0] = app_general_pull_dhm_aircod_humidity(in_solidNum);
+            break;
+        }   
+        case DP_ADDR_DHM_WIND_SET_MODE:
+        {//
+            out_buff[0] = app_general_pull_aircod_mode();
+            break;
+        }  
+        case DP_ADDR_DHM_WIND_SET_SPEED:
+        {
+            out_buff[0] = app_general_pull_dhm_fanSpeed(in_solidNum);
+            break;
+        }   
+        case DP_ADDR_DHM_DEHUM_NEDD:
+        {
+            out_buff[0] = app_general_pull_dhm_dehum_request(in_solidNum);
+            break;
+        }  
+        case DP_ADDR_DHM_DEHUM_STATUS:
+        {
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_ptc_temp(in_solidNum),&out_buff[0]);
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_iec5_temp(in_solidNum),&out_buff[2]);
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_dm_output_status(in_solidNum),&out_buff[4]);
+            break;
+        }   
+        case DP_ADDR_DHM_LIS_NEW_AIR_PWM:
+        {
+            out_buff[0] = app_general_pull_dhm_new_air_pwm_low(in_solidNum);
+            out_buff[1] = app_general_pull_dhm_new_air_pwm_mid(in_solidNum);
+            out_buff[2] = app_general_pull_dhm_new_air_pwm_high(in_solidNum);
+            break;
+        }   
+        case DP_ADDR_DHM_LIS_BACK_AIR_PWM:
+        {
+            out_buff[0] = app_general_pull_dhm_back_air_pwm_low(in_solidNum);
+            out_buff[1] = app_general_pull_dhm_back_air_pwm_mid(in_solidNum);
+            out_buff[2] = app_general_pull_dhm_back_air_pwm_high(in_solidNum);
+            break;
+        }   
+        case DP_ADDR_DHM_LIS_OUTDOOR_WEATHER:
+        {   
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_outdoor_temp(in_solidNum),&out_buff[0]);
+            out_buff[2] = app_general_pull_dhm_outdoor_hum(in_solidNum);
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_outdoor_hum(in_solidNum),&out_buff[3]);
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_outdoor_temp(in_solidNum),&out_buff[5]);
+            break;
+        }   
+        case DP_ADDR_DHM_LIS_BEFORE_FU_WEATHER:
+        {
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_before_fu_temp(in_solidNum),&out_buff[0]);
+            out_buff[2] = app_general_pull_dhm_before_fu_hum(in_solidNum);
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_beforfu_hum(in_solidNum),&out_buff[3]);
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_beforfu_temp(in_solidNum),&out_buff[5]);
+            break;
+        }   
+        case DP_ADDR_DHM_LIS_AFTER_FU_WEATHER:
+        {
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_after_fu_temp(in_solidNum),&out_buff[0]);
+            out_buff[2] = app_general_pull_dhm_after_fu_hum(in_solidNum);
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_afterfu_hum(in_solidNum),&out_buff[3]);
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_afterfu_temp(in_solidNum),&out_buff[5]);
+            break;
+        }   
+        case DP_ADDR_DHM_LIS_BACK_AIR_WEATHER:
+        {
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+            out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_co2(in_solidNum),&out_buff[3]);
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_pm25(in_solidNum),&out_buff[5]);    
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_backair_hum(in_solidNum),&out_buff[7]);
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_backair_temp(in_solidNum),&out_buff[9]);
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_backair_co2(in_solidNum),&out_buff[11]);
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_backair_pm25(in_solidNum),&out_buff[13]);
+            break;
+        }   
+        case DP_ADDR_DHM_LIS_EXHAST_AIR_WEATHER:
+        {
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_exhastair_temp(in_solidNum),&out_buff[0]);
+            out_buff[2] = app_general_pull_dhm_exhastair_hum(in_solidNum);
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_exhastair_hum(in_solidNum),&out_buff[3]);
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_exhastair_temp(in_solidNum),&out_buff[5]);
+            break;
+        }   
         case DP_ADDR_PAD_POWER:
         {
             out_buff[0] = app_general_pull_devive_power(in_solidNum);
@@ -707,6 +801,96 @@ void app_push_data_point_message_pad(uint8_t in_solidNum,uint16_t in_dpAddr,uint
 {//面板写入信息
     switch (in_dpAddr)
     {
+        case DP_ADDR_DHM_POWER:
+        {
+            app_general_push_power_status(in_buff[0]);
+            break;
+        }   
+        case DP_ADDR_DHM_WIND_SET_HUM:
+        {
+            app_general_push_dhm_aircod_humidity(in_solidNum,in_buff[0]);
+            break;
+        }   
+        case DP_ADDR_DHM_WIND_SET_MODE:
+        {//
+            app_general_push_aircod_mode((AirRunMode_Def)in_buff[0]);
+            break;
+        }  
+        case DP_ADDR_DHM_WIND_SET_SPEED:
+        {
+            app_general_push_dhm_fanSpeed(in_solidNum,(NewAirLevelSet_Def)in_buff[0]);
+            break;
+        }   
+        case DP_ADDR_DHM_DEHUM_NEDD:
+        {
+            app_general_push_dhm_dehum_request(in_solidNum,in_buff[0]);
+            break;
+        }  
+        case DP_ADDR_DHM_DEHUM_STATUS:
+        {
+            app_general_push_dhm_ptc_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            app_general_push_dhm_iec5_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            app_general_push_dhm_dm_output_status(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            break;
+        }   
+        case DP_ADDR_DHM_LIS_NEW_AIR_PWM:
+        {
+            app_general_push_dhm_new_air_pwm_low(in_solidNum,in_buff[0]);
+            app_general_push_dhm_new_air_pwm_mid(in_solidNum,in_buff[0]);
+            app_general_push_dhm_new_air_pwm_high(in_solidNum,in_buff[0]);
+            break;
+        }   
+        case DP_ADDR_DHM_LIS_BACK_AIR_PWM:
+        {
+            app_general_push_dhm_back_air_pwm_low(in_solidNum,in_buff[0]);
+            app_general_push_dhm_back_air_pwm_mid(in_solidNum,in_buff[0]);
+            app_general_push_dhm_back_air_pwm_high(in_solidNum,in_buff[0]);
+            break;
+        }   
+        case DP_ADDR_DHM_LIS_OUTDOOR_WEATHER:
+        {   
+            app_general_push_dhm_outdoor_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            app_general_push_dhm_outdoor_hum(in_solidNum,in_buff[2]);
+            app_general_push_dhm_adjust_outdoor_hum(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[3]));
+            app_general_push_dhm_adjust_outdoor_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[5]));
+            break;
+        }   
+        case DP_ADDR_DHM_LIS_BEFORE_FU_WEATHER:
+        {
+            app_general_push_dhm_before_fu_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            app_general_push_dhm_before_fu_hum(in_solidNum,in_buff[2]);
+            app_general_push_dhm_adjust_beforfu_hum(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[3]));
+            app_general_push_dhm_adjust_beforfu_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[5]));
+            break;
+        }   
+        case DP_ADDR_DHM_LIS_AFTER_FU_WEATHER:
+        {
+            app_general_push_dhm_after_fu_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            app_general_push_dhm_after_fu_hum(in_solidNum,in_buff[2]);
+            app_general_push_dhm_adjust_afterfu_hum(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[3]));
+            app_general_push_dhm_adjust_afterfu_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[5]));
+            break;
+        }   
+        case DP_ADDR_DHM_LIS_BACK_AIR_WEATHER:
+        {
+            app_general_push_dhm_backair_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            app_general_push_dhm_backair_hum(in_solidNum,in_buff[2]);
+            app_general_push_dhm_backair_co2(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[3]));
+            app_general_push_dhm_backair_pm25(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[5]));    
+            app_general_push_dhm_adjust_backair_hum(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[7]));
+            app_general_push_dhm_adjust_backair_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[9]));    
+            app_general_push_dhm_adjust_backair_co2(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[11]));
+            app_general_push_dhm_adjust_backair_pm25(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[13]));    
+            break;
+        }   
+        case DP_ADDR_DHM_LIS_EXHAST_AIR_WEATHER:
+        {
+            app_general_push_dhm_exhastair_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            app_general_push_dhm_exhastair_hum(in_solidNum,in_buff[2]);
+            app_general_push_dhm_adjust_exhastair_hum(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[3]));
+            app_general_push_dhm_adjust_exhastair_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[5]));
+            break;
+        }   
         case DP_ADDR_PAD_POWER:
         {
             app_general_push_devive_power(in_solidNum,in_buff[0]);
@@ -963,18 +1147,36 @@ void app_master_slave_send_syn_block(uint8_t in_solidNum,uint8_t *in_dest_addr,s
             {
                 for(i = 0; i < in_block.blockNum;i++)
                 {
-                    stamp = app_general_pull_pad_dp_stamp(in_block.padNumber,in_block.regAddr_pad[i]);     
-                    tempLinkData->Payload[startIndex] = (uint8_t)(stamp>>24);//时间戳
-                    tempLinkData->Payload[startIndex+1] =(uint8_t)(stamp>>16);
-                    tempLinkData->Payload[startIndex+2] =(uint8_t)(stamp>>8);
-                    tempLinkData->Payload[startIndex+3] =(uint8_t)(stamp);
-                    tempLinkData->Payload[startIndex+4] = (dpPadLen_pad[in_block.regAddr_pad[i]] + 3);
-                    tempLinkData->Payload[startIndex+5] = (uint8_t)(in_block.regAddr_pad[i]>>8);
-                    tempLinkData->Payload[startIndex+6] = (uint8_t)(in_block.regAddr_pad[i]);
-                    app_pull_data_point_message_pad(in_block.padNumber,in_block.regAddr_pad[i],&tempLinkData->Payload[startIndex+7]);
-                    blockLen = (7+dpPadLen_pad[in_block.regAddr_pad[i]]);
-                    tempLinkData->PayloadLength += blockLen;
-                    startIndex += blockLen;
+                    if(in_block.regAddr_pad[i] >= DP_ADDR_DHM_START)
+                    {
+                        stamp = app_general_pull_dhm_dp_stamp(in_block.padNumber,in_block.regAddr_pad[i]);     
+                        tempLinkData->Payload[startIndex] = (uint8_t)(stamp>>24);//时间戳
+                        tempLinkData->Payload[startIndex+1] =(uint8_t)(stamp>>16);
+                        tempLinkData->Payload[startIndex+2] =(uint8_t)(stamp>>8);
+                        tempLinkData->Payload[startIndex+3] =(uint8_t)(stamp);
+                        tempLinkData->Payload[startIndex+4] = (dpPadLen_pad[in_block.regAddr_pad[i]] + 3);
+                        tempLinkData->Payload[startIndex+5] = (uint8_t)(in_block.regAddr_pad[i]>>8);
+                        tempLinkData->Payload[startIndex+6] = (uint8_t)(in_block.regAddr_pad[i]);
+                        app_pull_data_point_message_pad(in_block.padNumber,in_block.regAddr_pad[i],&tempLinkData->Payload[startIndex+7]);
+                        blockLen = (7+dpPadLen_pad[in_block.regAddr_pad[i]]);
+                        tempLinkData->PayloadLength += blockLen;
+                        startIndex += blockLen;
+                    }
+                    else
+                    {
+                        stamp = app_general_pull_pad_dp_stamp(in_block.padNumber,in_block.regAddr_pad[i]);     
+                        tempLinkData->Payload[startIndex] = (uint8_t)(stamp>>24);//时间戳
+                        tempLinkData->Payload[startIndex+1] =(uint8_t)(stamp>>16);
+                        tempLinkData->Payload[startIndex+2] =(uint8_t)(stamp>>8);
+                        tempLinkData->Payload[startIndex+3] =(uint8_t)(stamp);
+                        tempLinkData->Payload[startIndex+4] = (dpPadLen_pad[in_block.regAddr_pad[i]] + 3);
+                        tempLinkData->Payload[startIndex+5] = (uint8_t)(in_block.regAddr_pad[i]>>8);
+                        tempLinkData->Payload[startIndex+6] = (uint8_t)(in_block.regAddr_pad[i]);
+                        app_pull_data_point_message_pad(in_block.padNumber,in_block.regAddr_pad[i],&tempLinkData->Payload[startIndex+7]);
+                        blockLen = (7+dpPadLen_pad[in_block.regAddr_pad[i]]);
+                        tempLinkData->PayloadLength += blockLen;
+                        startIndex += blockLen;
+                    }           
                 }
             }
             else if(in_solidNum == SYSTEM_MASTER)
@@ -1010,18 +1212,36 @@ void app_master_slave_send_syn_block(uint8_t in_solidNum,uint8_t *in_dest_addr,s
             {
                 for(i = 0; i < in_block.blockNum;i++)
                 {
-                    stamp = app_general_pull_pad_dp_stamp(in_block.padNumber,in_block.regAddr_pad[i]);     
-                    tempLinkData->Payload[startIndex] = (uint8_t)(stamp>>24);//时间戳
-                    tempLinkData->Payload[startIndex+1] =(uint8_t)(stamp>>16);
-                    tempLinkData->Payload[startIndex+2] =(uint8_t)(stamp>>8);
-                    tempLinkData->Payload[startIndex+3] =(uint8_t)(stamp);
-                    tempLinkData->Payload[startIndex+4] = (dpPadLen_pad[in_block.regAddr_pad[i]] + 3);
-                    tempLinkData->Payload[startIndex+5] = (uint8_t)(in_block.regAddr_pad[i]>>8);
-                    tempLinkData->Payload[startIndex+6] = (uint8_t)(in_block.regAddr_pad[i]);
-                    app_pull_data_point_message_pad(in_block.padNumber,in_block.regAddr_pad[i],&tempLinkData->Payload[startIndex+7]);
-                    blockLen = (7+dpPadLen_pad[in_block.regAddr_pad[i]]);
-                    tempLinkData->PayloadLength += blockLen;
-                    startIndex += blockLen;
+                    if(in_block.regAddr_pad[i] >= DP_ADDR_DHM_START)
+                    {
+                        stamp = app_general_pull_dhm_dp_stamp(in_block.padNumber,in_block.regAddr_pad[i]);     
+                        tempLinkData->Payload[startIndex] = (uint8_t)(stamp>>24);//时间戳
+                        tempLinkData->Payload[startIndex+1] =(uint8_t)(stamp>>16);
+                        tempLinkData->Payload[startIndex+2] =(uint8_t)(stamp>>8);
+                        tempLinkData->Payload[startIndex+3] =(uint8_t)(stamp);
+                        tempLinkData->Payload[startIndex+4] = (dpPadLen_pad[in_block.regAddr_pad[i]] + 3);
+                        tempLinkData->Payload[startIndex+5] = (uint8_t)(in_block.regAddr_pad[i]>>8);
+                        tempLinkData->Payload[startIndex+6] = (uint8_t)(in_block.regAddr_pad[i]);
+                        app_pull_data_point_message_pad(in_block.padNumber,in_block.regAddr_pad[i],&tempLinkData->Payload[startIndex+7]);
+                        blockLen = (7+dpPadLen_pad[in_block.regAddr_pad[i]]);
+                        tempLinkData->PayloadLength += blockLen;
+                        startIndex += blockLen;
+                    }
+                    else
+                    {
+                        stamp = app_general_pull_pad_dp_stamp(in_block.padNumber,in_block.regAddr_pad[i]);     
+                        tempLinkData->Payload[startIndex] = (uint8_t)(stamp>>24);//时间戳
+                        tempLinkData->Payload[startIndex+1] =(uint8_t)(stamp>>16);
+                        tempLinkData->Payload[startIndex+2] =(uint8_t)(stamp>>8);
+                        tempLinkData->Payload[startIndex+3] =(uint8_t)(stamp);
+                        tempLinkData->Payload[startIndex+4] = (dpPadLen_pad[in_block.regAddr_pad[i]] + 3);
+                        tempLinkData->Payload[startIndex+5] = (uint8_t)(in_block.regAddr_pad[i]>>8);
+                        tempLinkData->Payload[startIndex+6] = (uint8_t)(in_block.regAddr_pad[i]);
+                        app_pull_data_point_message_pad(in_block.padNumber,in_block.regAddr_pad[i],&tempLinkData->Payload[startIndex+7]);
+                        blockLen = (7+dpPadLen_pad[in_block.regAddr_pad[i]]);
+                        tempLinkData->PayloadLength += blockLen;
+                        startIndex += blockLen;
+                    }          
                 }
             } 
             else if(in_solidNum == SYSTEM_MASTER)
@@ -1064,18 +1284,36 @@ void app_master_slave_send_syn_block(uint8_t in_solidNum,uint8_t *in_dest_addr,s
             {
                 for(i = 0; i < in_block.blockNum;i++)
                 {
-                    stamp = app_general_pull_pad_dp_stamp(in_block.padNumber,in_block.regAddr_pad[i]);     
-                    tempLinkData->Payload[startIndex] = (uint8_t)(stamp>>24);//时间戳
-                    tempLinkData->Payload[startIndex+1] =(uint8_t)(stamp>>16);
-                    tempLinkData->Payload[startIndex+2] =(uint8_t)(stamp>>8);
-                    tempLinkData->Payload[startIndex+3] =(uint8_t)(stamp);
-                    tempLinkData->Payload[startIndex+4] = (dpPadLen_pad[in_block.regAddr_pad[i]] + 3);
-                    tempLinkData->Payload[startIndex+5] = (uint8_t)(in_block.regAddr_pad[i]>>8);
-                    tempLinkData->Payload[startIndex+6] = (uint8_t)(in_block.regAddr_pad[i]);
-                    app_pull_data_point_message_pad(in_block.padNumber,in_block.regAddr_pad[i],&tempLinkData->Payload[startIndex+7]);
-                    blockLen = (7+dpPadLen_pad[in_block.regAddr_pad[i]]);
-                    tempLinkData->PayloadLength += blockLen;
-                    startIndex += blockLen;
+                    if(in_block.regAddr_pad[i] >= DP_ADDR_DHM_START)
+                    {
+                        stamp = app_general_pull_dhm_dp_stamp(in_block.padNumber,in_block.regAddr_pad[i]);     
+                        tempLinkData->Payload[startIndex] = (uint8_t)(stamp>>24);//时间戳
+                        tempLinkData->Payload[startIndex+1] =(uint8_t)(stamp>>16);
+                        tempLinkData->Payload[startIndex+2] =(uint8_t)(stamp>>8);
+                        tempLinkData->Payload[startIndex+3] =(uint8_t)(stamp);
+                        tempLinkData->Payload[startIndex+4] = (dpPadLen_pad[in_block.regAddr_pad[i]] + 3);
+                        tempLinkData->Payload[startIndex+5] = (uint8_t)(in_block.regAddr_pad[i]>>8);
+                        tempLinkData->Payload[startIndex+6] = (uint8_t)(in_block.regAddr_pad[i]);
+                        app_pull_data_point_message_pad(in_block.padNumber,in_block.regAddr_pad[i],&tempLinkData->Payload[startIndex+7]);
+                        blockLen = (7+dpPadLen_pad[in_block.regAddr_pad[i]]);
+                        tempLinkData->PayloadLength += blockLen;
+                        startIndex += blockLen;
+                    }
+                    else
+                    {
+                        stamp = app_general_pull_pad_dp_stamp(in_block.padNumber,in_block.regAddr_pad[i]);     
+                        tempLinkData->Payload[startIndex] = (uint8_t)(stamp>>24);//时间戳
+                        tempLinkData->Payload[startIndex+1] =(uint8_t)(stamp>>16);
+                        tempLinkData->Payload[startIndex+2] =(uint8_t)(stamp>>8);
+                        tempLinkData->Payload[startIndex+3] =(uint8_t)(stamp);
+                        tempLinkData->Payload[startIndex+4] = (dpPadLen_pad[in_block.regAddr_pad[i]] + 3);
+                        tempLinkData->Payload[startIndex+5] = (uint8_t)(in_block.regAddr_pad[i]>>8);
+                        tempLinkData->Payload[startIndex+6] = (uint8_t)(in_block.regAddr_pad[i]);
+                        app_pull_data_point_message_pad(in_block.padNumber,in_block.regAddr_pad[i],&tempLinkData->Payload[startIndex+7]);
+                        blockLen = (7+dpPadLen_pad[in_block.regAddr_pad[i]]);
+                        tempLinkData->PayloadLength += blockLen;
+                        startIndex += blockLen;
+                    }          
                 }
             } 
              else if(in_solidNum == SYSTEM_MASTER)
@@ -2613,6 +2851,11 @@ void app_link_syn_push_outside_updata_word(uint8_t in_solidNum,uint32_t in_updat
 void app_link_syn_push_pad_updata_word(uint8_t in_prot,uint32_t in_updataWord)
 {
     padOccupyWord[in_prot] |= in_updataWord;
+}
+
+void app_link_syn_push_dhm_updata_word(uint8_t in_prot,uint32_t in_updataWord)
+{
+    dhmOccupyWord[in_prot] |= in_updataWord;
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

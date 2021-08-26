@@ -1252,7 +1252,21 @@
 #define DP_ADDR_WRITE_DEVICE_ID                          0X1000
 
 #define DP_ADDR_DHM_START                                0X0200
-
+#define DP_ADDR_DHM_POWER                                0X0200
+#define DP_ADDR_DHM_WIND_SET_HUM                         0X0201
+#define DP_ADDR_DHM_WIND_SET_MODE                        0X0202
+#define DP_ADDR_DHM_WIND_SET_SPEED                       0X0203
+#define DP_ADDR_DHM_DEHUM_NEDD                           0X0204
+#define DP_ADDR_DHM_DEHUM_STATUS                         0X0205
+#define DP_ADDR_DHM_LIS_NEW_AIR_PWM                      0X0206
+#define DP_ADDR_DHM_LIS_BACK_AIR_PWM                     0X0207
+#define DP_ADDR_DHM_LIS_OUTDOOR_WEATHER                  0X0208
+#define DP_ADDR_DHM_LIS_BEFORE_FU_WEATHER                0X0209
+#define DP_ADDR_DHM_LIS_AFTER_FU_WEATHER                 0X020A
+#define DP_ADDR_DHM_LIS_BACK_AIR_WEATHER                 0X020B
+#define DP_ADDR_DHM_LIS_EXHAST_AIR_WEATHER               0X020C
+#define DP_ADDR_DHM_LIS_RTC                              0X020D
+#define DP_ADDR_DHM_LIS_485_PAREMETER                    0X020E
 
 #define DEVICE_TYPE                                      0x8522
 #define DEVICE_TYPE_HC                                   0x8521//环控
