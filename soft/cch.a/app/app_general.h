@@ -10,6 +10,9 @@
 #define  MASTER_PAD_NUM                 12//最大末端数量
 #define  MASTER_PAD_VIRTUAL_NUM         4//虚拟末端数量
 #define  MASTER_DHM_NUM                 2//最大除湿数量
+#define  DHM_PORT_0                     10//除湿自动绑定端口
+#define  DHM_PORT_1                     9
+
 #define  ERROR_NTC_MIX_WATER            0X0001
 #define  ERROR_NTC_IN_WATER             0X0002
 #define  ERROR_NTC_BACK_WATER           0X0002

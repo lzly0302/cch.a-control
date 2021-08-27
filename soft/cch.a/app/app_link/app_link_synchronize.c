@@ -770,7 +770,8 @@ void app_pull_data_point_message_pad(uint8_t in_solidNum,uint16_t in_dpAddr,uint
 			pbc_int16uToArray_bigEndian(app_pull_mix_water_temp(),&out_buff[10]);
             pbc_int16uToArray_bigEndian(app_general_pull_system_lew_temp_status(),&out_buff[12]);
             break;
-        }    
+        } 
+        case DP_ADDR_DHM_LIS_RTC:
         case  DP_ADDR_PAD_SYSTEM_RTC:
         {
             realTime_t* rtc;
@@ -829,22 +830,22 @@ void app_push_data_point_message_pad(uint8_t in_solidNum,uint16_t in_dpAddr,uint
         case DP_ADDR_DHM_DEHUM_STATUS:
         {
             app_general_push_dhm_ptc_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            app_general_push_dhm_iec5_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            app_general_push_dhm_dm_output_status(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            app_general_push_dhm_iec5_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[2]));
+            app_general_push_dhm_dm_output_status(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[4]));
             break;
         }   
         case DP_ADDR_DHM_LIS_NEW_AIR_PWM:
         {
             app_general_push_dhm_new_air_pwm_low(in_solidNum,in_buff[0]);
-            app_general_push_dhm_new_air_pwm_mid(in_solidNum,in_buff[0]);
-            app_general_push_dhm_new_air_pwm_high(in_solidNum,in_buff[0]);
+            app_general_push_dhm_new_air_pwm_mid(in_solidNum,in_buff[1]);
+            app_general_push_dhm_new_air_pwm_high(in_solidNum,in_buff[2]);
             break;
         }   
         case DP_ADDR_DHM_LIS_BACK_AIR_PWM:
         {
             app_general_push_dhm_back_air_pwm_low(in_solidNum,in_buff[0]);
-            app_general_push_dhm_back_air_pwm_mid(in_solidNum,in_buff[0]);
-            app_general_push_dhm_back_air_pwm_high(in_solidNum,in_buff[0]);
+            app_general_push_dhm_back_air_pwm_mid(in_solidNum,in_buff[1]);
+            app_general_push_dhm_back_air_pwm_high(in_solidNum,in_buff[2]);
             break;
         }   
         case DP_ADDR_DHM_LIS_OUTDOOR_WEATHER:
@@ -1154,11 +1155,11 @@ void app_master_slave_send_syn_block(uint8_t in_solidNum,uint8_t *in_dest_addr,s
                         tempLinkData->Payload[startIndex+1] =(uint8_t)(stamp>>16);
                         tempLinkData->Payload[startIndex+2] =(uint8_t)(stamp>>8);
                         tempLinkData->Payload[startIndex+3] =(uint8_t)(stamp);
-                        tempLinkData->Payload[startIndex+4] = (dpPadLen_pad[in_block.regAddr_pad[i]] + 3);
+                        tempLinkData->Payload[startIndex+4] = (dpPadLen_hm[in_block.regAddr_pad[i]-DP_ADDR_DHM_START] + 3);
                         tempLinkData->Payload[startIndex+5] = (uint8_t)(in_block.regAddr_pad[i]>>8);
                         tempLinkData->Payload[startIndex+6] = (uint8_t)(in_block.regAddr_pad[i]);
                         app_pull_data_point_message_pad(in_block.padNumber,in_block.regAddr_pad[i],&tempLinkData->Payload[startIndex+7]);
-                        blockLen = (7+dpPadLen_pad[in_block.regAddr_pad[i]]);
+                        blockLen = (7+dpPadLen_hm[in_block.regAddr_pad[i]-DP_ADDR_DHM_START]);
                         tempLinkData->PayloadLength += blockLen;
                         startIndex += blockLen;
                     }
@@ -1219,11 +1220,11 @@ void app_master_slave_send_syn_block(uint8_t in_solidNum,uint8_t *in_dest_addr,s
                         tempLinkData->Payload[startIndex+1] =(uint8_t)(stamp>>16);
                         tempLinkData->Payload[startIndex+2] =(uint8_t)(stamp>>8);
                         tempLinkData->Payload[startIndex+3] =(uint8_t)(stamp);
-                        tempLinkData->Payload[startIndex+4] = (dpPadLen_pad[in_block.regAddr_pad[i]] + 3);
+                        tempLinkData->Payload[startIndex+4] = (dpPadLen_hm[in_block.regAddr_pad[i]-DP_ADDR_DHM_START] + 3);
                         tempLinkData->Payload[startIndex+5] = (uint8_t)(in_block.regAddr_pad[i]>>8);
                         tempLinkData->Payload[startIndex+6] = (uint8_t)(in_block.regAddr_pad[i]);
                         app_pull_data_point_message_pad(in_block.padNumber,in_block.regAddr_pad[i],&tempLinkData->Payload[startIndex+7]);
-                        blockLen = (7+dpPadLen_pad[in_block.regAddr_pad[i]]);
+                        blockLen = (7+dpPadLen_hm[in_block.regAddr_pad[i]-DP_ADDR_DHM_START]);
                         tempLinkData->PayloadLength += blockLen;
                         startIndex += blockLen;
                     }
@@ -1291,11 +1292,11 @@ void app_master_slave_send_syn_block(uint8_t in_solidNum,uint8_t *in_dest_addr,s
                         tempLinkData->Payload[startIndex+1] =(uint8_t)(stamp>>16);
                         tempLinkData->Payload[startIndex+2] =(uint8_t)(stamp>>8);
                         tempLinkData->Payload[startIndex+3] =(uint8_t)(stamp);
-                        tempLinkData->Payload[startIndex+4] = (dpPadLen_pad[in_block.regAddr_pad[i]] + 3);
+                        tempLinkData->Payload[startIndex+4] = (dpPadLen_hm[in_block.regAddr_pad[i]-DP_ADDR_DHM_START] + 3);
                         tempLinkData->Payload[startIndex+5] = (uint8_t)(in_block.regAddr_pad[i]>>8);
                         tempLinkData->Payload[startIndex+6] = (uint8_t)(in_block.regAddr_pad[i]);
                         app_pull_data_point_message_pad(in_block.padNumber,in_block.regAddr_pad[i],&tempLinkData->Payload[startIndex+7]);
-                        blockLen = (7+dpPadLen_pad[in_block.regAddr_pad[i]]);
+                        blockLen = (7+dpPadLen_hm[in_block.regAddr_pad[i]-DP_ADDR_DHM_START]);
                         tempLinkData->PayloadLength += blockLen;
                         startIndex += blockLen;
                     }
@@ -1540,10 +1541,6 @@ void _master_system_syn_task(void)
                 else if(appModbusSyn[SYSTEM_MASTER].updataWord)
                 {//更新字
                     appModbusSyn[SYSTEM_MASTER].mainSynStatsus = SYN_STATUS_SEND_UPDATA_ACTIVE;
-                }
-                else if(mde_upgrade_pull_ae_status())
-                {
-                    app_bough_update_master_ae_task();
                 }
                 break;
             }
@@ -1875,11 +1872,10 @@ uint8_t pull_syn_main_status(void)
 {
     return appModbusSyn[0].mainSynStatsus;
 }
-
+static synBlock_t  padSynBlock;
 void _pad_dispose_receive_data(void)
 {
     uint8_t blockNum = 0;
-    static synBlock_t  padSynBlock;
     uint8_t startIndex = 0;
     uint8_t i = 0;
     uint8_t j = 0;
@@ -1923,6 +1919,7 @@ void _pad_dispose_receive_data(void)
                             {
                                 if(app_general_pull_dhm_use_port(num) == i)
                                 {
+                                    padSynBlock.padNumber = num;
                                     if(receiveStamp >= app_general_pull_dhm_dp_stamp(num,regAdd))
                                     {//压入数据
                                         app_general_push_dhm_dp_stamp(num,regAdd,receiveStamp);
@@ -1940,7 +1937,8 @@ void _pad_dispose_receive_data(void)
                             }   
                         }
                         else
-                        {                  
+                        {   
+                            padSynBlock.padNumber = i;
                             if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
                             {//压入数据
                                 app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
@@ -1992,6 +1990,7 @@ void _pad_dispose_receive_data(void)
                                 {
                                     if(app_general_pull_dhm_id_use_message(num) == false)
                                     {
+                                        padSynBlock.padNumber = num;
                                         app_general_push_dhm_id_use_message(num,true);
                                         app_general_push_dhm_use_port(num,i);//公共端占用端口
                                         if(receiveStamp >= app_general_pull_dhm_dp_stamp(num,regAdd))
@@ -2012,6 +2011,7 @@ void _pad_dispose_receive_data(void)
                             }  
                             else
                             {
+                                padSynBlock.padNumber = i;
                                 if(receiveStamp >= app_general_pull_pad_dp_stamp(i,regAdd))
                                 {//压入数据
                                     app_general_push_pad_dp_stamp(i,regAdd,receiveStamp);
@@ -2047,7 +2047,6 @@ void _control_pad_syn_task(void)
    // uint32_t occupyWord_backup;
    // uint32_t padOccupy_backup;
     synStatus_def mainSynStatsu_backup;
-    static synBlock_t  padSynBlock;
     static uint8_t failCount = 0;
     uint16_t regAdd = 0;
     uint8_t i = 0;
@@ -2163,6 +2162,10 @@ void _control_pad_syn_task(void)
                         {
                             app_bough_update_master_task();
                         }                  
+                    }
+                    else if(mde_upgrade_pull_ae_status())
+                    {
+                        app_bough_update_master_task();
                     }
                 }             
                 break;

@@ -2493,10 +2493,54 @@ void app_general_push_water_machine_status(bool in_status)
 
 
 
-/*末端id占用信息*/
+/*除湿末端id占用信息*/
 void app_general_push_dhm_id_use_message(uint8_t in_port,bool in_status)
 {
+    uint16_t unbindList_warm = 0;
+	uint16_t unbindList_fan = 0;
     s_sysPara.dhmPara[in_port].occpuFlag = in_status;
+    if(in_status)
+    {//占用  绑点信息需要更新
+        if(in_port == 0)
+        {//自动绑定11路
+            unbindList_warm = app_general_pull_unbind_list_warm();
+            unbindList_warm &= (~(0x01<<DHM_PORT_0));
+            app_general_push_unbind_list_warm(unbindList_warm);
+            unbindList_fan = app_general_pull_unbind_list_fan();
+            unbindList_fan &= (~(0x01<<DHM_PORT_0));                  
+            app_general_push_unbind_list_fan(unbindList_fan);
+        }
+        else if(in_port == 1)
+        {//自动绑定10路
+            unbindList_warm = app_general_pull_unbind_list_warm();
+            unbindList_warm &= (~(0x01<<DHM_PORT_1));
+            app_general_push_unbind_list_warm(unbindList_warm);
+            unbindList_fan = app_general_pull_unbind_list_fan();
+            unbindList_fan &= (~(0x01<<DHM_PORT_1));                  
+            app_general_push_unbind_list_fan(unbindList_fan);
+        }
+    }
+    else
+    {
+        if(in_port == 0)
+        {//自动绑定11路
+            unbindList_warm = app_general_pull_unbind_list_warm();
+            unbindList_warm |= (0x01<<DHM_PORT_0);
+            app_general_push_unbind_list_warm(unbindList_warm);
+            unbindList_fan = app_general_pull_unbind_list_fan();
+            unbindList_fan |= (0x01<<DHM_PORT_0);                  
+            app_general_push_unbind_list_fan(unbindList_fan);
+        }
+        else if(in_port == 1)
+        {//自动绑定10路
+            unbindList_warm = app_general_pull_unbind_list_warm();
+            unbindList_warm |= (0x01<<DHM_PORT_1);
+            app_general_push_unbind_list_warm(unbindList_warm);
+            unbindList_fan = app_general_pull_unbind_list_fan();
+            unbindList_fan |= (0x01<<DHM_PORT_1);                  
+            app_general_push_unbind_list_fan(unbindList_fan);
+        }
+    }
 }
 bool app_general_pull_dhm_id_use_message(uint8_t in_port)
 {
@@ -3644,7 +3688,7 @@ bool app_pull_id_in_list(uint8_t *in_id)
 void app_general_id_ocupy_task(void)
 {
     uint8_t i = 0;
-
+    uint8_t j = 0;
     macro_createTimer(check_list_delay,timerType_second,0);
     pbc_timerClockRun_task(&check_list_delay);
     if(pbc_pull_timerIsCompleted(&check_list_delay))
@@ -3666,6 +3710,15 @@ void app_general_id_ocupy_task(void)
         if(pbc_pull_timerIsOnceTriggered(app_general_pull_pad_id_ocupy_time(i)))
         {//释放
             s_sysPara.publicPara[i].idUsedFlag = false;
+            for(j = 0; j < MASTER_DHM_NUM;j++)
+            {
+                if(app_general_pull_dhm_use_port(j) == i)
+                {
+                    app_general_push_dhm_id_use_message(j,false);
+                    app_general_push_dhm_dehum_request(j,false);
+                    break;
+                }
+            }
 			app_general_push_pad_warm_need(i,false);
             app_general_push_pad_fan_need(i,false);
         }
@@ -4660,7 +4713,14 @@ void app_general_mix_water_task(void)
                         }     
                         break;
                     }
-                }                 
+                }   
+                for(i = 0; i < MASTER_DHM_NUM;i++)
+                {
+                    if(app_general_pull_dhm_id_use_message(i))
+                    {
+                        output_terminal_backup[DHM_PORT_0-i] = app_general_pull_dhm_dehum_request(i);
+                    }
+                }              
             }       
         }
         else
@@ -4753,24 +4813,16 @@ void app_general_mix_water_task(void)
         {
             /*6二次侧+5一次侧继电器输出*/
             for(i = 0; i <  (MASTER_PAD_NUM-1);i++)
-            {
-                if(i != 8)
+            {         
+                if(output_terminal_backup[i])
                 {
-                    if(output_terminal_backup[i])
-                    {
-                        mde_relay_on(i,(10+delay_count*10));
-                        delay_count++;
-                    }
-                    else
-                    {
-                        mde_relay_off(i,0);
-                    }     
+                    mde_relay_on(i,(10+delay_count*10));
+                    delay_count++;
                 }
                 else
                 {
-                    mde_relay_on(8,(10+delay_count*10));
-                    delay_count++;
-                }
+                    mde_relay_off(i,0);
+                }     
             }
             /*水泵输出*/
             if(s_sysPara.output_pump)

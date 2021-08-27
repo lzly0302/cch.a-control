@@ -366,9 +366,7 @@ sdt_int8u mde_push_fileMap(sdt_int8u* in_pBuff,sdt_bool in_resume)
             update_srm = pbc_arrayToInt32u_bigEndian(&rd_inf[16]);        //序号,app区
             update_srm = update_srm + 1;
         }
-        
-        
-        
+               
         fileMap_ver = pbc_arrayToInt32u_bigEndian(&buff_block[120]);  //version
         update_checksum = pbc_arrayToInt32u_bigEndian(&buff_block[108]);//校验文
         update_codesize = pbc_arrayToInt32u_bigEndian(&buff_block[112]);//代码字节数

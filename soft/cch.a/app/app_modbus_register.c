@@ -24,6 +24,11 @@ uint16_t app_modbus_read_reg_data(uint16_t reg_addr,uint8_t in_src)
 	{
 		switch(reg_addr)
 		{
+			case MRegaddr_HARDWARESIGN:
+			{//硬件标识
+				reg_detailes = HARDWARE_AIO5;
+				break;
+			}
 			case MRegaddr_ProductType:
 			{
 				reg_detailes = DEVICE_TYPE;
