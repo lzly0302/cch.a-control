@@ -4,7 +4,7 @@
 #include ".\app_cfg.h"
 //----------------------------------------------------------------------------
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#define  HARDWARE_AIO5                                   0xAC02
+
 #define MRegaddr_FactoryParameter                        0x1500   //恢复出厂设置,0x2591安全字
 //-----------------------------------------------------------------------------
 #define MRegaddr_SNWriteCtlHi                            0x1600   //控制字
@@ -152,8 +152,8 @@
 #define REG_ADRESS_WATER_MACHINE_CONTROL  			     0x2c61//水机控制
 #define REG_ADRESS_DEHUM_REQUEST  						 0x2c70//除湿需求
 #define REG_ADRESS_PTC_TEMP  						     0x2c71//PTC温度
-
 #define REG_ADRESS_IEC_TEMP  						     0x2c72//iec测量温度
+
 #define REG_ADRESS_REMOTE_CONTROL				 	     0x2D00//远程控制
 #define REG_ADRESS_REMOTE_RELAY1				 	     0x2D01//远程继电器1
 #define REG_ADRESS_REMOTE_RELAY2				 	     0x2D02//远程继电器2
@@ -1206,6 +1206,23 @@
 #define REG_ADDR_PAD22_ADJUST_TEMP                        0X452B//校温
 #define REG_ADDR_PAD22_ADJUST_HUM                         0X452C//校湿
 #define REG_ADDR_PAD22_VERSION                            0X452D//版本号
+
+#define REG_ADDR_DHM_START                               0X4000//除湿模块起始地址
+#define REG_ADDR_DHM1_ONLINE_STATUS                      0X4000//在线状态
+#define REG_ADDR_DHM1_DEVICE_TYPE                        0X4001//设备类型
+#define REG_ADDR_DHM1_VERSION                            0X4002//版本号
+#define REG_ADDR_DHM1_HARDSIGN                           0X4003//硬件标识
+#define REG_ADDR_DHM1_SET_FANSPEED                       0X4004//设定风速 
+#define REG_ADDR_DHM1_SET_HUM                            0X4005//设定湿度 
+#define REG_ADDR_DHM1_DHM_REQUEST                        0X4006//除湿需求
+#define REG_ADDR_DHM1_DHM_STATUS                         0X4007//除湿状态
+#define REG_ADDR_DHM1_NEW_AIR_LOW_PWM                    0X4008 //新风低风量PWM值
+#define REG_ADDR_DHM1_NEW_AIR_MID_PWM                    0X4009//新风中风量PWM值
+#define REG_ADDR_DHM1_NEW_AIR_HIGH_PWM                   0X400A// 新风高风量PWM值
+#define REG_ADDR_DHM1_BACK_AIR_LOW_PWM                   0X400B//回风低风量PWM值
+#define REG_ADDR_DHM1_BACK_AIR_MID_PWM                   0X400C //回风中风量PWM值
+#define REG_ADDR_DHM1_BACK_AIR_HIGH_PWM                  0X400D //回风高风量PWM值
+
 
 #define DP_ADDR_PAD_POWER                                 0X00
 #define DP_ADDR_PAD_SET_COLD_TEMP                         0X01

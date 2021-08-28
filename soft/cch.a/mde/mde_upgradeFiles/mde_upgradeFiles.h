@@ -23,6 +23,7 @@ typedef enum
 #define BGEUERR_BlockNumber        0x06
 #define BGEUERR_Fireware           0x07
 #define BGEUERR_Other              0xFE
+#define HARDWARE_AIO5              0xAC02
 //task++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 void mde_upgrade_files_task(void);
 //interface+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

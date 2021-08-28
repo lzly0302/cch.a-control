@@ -7,6 +7,7 @@
 uint16_t app_modbus_read_reg_data(uint16_t reg_addr,uint8_t in_src)
 {
     uint16_t reg_detailes = 0;
+	uint8_t comm_port = 0;
     uint8_t virtualPort = PAD_NO_PHY_BIND;
 	if((reg_addr >= 1) && (reg_addr <= (ARICOD_READ_ONLY_REG_NUM)))
     {
@@ -9767,6 +9768,81 @@ uint16_t app_modbus_read_reg_data(uint16_t reg_addr,uint8_t in_src)
 				reg_detailes = app_general_pull_remote_bypass();
 				break;
 			}	
+
+			
+			case REG_ADDR_DHM1_ONLINE_STATUS:
+			{//在线状态			
+				reg_detailes = app_general_pull_dhm_id_use_message((reg_addr-REG_ADDR_DHM_START)/256);
+				break;
+			}
+			case REG_ADDR_DHM1_DEVICE_TYPE:
+			{//设备类型
+				comm_port = app_general_pull_dhm_use_port((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_devive_type(comm_port);
+				break;
+			}
+			case REG_ADDR_DHM1_VERSION:
+			{//版本号
+				comm_port = app_general_pull_dhm_use_port((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_pad_version(comm_port);
+				break;
+			}
+			case REG_ADDR_DHM1_HARDSIGN:
+			{//硬件标识
+				comm_port = app_general_pull_dhm_use_port((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_pad_hardware_sign(comm_port);
+				break;
+			}
+			case REG_ADDR_DHM1_SET_FANSPEED:
+			{//设定风速
+				reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				break;
+			}
+			case REG_ADDR_DHM1_SET_HUM:
+			{//设定湿度
+				reg_detailes = app_general_pull_dhm_aircod_humidity((reg_addr-REG_ADDR_DHM_START)/256);
+				break;
+			}
+			case REG_ADDR_DHM1_DHM_REQUEST:
+			{//除湿需求
+				reg_detailes = app_general_pull_dhm_dehum_request((reg_addr-REG_ADDR_DHM_START)/256);
+				break;
+			}
+			case REG_ADDR_DHM1_DHM_STATUS:
+			{//除湿状态
+				reg_detailes = app_general_pull_dhm_dm_output_status((reg_addr-REG_ADDR_DHM_START)/256);
+				break;
+			}
+			case REG_ADDR_DHM1_NEW_AIR_LOW_PWM:
+			{//新风低风量PWM值
+				reg_detailes = app_general_pull_dhm_new_air_pwm_low((reg_addr-REG_ADDR_DHM_START)/256);
+				break;
+			}
+			case REG_ADDR_DHM1_NEW_AIR_MID_PWM:
+			{//新风中风量PWM值
+				reg_detailes = app_general_pull_dhm_new_air_pwm_mid((reg_addr-REG_ADDR_DHM_START)/256);
+				break;
+			}
+			case REG_ADDR_DHM1_NEW_AIR_HIGH_PWM:
+			{//新风高风量PWM值
+				reg_detailes = app_general_pull_dhm_new_air_pwm_high((reg_addr-REG_ADDR_DHM_START)/256);
+				break;
+			}
+			case REG_ADDR_DHM1_BACK_AIR_LOW_PWM:
+			{//回风低风量PWM值
+				reg_detailes = app_general_pull_dhm_back_air_pwm_low((reg_addr-REG_ADDR_DHM_START)/256);
+				break;
+			}
+			case REG_ADDR_DHM1_BACK_AIR_MID_PWM:
+			{//回风中风量PWM值
+				reg_detailes = app_general_pull_dhm_back_air_pwm_mid((reg_addr-REG_ADDR_DHM_START)/256);
+				break;
+			}
+			case REG_ADDR_DHM1_BACK_AIR_HIGH_PWM:
+			{//回风高风量PWM值
+				reg_detailes = app_general_pull_dhm_back_air_pwm_high((reg_addr-REG_ADDR_DHM_START)/256);
+				break;
+			}
 			default:
 			{
 				reg_detailes = 0;
@@ -18574,6 +18650,47 @@ bool app_modebus_write_reg_data(uint16_t reg_addr,uint16_t reg_detailes,uint8_t 
 			case REG_ADRESS_REMOTE_BY_PASS:
 			{
 				app_general_push_remote_bypass(reg_detailes);
+				break;
+			}
+
+			case REG_ADDR_DHM1_SET_FANSPEED:
+			{//设定风速
+				app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				break;
+			}
+			case REG_ADDR_DHM1_SET_HUM:
+			{//设定湿度
+				app_general_push_dhm_aircod_humidity((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
+				break;
+			}
+			case REG_ADDR_DHM1_NEW_AIR_LOW_PWM:
+			{//新风低风量PWM值
+				app_general_push_dhm_new_air_pwm_low((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
+				break;
+			}
+			case REG_ADDR_DHM1_NEW_AIR_MID_PWM:
+			{//新风中风量PWM值
+				app_general_push_dhm_new_air_pwm_mid((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
+				break;
+			}
+			case REG_ADDR_DHM1_NEW_AIR_HIGH_PWM:
+			{//新风高风量PWM值
+				app_general_push_dhm_new_air_pwm_high((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
+				break;
+			}
+			case REG_ADDR_DHM1_BACK_AIR_LOW_PWM:
+			{//回风低风量PWM值
+				app_general_push_dhm_back_air_pwm_low((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
+				break;
+			}
+			case REG_ADDR_DHM1_BACK_AIR_MID_PWM:
+			{//回风中风量PWM值
+				app_general_push_dhm_back_air_pwm_mid((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
+				break;
+			}
+			case REG_ADDR_DHM1_BACK_AIR_HIGH_PWM:
+			{//回风高风量PWM值
+				app_general_push_dhm_back_air_pwm_high((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			default:

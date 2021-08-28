@@ -299,7 +299,9 @@ uint16_t app_general_pull_devive_type(uint8_t in_solidNum);
 /*版本號*/
 void app_general_push_pad_version(uint8_t in_solidNum,uint16_t in_type);
 uint16_t app_general_pull_pad_version(uint8_t in_solidNum);
-
+/*硬件标识*/
+void app_general_push_pad_hardware_sign(uint8_t in_solidNum,uint16_t in_type);
+uint16_t app_general_pull_pad_hardware_sign(uint8_t in_solidNum);
 /*设备ID*/
 void app_general_push_devive_id0(uint8_t in_solidNum,uint16_t in_id);
 uint16_t app_general_pull_devive_id0(uint8_t in_solidNum);

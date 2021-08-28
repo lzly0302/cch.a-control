@@ -83,6 +83,7 @@ void app_updataBackup_writeRegister(uint16_t regAddr,uint16_t pDataBuff)
 {
     static uint8_t buff[128];
     static uint16_t totalNum = 0;
+    uint8_t error = 0;
     if((regAddr>=REG_MESSAGE_FIRST_TWO_BYTE)&&(regAddr<=REG_MESSAGE_LAST_TWO_BYTE))
     {//接收128byte数据
         buff[(regAddr - REG_MESSAGE_FIRST_TWO_BYTE) << 1] = (uint8_t)(pDataBuff>>8);
@@ -91,7 +92,11 @@ void app_updataBackup_writeRegister(uint16_t regAddr,uint16_t pDataBuff)
         {
             if(currentSerial == 0)
             {
-                mde_push_fileMap(buff,sdt_false);//压入描述区数据
+                error = mde_push_fileMap(buff,sdt_false);//压入描述区数据
+                if(error == 0x08)
+                {//版本错误
+                    slaveStatusWord = BACKUP_VERSION_TYPE_ERROR;
+                }
             }
             else
             {

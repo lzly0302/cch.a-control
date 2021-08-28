@@ -119,6 +119,7 @@ typedef struct
         bool                    output_remote;//远程输出
         uint16_t                deviceType;//设备类型 
         uint16_t                version;//版本号
+        uint16_t                hardwareSign;//硬件标识
 }control_publicPara_t;
 
 typedef struct
@@ -399,12 +400,21 @@ void app_general_push_system_status_word(uint16_t in_status)
 /*开关机*/
 void app_general_push_power_status(bool in_power_status)
 { 
+    
     if(in_power_status != StoRunParameter.systemPower)
     {
         StoRunParameter.systemPower = in_power_status;
         app_push_once_save_sto_parameter();
         app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_POWER);
         app_link_syn_push_outside_updata_word(SYSTEM_PAD,OCCUPY_PAD_SYSTEM_MESSAGE);
+        uint8_t i = 0;
+        for(i = 0;i < MASTER_DHM_NUM;i++)
+        {
+            if(app_general_pull_dhm_id_use_message(i))
+            {
+                app_link_syn_push_dhm_updata_word(i,OCCUPY_DHM_POWER);
+            }
+        }
     }
 }
 
@@ -426,9 +436,17 @@ void app_general_push_aircod_mode(AirRunMode_Def in_mode)
 		if(StoRunParameter.airRunmode != in_mode)
 		{
 			StoRunParameter.airRunmode = in_mode;
-            app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_RUN_MODE);
-            app_link_syn_push_outside_updata_word(SYSTEM_PAD,OCCUPY_PAD_SYSTEM_MESSAGE);
+            app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_RUN_MODE);//系统模式
+            app_link_syn_push_outside_updata_word(SYSTEM_PAD,OCCUPY_PAD_SYSTEM_MESSAGE);//末端模式
 			app_push_once_save_sto_parameter();
+            uint8_t i = 0;
+            for(i = 0;i < MASTER_DHM_NUM;i++)
+            {
+                if(app_general_pull_dhm_id_use_message(i))
+                {
+                    app_link_syn_push_dhm_updata_word(i,OCCUPY_DHM_POWER);
+                }
+            }
 		}
     }
 }
@@ -1547,6 +1565,15 @@ uint16_t app_general_pull_pad_version(uint8_t in_solidNum)
 {
     return s_sysPara.publicPara[in_solidNum].version;
 }
+/*硬件标识*/
+void app_general_push_pad_hardware_sign(uint8_t in_solidNum,uint16_t in_type)
+{
+    s_sysPara.publicPara[in_solidNum].hardwareSign = in_type;
+}
+uint16_t app_general_pull_pad_hardware_sign(uint8_t in_solidNum)
+{
+    return s_sysPara.publicPara[in_solidNum].hardwareSign;
+}
 /*设备ID*/
 void app_general_push_devive_id0(uint8_t in_solidNum,uint16_t in_id)
 {
@@ -2581,7 +2608,7 @@ void app_general_push_dhm_aircod_humidity(uint8_t in_port,int16_t in_set_humidit
 		if(s_sysPara.dhmPara[in_port].humidity_set != in_set_humidity)
 		{
 			s_sysPara.dhmPara[in_port].humidity_set = in_set_humidity;
-           // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+            app_link_syn_push_dhm_updata_word(in_port,OCCUPY_DHM_WIND_SET_HUM);
 		}
 	}
 }
@@ -2599,7 +2626,7 @@ void app_general_push_dhm_dehum_request(uint8_t in_port,bool in_status)
     if(s_sysPara.dhmPara[in_port].dhm_need != in_status)
     {
         s_sysPara.dhmPara[in_port].dhm_need = in_status;
-        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+        app_link_syn_push_dhm_updata_word(in_port,OCCUPY_DHM_NEED_DHM_REQUEST);
     }
 }
 
@@ -2612,7 +2639,7 @@ void app_general_push_dhm_fanSpeed(uint8_t in_port,NewAirLevelSet_Def in_speed)
 		if(s_sysPara.dhmPara[in_port].NewAirLevelSet != in_speed)
 		{
 			s_sysPara.dhmPara[in_port].NewAirLevelSet = in_speed;
-           // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_SPEED);
+            app_link_syn_push_dhm_updata_word(in_port,OCCUPY_DHM_WIND_SET_SPEED);
 		}
     }
 }
@@ -2680,7 +2707,7 @@ void app_general_push_dhm_new_air_pwm_low(uint8_t in_port,uint8_t in_pwm)
     if(s_sysPara.dhmPara[in_port].newAirLowPwm != in_pwm)
     {
         s_sysPara.dhmPara[in_port].newAirLowPwm = in_pwm;
-        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+        app_link_syn_push_dhm_updata_word(in_port,OCCUPY_DHM_LIS_NEW_AIR_PWM);
     }
 }
 void app_general_push_dhm_new_air_pwm_mid(uint8_t in_port,uint8_t in_pwm)
@@ -2688,7 +2715,7 @@ void app_general_push_dhm_new_air_pwm_mid(uint8_t in_port,uint8_t in_pwm)
     if(s_sysPara.dhmPara[in_port].newAirMidPwm != in_pwm)
     {
         s_sysPara.dhmPara[in_port].newAirMidPwm = in_pwm;
-        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+        app_link_syn_push_dhm_updata_word(in_port,OCCUPY_DHM_LIS_NEW_AIR_PWM);
     }
 }
 void app_general_push_dhm_new_air_pwm_high(uint8_t in_port,uint8_t in_pwm)
@@ -2696,7 +2723,7 @@ void app_general_push_dhm_new_air_pwm_high(uint8_t in_port,uint8_t in_pwm)
     if(s_sysPara.dhmPara[in_port].newAirHighPwm != in_pwm)
     {
         s_sysPara.dhmPara[in_port].newAirHighPwm = in_pwm;
-        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+        app_link_syn_push_dhm_updata_word(in_port,OCCUPY_DHM_LIS_NEW_AIR_PWM);
     }
 }
 /*回风风PWM*/
@@ -2717,7 +2744,7 @@ void app_general_push_dhm_back_air_pwm_low(uint8_t in_port,uint8_t in_pwm)
     if(s_sysPara.dhmPara[in_port].backAirLowPwm != in_pwm)
     {
         s_sysPara.dhmPara[in_port].backAirLowPwm = in_pwm;
-        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+        app_link_syn_push_dhm_updata_word(in_port,OCCUPY_DHM_LIS_NEW_AIR_PWM);
     }
 }
 void app_general_push_dhm_back_air_pwm_mid(uint8_t in_port,uint8_t in_pwm)
@@ -2725,7 +2752,7 @@ void app_general_push_dhm_back_air_pwm_mid(uint8_t in_port,uint8_t in_pwm)
     if(s_sysPara.dhmPara[in_port].backAirMidPwm != in_pwm)
     {
         s_sysPara.dhmPara[in_port].backAirMidPwm = in_pwm;
-        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+        app_link_syn_push_dhm_updata_word(in_port,OCCUPY_DHM_LIS_BACK_AIR_PWM);
     }
 }
 void app_general_push_dhm_back_air_pwm_high(uint8_t in_port,uint8_t in_pwm)
@@ -2733,7 +2760,7 @@ void app_general_push_dhm_back_air_pwm_high(uint8_t in_port,uint8_t in_pwm)
     if(s_sysPara.dhmPara[in_port].backAirHighPwm != in_pwm)
     {
         s_sysPara.dhmPara[in_port].backAirHighPwm = in_pwm;
-        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+        app_link_syn_push_dhm_updata_word(in_port,OCCUPY_DHM_LIS_BACK_AIR_PWM);
     }
 }
 /*户外进风/氟盘前/氟盘后/回风/排风温湿度*/
@@ -3993,7 +4020,8 @@ void app_general_check_pad_updata(void)
                     {
                         if((s_sysPara.publicPara[i].idUsedFlag) && (s_sysPara.publicPara[i].deviceType == DEVICE_TYPE_FAN))
                         {
-                            if((s_sysPara.publicPara[i].version != 0) && (s_sysPara.publicPara[i].version < padVersion))
+                            if((s_sysPara.publicPara[i].version != 0) && (s_sysPara.publicPara[i].version < fanVersion))
+                            //if((s_sysPara.publicPara[i].version < fanVersion))
                             {
                                 fanVersion_list |= (0x01<<i);
                             }
@@ -4164,7 +4192,7 @@ void app_general_mix_water_task(void)
         app_general_id_ocupy_task();//末端ID占用任务
         app_general_para_updata_task();//参数更新  
         app_general_check_dpstamp();//时间戳校准
-        app_general_check_pad_updata();
+        app_general_check_pad_updata();//面板升级
         static uint8_t   pump_status = 0;    //水泵输出
         if(StoRunParameter.systemPower)
         {

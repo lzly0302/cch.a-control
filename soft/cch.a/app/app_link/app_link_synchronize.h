@@ -18,8 +18,8 @@
 #define OCCUPY_DHM_WIND_SET_HUM                      0X0002//通风制冷/除湿模式设定相对湿度  
 #define OCCUPY_DHM_RUN_MODE                          0X0004//系统运行模式
 #define OCCUPY_DHM_WIND_SET_SPEED                    0X0008//通风设定风速 
-#define OCCUPY_DHM_NEED_DHM_OUTPUT                   0X0010//通风设定风速
-#define OCCUPY_DHM_NEED_DHM_STATUS                   0X0020//通风设定风速
+#define OCCUPY_DHM_NEED_DHM_REQUEST                  0X0010//除湿需求
+#define OCCUPY_DHM_NEED_DHM_STATUS                   0X0020//除湿状态
 #define OCCUPY_DHM_LIS_NEW_AIR_PWM                   0X0040//新风PWM值
 #define OCCUPY_DHM_LIS_BACK_AIR_PWM                  0X0080//回风PWM值
 #define OCCUPY_DHM_LIS_OUTDOOR_WEATHER               0X0100//户外温湿度

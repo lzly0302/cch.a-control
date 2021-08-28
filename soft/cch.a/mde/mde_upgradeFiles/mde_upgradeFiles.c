@@ -43,7 +43,7 @@ sdt_bool mde_upgrade_pull_ae_status(void)
 }
 void mde_upgrade_clear_ae_status(void)
 {
-    aeNeedUpgrade = sdt_true;
+    aeNeedUpgrade = sdt_false;
 }
 //风盘需要升级
 sdt_bool fanNeedUpgrade = sdt_false;
@@ -269,6 +269,7 @@ sdt_int8u mde_push_fileMap(sdt_int8u* in_pBuff,sdt_bool in_resume)
     sdt_int8u error = BGEUERR_NoneError;
     sdt_int8u buff_block[128];
     sdt_int8u i,j;
+    sdt_int16u hardwareSign;//硬件标识
     char deviceType[DEVICE_TYPE_LEN];
     for(i = 0; i < 128; i++)
     {
@@ -303,7 +304,7 @@ sdt_int8u mde_push_fileMap(sdt_int8u* in_pBuff,sdt_bool in_resume)
         sdt_int32u update_flag;
         sdt_int32u update_checksum;
         sdt_int32u update_codesize;
-
+        
         if(strcmp(deviceType, "CCH1.RC")==0)
         {
             device_type_s = TYPE_PAD;           
@@ -371,7 +372,7 @@ sdt_int8u mde_push_fileMap(sdt_int8u* in_pBuff,sdt_bool in_resume)
         update_checksum = pbc_arrayToInt32u_bigEndian(&buff_block[108]);//校验文
         update_codesize = pbc_arrayToInt32u_bigEndian(&buff_block[112]);//代码字节数
         update_flag = upgrade_updating;    //标记
-
+        hardwareSign = pbc_arrayToInt16u_bigEndian(&buff_block[32]);
         if(0x00000001 == fileMap_ver)
         {
             static sdt_int8u wr_inf[32];
@@ -404,7 +405,14 @@ sdt_int8u mde_push_fileMap(sdt_int8u* in_pBuff,sdt_bool in_resume)
             }  
             else if(device_type_s == TYPE_CC)
             {
-                bsp_write_information_user_upgrade(&wr_inf[0]);       //写入信息到upgrade区
+                if(hardwareSign == HARDWARE_AIO5)
+                {
+                    bsp_write_information_user_upgrade(&wr_inf[0]);       //写入信息到upgrade区
+                }    
+                else
+                {
+                    error = 0x08;
+                }
             }      
             else
             {

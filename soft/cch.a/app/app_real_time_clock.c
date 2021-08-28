@@ -20,6 +20,28 @@ void software_time_run(void)
         }
     }
 }
+void stamp_updata(void)
+{
+    uint8_t i = 0;
+    for(i = 0; i < MASTER_PAD_NUM;i++)
+    {//面板dp时间戳更新
+        app_general_push_pad_dp_stamp(i,DP_ADDR_PAD_SYSTEM_RTC,pbc_timeStamp_get_stamp());  
+        app_general_push_pad_dp_stamp(i,DP_ADDR_PAD_SYSTEM_MESSAGE,pbc_timeStamp_get_stamp());
+    } 
+    for(i = 0;i < MASTER_DHM_NUM;i++)
+    {//除湿dp时间戳更新
+        app_general_push_dhm_dp_stamp(i,DP_ADDR_DHM_LIS_RTC,pbc_timeStamp_get_stamp());//时间
+        app_general_push_dhm_dp_stamp(i,DP_ADDR_DHM_POWER,pbc_timeStamp_get_stamp());//开关机
+        app_general_push_dhm_dp_stamp(i,DP_ADDR_DHM_WIND_SET_MODE,pbc_timeStamp_get_stamp());//模式
+    }   
+    for(i = 9; i < 14;i++)
+    {//主机集成dp时间戳更新
+        app_general_push_system_dp_stamp((DP_ADDR_START+i),pbc_timeStamp_get_stamp());
+    }
+    app_general_push_system_dp_stamp(DP_ADDR_SYSTEM_LIS_RTC,pbc_timeStamp_get_stamp());
+    app_general_push_system_dp_stamp(DP_ADDR_SYSTEM_LIS_MIXWATER_OUT,pbc_timeStamp_get_stamp());
+    app_general_push_system_dp_stamp(DP_ADDR_SYSTEM_LIS_MIXWATER_TEMP,pbc_timeStamp_get_stamp());
+}
 void app_clock_timing_read(void)
 {  
     macro_createTimer(measure_delay,timerType_millisecond,0);
@@ -28,26 +50,13 @@ void app_clock_timing_read(void)
     {
         pbc_reload_timerClock(&measure_delay,1000);
         mde_sd3078_read(&currentTime);   
-        app_general_push_system_dp_stamp(DP_ADDR_SYSTEM_LIS_RTC,pbc_timeStamp_get_stamp());
-        app_general_push_system_dp_stamp(DP_ADDR_SYSTEM_LIS_MIXWATER_OUT,pbc_timeStamp_get_stamp());
-		app_general_push_system_dp_stamp(DP_ADDR_SYSTEM_LIS_MIXWATER_TEMP,pbc_timeStamp_get_stamp());
-        uint8_t i = 0;
-        for(i = 0; i < MASTER_PAD_NUM;i++)
-        {
-            app_general_push_pad_dp_stamp(i,DP_ADDR_PAD_SYSTEM_RTC,pbc_timeStamp_get_stamp());  
-            app_general_push_pad_dp_stamp(i,DP_ADDR_PAD_SYSTEM_MESSAGE,pbc_timeStamp_get_stamp());
-        } 
-        for(i = 0;i < MASTER_DHM_NUM;i++)
-        {//除湿dp时间戳更新
-            app_general_push_dhm_dp_stamp(i,DP_ADDR_DHM_LIS_RTC,pbc_timeStamp_get_stamp());
-        }   
+        stamp_updata();
     }
 }
 bool writeRTCFlag = false;
 void app_real_time_clock_task(void)
 {
     static sdt_bool sys_cfged = sdt_false;
-	uint8_t i = 0;
     if(sys_cfged)
     {
         pbc_timerClockRun_task(&timer_notWrite);      
@@ -57,22 +66,7 @@ void app_real_time_clock_task(void)
 			{
 				mde_sd3078_write(&currentTime);
 				writeRTCFlag = false;
-				for(i = 0;i < MASTER_PAD_NUM;i++)
-				{//面板dp时间戳更新
-					app_general_push_pad_dp_stamp(i,DP_ADDR_PAD_SYSTEM_MESSAGE,pbc_timeStamp_get_stamp());
-					app_general_push_pad_dp_stamp(i,DP_ADDR_PAD_SYSTEM_RTC,pbc_timeStamp_get_stamp());
-				}   
-                for(i = 0;i < MASTER_DHM_NUM;i++)
-				{//除湿dp时间戳更新
-					app_general_push_dhm_dp_stamp(i,DP_ADDR_DHM_LIS_RTC,pbc_timeStamp_get_stamp());
-				}   
-				for(i = 9; i < 14;i++)
-				{//主机集成dp时间戳更新
-					app_general_push_system_dp_stamp((DP_ADDR_START+i),pbc_timeStamp_get_stamp());
-				}
-				app_general_push_system_dp_stamp(DP_ADDR_SYSTEM_LIS_MIXWATER_OUT,pbc_timeStamp_get_stamp());
-				app_general_push_system_dp_stamp(DP_ADDR_SYSTEM_LIS_MIXWATER_TEMP,pbc_timeStamp_get_stamp());
-				app_general_push_system_dp_stamp(DP_ADDR_SYSTEM_LIS_RTC,pbc_timeStamp_get_stamp());
+				stamp_updata();
 			}				
 		}
 		else
@@ -93,23 +87,7 @@ void app_real_time_clock_task(void)
         sys_cfged = true;
         mde_sd3078_read(&currentTime);
         pbc_timeStamp_get_absolutely_time(((uint8_t *)&currentTime));
-        uint8_t i = 0;
-        for(i = 0;i < MASTER_PAD_NUM;i++)
-        {//面板dp时间戳更新
-            app_general_push_pad_dp_stamp(i,DP_ADDR_PAD_SYSTEM_MESSAGE,pbc_timeStamp_get_stamp());
-            app_general_push_pad_dp_stamp(i,DP_ADDR_PAD_SYSTEM_RTC,pbc_timeStamp_get_stamp());
-        }  
-        for(i = 0;i < MASTER_DHM_NUM;i++)
-        {//除湿dp时间戳更新
-            app_general_push_dhm_dp_stamp(i,DP_ADDR_DHM_LIS_RTC,pbc_timeStamp_get_stamp());
-        }         
-        for(i = 9; i < 14;i++)
-        {//主机集成dp时间戳更新
-            app_general_push_system_dp_stamp((DP_ADDR_START+i),pbc_timeStamp_get_stamp());
-        }
-        app_general_push_system_dp_stamp(DP_ADDR_SYSTEM_LIS_MIXWATER_OUT,pbc_timeStamp_get_stamp());
-        app_general_push_system_dp_stamp(DP_ADDR_SYSTEM_LIS_MIXWATER_TEMP,pbc_timeStamp_get_stamp());
-        app_general_push_system_dp_stamp(DP_ADDR_SYSTEM_LIS_RTC,pbc_timeStamp_get_stamp());
+        stamp_updata();
     } 
 }
 realTime_t* app_real_time_pull_rtc(void)

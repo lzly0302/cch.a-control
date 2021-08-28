@@ -41,7 +41,7 @@ uint32_t        dhmOccupyWord[MASTER_DHM_NUM];//除湿机抢占字
 uint8_t deviceid_addr[6]={0xaa,0xaa,0xaa,0xaa,0xaa,0xaa};//写入设备ID时用的地址
 #define  DEVICE_KEY 0XFA3456AF//写入设备密匙
 const uint8_t dpPadLen_pad[MAX_DATA_POINT_LEN_PAD] = {1,2,2,1,1,1,4,10,5,32,14,7,4,4,6};//面板数据点长度
-const uint8_t dpPadLen_hm[MAX_DATA_POINT_LEN_DHM]  = {1,1,1,1,1,6,3,3,7,7,7,15,7,7,4};//除湿模块数据点长度
+const uint8_t dpPadLen_hm[MAX_DATA_POINT_LEN_DHM]  = {1,1,1,1,1,10,3,3,7,7,7,15,7,7,4};//除湿模块数据点长度
 const uint8_t dpPadLen_system[MAX_DATA_POINT_LEN_SYSTEM] = {1,1,2,2,1,1,2,2,2,2,2,1,1,2,3,3,11,11,11,15,11,2,10,43,8,6,6,7,4,168,148,4};//系统数据点长度
 
 
@@ -613,6 +613,8 @@ void app_pull_data_point_message_pad(uint8_t in_solidNum,uint16_t in_dpAddr,uint
             pbc_int16uToArray_bigEndian(app_general_pull_dhm_ptc_temp(in_solidNum),&out_buff[0]);
             pbc_int16uToArray_bigEndian(app_general_pull_dhm_iec5_temp(in_solidNum),&out_buff[2]);
             pbc_int16uToArray_bigEndian(app_general_pull_dhm_dm_output_status(in_solidNum),&out_buff[4]);
+            pbc_int16uToArray_bigEndian(app_general_pull_pad_version(in_solidNum),&out_buff[6]);
+            pbc_int16uToArray_bigEndian(app_general_pull_pad_hardware_sign(in_solidNum),&out_buff[8]);
             break;
         }   
         case DP_ADDR_DHM_LIS_NEW_AIR_PWM:
@@ -832,6 +834,8 @@ void app_push_data_point_message_pad(uint8_t in_solidNum,uint16_t in_dpAddr,uint
             app_general_push_dhm_ptc_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
             app_general_push_dhm_iec5_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[2]));
             app_general_push_dhm_dm_output_status(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[4]));
+            app_general_push_pad_version(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[6]));
+            app_general_push_pad_hardware_sign(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[8]));
             break;
         }   
         case DP_ADDR_DHM_LIS_NEW_AIR_PWM:
@@ -2101,7 +2105,7 @@ void _control_pad_syn_task(void)
                     }                             
                 }
                 else if(appModbusSyn[SYSTEM_PAD].updataWord)
-                {
+                {//更新字
                     if(appModbusSyn[SYSTEM_PAD].listWord)
                     {
 
@@ -2165,7 +2169,10 @@ void _control_pad_syn_task(void)
                     }
                     else if(mde_upgrade_pull_ae_status())
                     {
-                        app_bough_update_master_task();
+                        if(app_updaBackup_pull_status() != BACKUP_UPDATING)
+                        {
+                            app_bough_update_master_task();
+                        }  
                     }
                 }             
                 break;
@@ -2267,8 +2274,36 @@ void _control_pad_syn_task(void)
                 }
                 if(occpupyFlag)
                 {//无抢占数据结束
+                    for(i = 0;i < MASTER_DHM_NUM;i++)
+                    {
+                        if(dhmOccupyWord[i])
+                        {//除湿模块抢占字
+                            occpupyFlag = false;
+                            for(j = 0; j < MAX_DATA_POINT_LEN_DHM;j++)
+                            {
+                                if(dhmOccupyWord[i] & (0x01<<j))
+                                {
+                                    app_general_push_dhm_dp_stamp(i,j+DP_ADDR_DHM_START,pbc_timeStamp_get_stamp());
+                                    padSynBlock.regAddr_pad[padSynBlock.blockNum] = (j+DP_ADDR_DHM_START);
+                                    padSynBlock.blockNum++;                              
+                                }
+                            }
+                            padSynBlock.control_answer = 0x01;
+                            padSynBlock.padNumber = i;
+                            updata_port = i;
+                            pbc_int16uToArray_bigEndian(app_general_pull_devive_id0(app_general_pull_dhm_use_port(i)),&idBuff[0]);
+                            pbc_int16uToArray_bigEndian(app_general_pull_devive_id1(app_general_pull_dhm_use_port(i)),&idBuff[2]);
+                            pbc_int16uToArray_bigEndian(app_general_pull_devive_id2(app_general_pull_dhm_use_port(i)),&idBuff[4]);
+                            app_master_slave_send_syn_block(SYSTEM_PAD,&idBuff[0],padSynBlock);
+                            appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_SEND_UPDATA_WORD_RESULT;
+                            break;
+                        }
+                    }                  
+                } 
+                 if(occpupyFlag)
+                {//无抢占数据结束
                     appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_WAIT_RECEIVE;
-                }            
+                }         
                 break;
             }
             case SYN_STATUS_SEND_UPDATA_WORD_RESULT:
@@ -2308,8 +2343,15 @@ void _control_pad_syn_task(void)
                 if(appModbusSyn[SYSTEM_PAD].receiveOneMessage)
                 {
                     appModbusSyn[SYSTEM_PAD].receiveOneMessage = false;
-                    _pad_dispose_receive_data();   
-                    padOccupyWord[updata_port] = 0;
+                    _pad_dispose_receive_data(); 
+                    if(padOccupyWord[updata_port])  
+                    {
+                        padOccupyWord[updata_port] = 0;
+                    }
+                    else
+                    {
+                        dhmOccupyWord[updata_port] = 0;
+                    }
                     appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_WAIT_RECEIVE;                     
                 }
                 else if(pbc_pull_timerIsCompleted(&appModbusSyn[SYSTEM_PAD].receive_timeout_delay))
@@ -2414,6 +2456,34 @@ void _control_pad_syn_task(void)
                     }
                 }
                 if(occpupyFlag)
+                {//无抢占数据结束
+                    for(i = 0;i < MASTER_DHM_NUM;i++)
+                    {
+                        if(dhmOccupyWord[i])
+                        {//除湿模块抢占字
+                            occpupyFlag = false;
+                            for(j = 0; j < MAX_DATA_POINT_LEN_DHM;j++)
+                            {
+                                if(dhmOccupyWord[i] & (0x01<<j))
+                                {
+                                    app_general_push_dhm_dp_stamp(i,j+DP_ADDR_DHM_START,pbc_timeStamp_get_stamp());
+                                    padSynBlock.regAddr_pad[padSynBlock.blockNum] = (j+DP_ADDR_DHM_START);
+                                    padSynBlock.blockNum++;                              
+                                }
+                            }
+                            padSynBlock.control_answer = 0x01;
+                            padSynBlock.padNumber = i;
+                            updata_port = i;
+                            pbc_int16uToArray_bigEndian(app_general_pull_devive_id0(app_general_pull_dhm_use_port(i)),&idBuff[0]);
+                            pbc_int16uToArray_bigEndian(app_general_pull_devive_id1(app_general_pull_dhm_use_port(i)),&idBuff[2]);
+                            pbc_int16uToArray_bigEndian(app_general_pull_devive_id2(app_general_pull_dhm_use_port(i)),&idBuff[4]);
+                            app_master_slave_send_syn_block(SYSTEM_PAD,&idBuff[0],padSynBlock);
+                            appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_SEND_UPDATA_WORD_RESULT;
+                            break;
+                        }
+                    }                  
+                } 
+                if(occpupyFlag)
                 {
                     appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_WAIT_RECEIVE;
                 }  
@@ -2456,8 +2526,15 @@ void _control_pad_syn_task(void)
                 if(appModbusSyn[SYSTEM_PAD].receiveOneMessage)
                 {
                     appModbusSyn[SYSTEM_PAD].receiveOneMessage = false;
-                   _pad_dispose_receive_data(); 
-                    padOccupyWord[updata_port] = 0;
+                    _pad_dispose_receive_data(); 
+                    if(padOccupyWord[updata_port])  
+                    {
+                        padOccupyWord[updata_port] = 0;
+                    }
+                    else
+                    {
+                        dhmOccupyWord[updata_port] = 0;
+                    }
                     appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_WAIT_RECEIVE; 
                     
                 }
