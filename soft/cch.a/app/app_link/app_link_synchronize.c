@@ -41,7 +41,7 @@ uint32_t        dhmOccupyWord[MASTER_DHM_NUM];//除湿机抢占字
 uint8_t deviceid_addr[6]={0xaa,0xaa,0xaa,0xaa,0xaa,0xaa};//写入设备ID时用的地址
 #define  DEVICE_KEY 0XFA3456AF//写入设备密匙
 const uint8_t dpPadLen_pad[MAX_DATA_POINT_LEN_PAD] = {1,2,2,1,1,1,4,10,5,32,14,7,4,4,6};//面板数据点长度
-const uint8_t dpPadLen_hm[MAX_DATA_POINT_LEN_DHM]  = {1,1,1,1,1,10,3,3,7,7,7,15,7,7,4};//除湿模块数据点长度
+const uint8_t dpPadLen_hm[MAX_DATA_POINT_LEN_DHM]  = {1,1,1,1,1,12,3,3,7,7,7,15,7,7,4};//除湿模块数据点长度
 const uint8_t dpPadLen_system[MAX_DATA_POINT_LEN_SYSTEM] = {1,1,2,2,1,1,2,2,2,2,2,1,1,2,3,3,11,11,11,15,11,2,10,43,8,6,6,7,4,168,148,4};//系统数据点长度
 
 
@@ -612,9 +612,10 @@ void app_pull_data_point_message_pad(uint8_t in_solidNum,uint16_t in_dpAddr,uint
         {
             pbc_int16uToArray_bigEndian(app_general_pull_dhm_ptc_temp(in_solidNum),&out_buff[0]);
             pbc_int16uToArray_bigEndian(app_general_pull_dhm_iec5_temp(in_solidNum),&out_buff[2]);
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_dm_output_status(in_solidNum),&out_buff[4]);
-            pbc_int16uToArray_bigEndian(app_general_pull_pad_version(in_solidNum),&out_buff[6]);
-            pbc_int16uToArray_bigEndian(app_general_pull_pad_hardware_sign(in_solidNum),&out_buff[8]);
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_iec5_hum(in_solidNum),&out_buff[4]);
+            pbc_int16uToArray_bigEndian(app_general_pull_dhm_dm_output_status(in_solidNum),&out_buff[6]);
+            pbc_int16uToArray_bigEndian(app_general_pull_pad_version(in_solidNum),&out_buff[8]);
+            pbc_int16uToArray_bigEndian(app_general_pull_pad_hardware_sign(in_solidNum),&out_buff[10]);
             break;
         }   
         case DP_ADDR_DHM_LIS_NEW_AIR_PWM:
@@ -833,9 +834,10 @@ void app_push_data_point_message_pad(uint8_t in_solidNum,uint16_t in_dpAddr,uint
         {
             app_general_push_dhm_ptc_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
             app_general_push_dhm_iec5_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[2]));
-            app_general_push_dhm_dm_output_status(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[4]));
-            app_general_push_pad_version(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[6]));
-            app_general_push_pad_hardware_sign(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[8]));
+            app_general_push_dhm_iec5_hum(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[4]));
+            app_general_push_dhm_dm_output_status(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[6]));
+            app_general_push_pad_version(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[8]));
+            app_general_push_pad_hardware_sign(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[10]));
             break;
         }   
         case DP_ADDR_DHM_LIS_NEW_AIR_PWM:
@@ -2039,17 +2041,42 @@ void _pad_dispose_receive_data(void)
         }
     }
 }
+/*面板是否有更新数据*/
+bool _pull_pad_occupy_status(void)
+{
+    uint8_t i = 0;
+    for(i = 0; i < MASTER_PAD_NUM; i++)
+    {
+        if(app_general_pull_devive_online(i))
+        {//在线
+            if(padOccupyWord[i])
+            {
+                return true;
+            }
+        }                                                     
+    }
+    return false; 
+}
+/*除湿模块是否有更新数据*/
+bool _pull_dhm_occupy_status(void)
+{
+    uint8_t i = 0;
+    uint8_t comm_port = 0;
+    for(i = 0; i < MASTER_DHM_NUM; i++)
+    {
+        comm_port = app_general_pull_dhm_use_port(i);
+        if(app_general_pull_devive_online(comm_port))
+        {//在线
+            if(dhmOccupyWord[i])
+            {
+                return true;
+            }
+        }                                                      
+    }
+    return false;
+}
 void _control_pad_syn_task(void)
 {//输配面板同步任务
-    // uint8_t startIndex = 0;
-   // uint8_t blockLen = 0;
-   //  uint8_t k = 0;
-   // uint8_t blockNum = 0;
-   // uint16_t id0,id1,id2;
-   // uint32_t receiveStamp = 0;
-   // bool newIdFlag = true;
-   // uint32_t occupyWord_backup;
-   // uint32_t padOccupy_backup;
     synStatus_def mainSynStatsu_backup;
     static uint8_t failCount = 0;
     uint16_t regAdd = 0;
@@ -2138,42 +2165,35 @@ void _control_pad_syn_task(void)
                 }
                 else
                 {
-                    for(i = 0; i < MASTER_PAD_NUM; i++)
+                    if(_pull_pad_occupy_status() || _pull_dhm_occupy_status())
                     {
-                        if(app_general_pull_devive_online(i))
-                        {//在线
-                            if(padOccupyWord[i])
+                        appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_SEND_UPDATA_ACTIVE;
+                    }
+                    else 
+                    {
+                        if(mde_upgrade_pull_pad_status()|| app_general_pull_version_pad_flag())
+                        {//加入主动升级任务
+                            if(app_updaBackup_pull_status() != BACKUP_UPDATING)
                             {
-                                appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_SEND_UPDATA_ACTIVE;
-                                break;
-                            }
-                        }  
-                        else
+                                app_bough_update_master_task();
+                            }                  
+                        }
+                        else if(mde_upgrade_pull_fan_status() || app_general_pull_version_fan_flag())
+                        {//加入主动升级任务
+                            if(app_updaBackup_pull_status() != BACKUP_UPDATING)
+                            {
+                                app_bough_update_master_task();
+                            }                  
+                        }
+                        else if(mde_upgrade_pull_ae_status())
                         {
-                            padOccupyWord[i] = 0;
-                        }                                             
+                            if(app_updaBackup_pull_status() != BACKUP_UPDATING)
+                            {
+                                app_bough_update_master_task();
+                            }  
+                        }
                     }
-                    if(mde_upgrade_pull_pad_status()|| app_general_pull_version_pad_flag())
-                    {//加入主动升级任务
-                        if(app_updaBackup_pull_status() != BACKUP_UPDATING)
-                        {
-                            app_bough_update_master_task();
-                        }                  
-                    }
-                    else if(mde_upgrade_pull_fan_status() || app_general_pull_version_fan_flag())
-                    {//加入主动升级任务
-                        if(app_updaBackup_pull_status() != BACKUP_UPDATING)
-                        {
-                            app_bough_update_master_task();
-                        }                  
-                    }
-                    else if(mde_upgrade_pull_ae_status())
-                    {
-                        if(app_updaBackup_pull_status() != BACKUP_UPDATING)
-                        {
-                            app_bough_update_master_task();
-                        }  
-                    }
+                    
                 }             
                 break;
             }

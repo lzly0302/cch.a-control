@@ -9843,6 +9843,21 @@ uint16_t app_modbus_read_reg_data(uint16_t reg_addr,uint8_t in_src)
 				reg_detailes = app_general_pull_dhm_back_air_pwm_high((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
+			case REG_ADDR_DHM1_ROOM_TEMP_WRITE:
+			{//房间温度写入
+				reg_detailes = app_general_pull_dhm_iec5_temp((reg_addr-REG_ADDR_DHM_START)/256);
+				break;
+			}
+			case REG_ADDR_DHM1_ROOM_HUM_WRITE:
+			{//房间湿度写入
+				reg_detailes = app_general_pull_dhm_iec5_hum((reg_addr-REG_ADDR_DHM_START)/256);
+				break;
+			}
+			case REG_ADDR_DHM1_PTC_TEMP:
+			{//PTC再热后温度
+				reg_detailes = app_general_pull_dhm_ptc_temp((reg_addr-REG_ADDR_DHM_START)/256);
+				break;
+			}
 			default:
 			{
 				reg_detailes = 0;
@@ -18691,6 +18706,21 @@ bool app_modebus_write_reg_data(uint16_t reg_addr,uint16_t reg_detailes,uint8_t 
 			case REG_ADDR_DHM1_BACK_AIR_HIGH_PWM:
 			{//回风高风量PWM值
 				app_general_push_dhm_back_air_pwm_high((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
+				break;
+			}
+			case REG_ADDR_DHM1_ROOM_TEMP_WRITE:
+			{//房间温度写入
+				app_general_push_dhm_iec5_temp((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
+				break;
+			}
+			case REG_ADDR_DHM1_ROOM_HUM_WRITE:
+			{//房间湿度写入
+				app_general_push_dhm_iec5_hum((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
+				break;
+			}
+			case REG_ADDR_DHM1_PTC_TEMP:
+			{//PTC再热后温度
+				app_general_push_dhm_ptc_temp((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			default:

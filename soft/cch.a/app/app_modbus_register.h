@@ -84,9 +84,9 @@
 #define REG_ADDR_DEADZONE_FAN_TEMP                       0X2C1E//
 #define REG_ADDR_NEW_AIR_SPEED                           0X2C1F//
 #define REG_ADDR_BACK_AIR_SPEED                          0X2C20//
-#define REG_ADDR_WATER_MACHINE_FRE                       0X2C21//
+#define REG_ADDR_WATER_MACHINE_FRE                       0X2C21//水机压缩机频率
 #define REG_ADDR_FU_MACHINE_FRE                          0X2C22//
-#define REG_ADDR_MASTER_SUPPLY_TEMP                      0X2C23//
+#define REG_ADDR_MASTER_SUPPLY_TEMP                      0X2C23//主机供水温度
 #define REG_ADDR_MASTER_LIVING_TEMP                      0X2C24//
 #define REG_ADDR_MASTER_OUTDOOR_TEMP                     0X2C25//
 #define REG_ADDR_ADJUST_BACKAIR_HUM                      0X2C26//回风
@@ -1222,6 +1222,10 @@
 #define REG_ADDR_DHM1_BACK_AIR_LOW_PWM                   0X400B//回风低风量PWM值
 #define REG_ADDR_DHM1_BACK_AIR_MID_PWM                   0X400C //回风中风量PWM值
 #define REG_ADDR_DHM1_BACK_AIR_HIGH_PWM                  0X400D //回风高风量PWM值
+#define REG_ADDR_DHM1_ROOM_TEMP_WRITE                    0X400E //房间温度写入
+#define REG_ADDR_DHM1_ROOM_HUM_WRITE                     0X400F //房间湿度写入
+#define REG_ADDR_DHM1_PTC_TEMP                           0X4010 //PTC再热后温度
+
 
 
 #define DP_ADDR_PAD_POWER                                 0X00

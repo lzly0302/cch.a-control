@@ -68,6 +68,7 @@ typedef struct
         int16_t                    humidity_set;             //设定湿度
         int16_t                    ptc_temp;                //再热温度
         int16_t                    iec_temp;                //房间温度
+        int16_t                    iec_hum;                 //房间湿度
         int16_t                    outdoor_temp;
         int16_t                    outdoor_hum;
         int16_t                    before_fu_temp;
@@ -466,6 +467,7 @@ void app_general_push_aircod_humidity(int16_t in_set_humidity)
 		if(s_sysPara.dhmPara[0].humidity_set != in_set_humidity)
 		{
 			s_sysPara.dhmPara[0].humidity_set = in_set_humidity;
+            app_link_syn_push_dhm_updata_word(0,OCCUPY_DHM_WIND_SET_HUM);
             app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
 			app_push_once_save_sto_parameter();
 		}
@@ -485,6 +487,7 @@ void app_general_push_aircod_fanSpeed(NewAirLevelSet_Def in_speed)
 		{
 			s_sysPara.dhmPara[0].NewAirLevelSet = in_speed;
             app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_SPEED);
+            app_link_syn_push_dhm_updata_word(0,OCCUPY_DHM_WIND_SET_SPEED);
 			app_push_once_save_sto_parameter();
 		}
     }
@@ -925,7 +928,7 @@ void app_general_push_water_machine_fre(uint16_t in_fre)
     if(s_sysPara.water_machine_fre != in_fre)
     {
         s_sysPara.water_machine_fre = in_fre;
-        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUT_VALVE);
+      //  app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUT_VALVE);
     } 
 }
 uint16_t app_general_pull_water_machine_fre(void)
@@ -2586,14 +2589,14 @@ void app_general_push_dhm_use_port(uint8_t in_port,uint8_t in_com)
 /*除湿模块时间戳*/
 void app_general_push_dhm_dp_stamp(uint8_t in_solidNum,uint16_t in_index,uint32_t in_stamp)
 {
-    if(in_index > DP_ADDR_DHM_START)
+    if(in_index >= DP_ADDR_DHM_START)
     {
         s_sysPara.dhmPara[in_solidNum].dhm_dpStamp[in_index-DP_ADDR_DHM_START] = in_stamp;
     }
 }
 uint32_t app_general_pull_dhm_dp_stamp(uint8_t in_solidNum,uint16_t in_index)
 {
-    if(in_index > DP_ADDR_DHM_START)
+    if(in_index >= DP_ADDR_DHM_START)
     {
         return s_sysPara.dhmPara[in_solidNum].dhm_dpStamp[in_index-DP_ADDR_DHM_START];
     }
@@ -2673,9 +2676,24 @@ void  app_general_push_dhm_iec5_temp(uint8_t in_port,int16_t in_temp)
     if(s_sysPara.dhmPara[in_port].iec_temp != in_temp)
     {
         s_sysPara.dhmPara[in_port].iec_temp = in_temp;
-        // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_WIND_SET_HUM);
+        app_link_syn_push_dhm_updata_word(in_port,OCCUPY_DHM_NEED_DHM_STATUS);
     }
 }
+//iec5测量湿度
+int16_t app_general_pull_dhm_iec5_hum(uint8_t in_port)
+{
+    return s_sysPara.dhmPara[in_port].iec_hum;
+}
+
+void  app_general_push_dhm_iec5_hum(uint8_t in_port,int16_t in_temp)
+{
+    if(s_sysPara.dhmPara[in_port].iec_hum != in_temp)
+    {
+        s_sysPara.dhmPara[in_port].iec_hum = in_temp;
+        app_link_syn_push_dhm_updata_word(in_port,OCCUPY_DHM_NEED_DHM_STATUS);
+    }
+}
+
 /*除湿输出状态*/
 uint16_t app_general_pull_dhm_dm_output_status(uint8_t in_port)
 {
@@ -3532,7 +3550,7 @@ bool app_pull_energy_need(void)
     uint8_t j = 0;
     if(s_sysPara.remoteControlFlag)
     {
-        for(i = 0; i < (MASTER_PAD_NUM-2);i++)
+        for(i = 0; i < 6;i++)
         {
             if(s_sysPara.publicPara[i].output_remote)
             {
@@ -3552,6 +3570,43 @@ bool app_pull_energy_need(void)
                     {
                         if((s_sysPara.publicPara[j].output_terminal) && ((s_sysPara.lewTempStatus & (0x01<<j)) == 0))
                         {//有输出同时没有露点状态
+                            return true;
+                        }
+                    }       
+                }
+            }
+        }	
+    }	
+    return false; 
+}
+
+/*风盘能需*/
+bool _app_pull_fan_energy_need(void)
+{
+    uint8_t i = 0;
+    uint8_t j = 0;
+    if(s_sysPara.remoteControlFlag)
+    {
+        for(i = 6; i < (MASTER_PAD_NUM-1);i++)
+        {
+            if(s_sysPara.publicPara[i].output_remote)
+            {
+                return true;
+            }
+        }
+    }
+    else
+    {
+        for(i = 0; i < MASTER_PAD_NUM;i++)
+        {
+            if(s_sysPara.padPara[i].pad_bind_fan)
+            {
+                for(j = 0; j < MASTER_PAD_NUM; j++)
+                {
+                    if(s_sysPara.padPara[i].pad_bind_fan & (0x01 << j))
+                    {
+                        if(s_sysPara.publicPara[j].output_terminal)
+                        {//有输出
                             return true;
                         }
                     }       
@@ -4069,33 +4124,15 @@ void app_general_para_updata_task(void)
             system_need &= (~ENGER_NEED_RADIATION_BIT);
             s_sysPara.system_status_word &= (~0x04);
         }
-        if(s_sysPara.remoteControlFlag)
-        {
-            if((s_sysPara.publicPara[6].output_remote) ||
-            (s_sysPara.publicPara[7].output_remote) )
-            {//风盘能需
-                system_need |= ENGER_NEED_FAN_BIT;
-                s_sysPara.system_status_word |= 0x08;
-            }
-            else
-            {
-                system_need &= (~ENGER_NEED_FAN_BIT);
-                s_sysPara.system_status_word &= (~0x08);
-            }
+        if(_app_pull_fan_energy_need())
+        {//风盘能需
+            system_need |= ENGER_NEED_FAN_BIT;
+            s_sysPara.system_status_word |= 0x08;
         }
         else
         {
-            if((s_sysPara.publicPara[6].output_terminal) ||
-            (s_sysPara.publicPara[7].output_terminal) )
-            {
-                system_need |= ENGER_NEED_FAN_BIT;
-                s_sysPara.system_status_word |= 0x08;
-            }
-            else
-            {
-                system_need &= (~ENGER_NEED_FAN_BIT);
-                s_sysPara.system_status_word &= (~0x08);
-            }
+            system_need &= (~ENGER_NEED_FAN_BIT);
+            s_sysPara.system_status_word &= (~0x08);
         } 
         /*最高露点*/
         int16_t max_lew_temp_backup = 0;
@@ -4220,13 +4257,21 @@ void app_general_mix_water_task(void)
             {//制冷、制热、除湿   
                 if((StoRunParameter.airRunmode == AIR_MODE_COOL) || (StoRunParameter.airRunmode == AIR_MODE_AUTO_COOL) ||(StoRunParameter.airRunmode == AIR_MODE_HUMIDITY))
                 {
-                     APP_push_aricod_message(DRIVE_BOARD_SET_MODE,AIR_MODE_COOL);//制冷模式
-                     APP_push_aricod_message(DRIVE_BOARD_COOL_OUTWATER_SETTEMP,app_general_pull_set_cold_water_temp());//制冷出水设置温度
+                    APP_push_aricod_message(DRIVE_BOARD_SET_MODE,AIR_MODE_COOL);//制冷模式
+                    APP_push_aricod_message(DRIVE_BOARD_COOL_OUTWATER_SETTEMP,app_general_pull_set_cold_water_temp());//制冷出水设置温度
                 }
                 else
                 {
                     APP_push_aricod_message(DRIVE_BOARD_SET_MODE,AIR_MODE_HEAT);//制热模式
                     APP_push_aricod_message(DRIVE_BOARD_HOT_OUTWATER_SETTEMP,app_general_pull_set_heat_water_temp());//制热出水设置温度
+                }
+                if(_app_pull_fan_energy_need())
+                {
+                    s_sysPara.energyNeed = false;
+                }
+                else
+                {
+                    s_sysPara.energyNeed = true;
                 }
                 switch(StoRunParameter.control_method)
                 {

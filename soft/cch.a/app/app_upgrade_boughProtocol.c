@@ -510,28 +510,18 @@ void app_bough_update_master_task(void)
         
         case ugdsm_idle:
         {
-            if(mde_upgrade_pull_pad_status())
-            {
+            if(mde_upgrade_pull_pad_status() || (app_general_pull_version_pad_flag()))
+            {//面板
                 upgrade_stateMachine = ugdsm_check_pad_list;
                 padList = app_general_pull_version_pad_list();
             }
-            else if(mde_upgrade_pull_fan_status())
-            {
+            else if(mde_upgrade_pull_fan_status()||(app_general_pull_version_fan_flag()))
+            {//风盘
                 upgrade_stateMachine = ugdsm_check_fan_list;
                 padList = app_general_pull_version_fan_list();
-            }
-            else if(app_general_pull_version_pad_flag())
-            {
-                padList = app_general_pull_version_pad_list();
-                upgrade_stateMachine = ugdsm_check_pad_list;
-            }
-            else if(app_general_pull_version_fan_flag())
-            {
-                padList = app_general_pull_version_fan_list();
-                upgrade_stateMachine = ugdsm_check_fan_list;
             }
             else if(mde_upgrade_pull_ae_status())
-            {
+            {//除湿模块
                 upgrade_stateMachine = ugdsm_check_dhm_list;
             }
             break;
@@ -572,24 +562,6 @@ void app_bough_update_master_task(void)
         {
             if(pbc_pull_timerIsCompleted(&pad_list_delay))
             {
-               /* if(padList)
-                {
-
-                }
-                else
-                {
-                    logList = app_link_log_pull_device_list(SYSTEM_PAD);
-                    for(i = 0; i < MAX_DEVICE_NUM;i++)
-                    {
-                        if(logList[i].onlineFlag)
-                        {
-                            if(logList[i].deviceType == DEVICE_TYPE_ROMM)
-                            {
-                                padList |= (0x01<<i);
-                            }
-                        }
-                    }      
-                }*/
                 if(padList)
                 {
                     upgrade_stateMachine = ugdsm_query;
@@ -603,24 +575,6 @@ void app_bough_update_master_task(void)
         }
         case ugdsm_check_fan_list:
         {
-           /* if(padList)
-            {
-
-            }
-            else
-            {
-                logList = app_link_log_pull_device_list(SYSTEM_PAD);
-                for(i = 0; i < MAX_DEVICE_NUM;i++)
-                {
-                    if(logList[i].onlineFlag)
-                    {
-                        if(logList[i].deviceType == DEVICE_TYPE_FAN)
-                        {
-                            padList |= (0x01<<i);
-                        }
-                    }
-                }      
-            }*/
             if(padList)
             {
                 upgrade_stateMachine = ugdsm_query;
@@ -635,7 +589,7 @@ void app_bough_update_master_task(void)
         {
             if(pbc_pull_timerIsCompleted(&timer_transmit))
             {
-                pbc_reload_timerClock(&timer_transmit,2000);
+                pbc_reload_timerClock(&timer_transmit,5000);
                 for(i = 0;i < MAX_DEVICE_NUM;i++)
                 {
                     if(padList & (0x01<<i))
@@ -645,7 +599,6 @@ void app_bough_update_master_task(void)
                     }
                 }
                 transmit_data = pull_bough_message_pBuff(SYSTEM_PAD);
-                //logList = app_link_log_pull_device_list(SYSTEM_PAD);
                 id0 = app_general_pull_devive_id0(padPort);
                 id1 = app_general_pull_devive_id1(padPort);
                 id2 = app_general_pull_devive_id2(padPort);
@@ -677,7 +630,7 @@ void app_bough_update_master_task(void)
         case ugdsm_query_amswer:
         {
             if(pbc_pull_timerIsCompleted(&timer_answerTimeout))
-            {
+            {//超时5s后重发
                 upgrade_stateMachine = ugdsm_query;
             }
             if(haveDataFlag)
@@ -702,6 +655,34 @@ void app_bough_update_master_task(void)
                     {
                         upgrade_stateMachine = ugdsm_entryBoot;
                     }
+                }
+                else if(pReceive_date->Payload[1] == BGEUCMD_ErrorReport)
+                {//错误报告
+                    padList &= (~(0x01<<padPort));
+                    app_general_clear_port_version(padPort);
+                    if(padList)
+                    {
+                        pbc_reload_timerClock(&pad_list_delay,60);
+                        upgrade_stateMachine = ugdsm_check_pad_list;
+                    }
+                    else
+                    {
+                        upgrade_stateMachine = ugdsm_idle;
+                        if((mde_upgrade_pull_pad_status()) || (app_general_pull_version_pad_flag()))
+                        {
+                            mde_upgrade_clear_pad_status();
+                            app_general_clear_version_pad_flag();
+                        }
+                        else if((mde_upgrade_pull_fan_status()) || (app_general_pull_version_fan_flag()))
+                        {
+                            app_general_clear_version_fan_flag();
+                            mde_upgrade_clear_fan_status();
+                        }
+                        else if(mde_upgrade_pull_ae_status())
+                        {
+                            mde_upgrade_clear_ae_status();
+                        }
+                    }          
                 }
             }
             break;
@@ -775,6 +756,34 @@ void app_bough_update_master_task(void)
                     upgrade_stateMachine = ugdsm_transFlies;
                     pbc_reload_timerClock(&timer_transmit,1000);
                 }
+                else if(pReceive_date->Payload[1] == BGEUCMD_ErrorReport)
+                {//错误报告
+                    padList &= (~(0x01<<padPort));
+                    app_general_clear_port_version(padPort);
+                    if(padList)
+                    {
+                        pbc_reload_timerClock(&pad_list_delay,60);
+                        upgrade_stateMachine = ugdsm_check_pad_list;
+                    }
+                    else
+                    {
+                        upgrade_stateMachine = ugdsm_idle;
+                        if((mde_upgrade_pull_pad_status()) || (app_general_pull_version_pad_flag()))
+                        {
+                            mde_upgrade_clear_pad_status();
+                            app_general_clear_version_pad_flag();
+                        }
+                        else if((mde_upgrade_pull_fan_status()) || (app_general_pull_version_fan_flag()))
+                        {
+                            app_general_clear_version_fan_flag();
+                            mde_upgrade_clear_fan_status();
+                        }
+                        else if(mde_upgrade_pull_ae_status())
+                        {
+                            mde_upgrade_clear_ae_status();
+                        }
+                    }          
+                }
             }
             if(pbc_pull_timerIsCompleted(&timer_answerTimeout))
             {
@@ -784,7 +793,31 @@ void app_bough_update_master_task(void)
                 if(max_retryCount >= MAX_RETY_COUNT)
                 {
                     max_retryCount = 0;
-                    upgrade_stateMachine = ugdsm_check_pad_list;
+                    padList &= (~(0x01<<padPort));
+                    app_general_clear_port_version(padPort);
+                    if(padList)
+                    {
+                        pbc_reload_timerClock(&pad_list_delay,60);
+                        upgrade_stateMachine = ugdsm_check_pad_list;
+                    }
+                    else
+                    {
+                        upgrade_stateMachine = ugdsm_idle;
+                        if((mde_upgrade_pull_pad_status()) || (app_general_pull_version_pad_flag()))
+                        {
+                            mde_upgrade_clear_pad_status();
+                            app_general_clear_version_pad_flag();
+                        }
+                        else if((mde_upgrade_pull_fan_status()) || (app_general_pull_version_fan_flag()))
+                        {
+                            app_general_clear_version_fan_flag();
+                            mde_upgrade_clear_fan_status();
+                        }
+                        else if(mde_upgrade_pull_ae_status())
+                        {
+                            mde_upgrade_clear_ae_status();
+                        }
+                    }          
                 }        
             }
             break;
@@ -886,8 +919,46 @@ void app_bough_update_master_task(void)
                         device_quety_fileNumber = device_quety_fileNumber<<8;
                         device_quety_fileNumber |= pReceive_date->Payload[5];
                         upgrade_stateMachine = ugdsm_transFlies;
-                        pbc_reload_timerClock(&timer_transmit,300);
+                        pbc_reload_timerClock(&timer_transmit,1000);
                     }
+                }
+                else if(pReceive_date->Payload[1] == BGEUCMD_ErrorReport)
+                {//错误报告
+                    if(pReceive_date->Payload[3] == BGEUERR_BlockNumber)
+                    {//块错误
+                        device_quety_fileNumber++;
+                        upgrade_stateMachine = ugdsm_transFlies;
+                        pbc_reload_timerClock(&timer_transmit,1000);
+                    }
+                    else
+                    {
+                        padList &= (~(0x01<<padPort));
+                        app_general_clear_port_version(padPort);
+                        if(padList)
+                        {
+                            pbc_reload_timerClock(&pad_list_delay,60);
+                            upgrade_stateMachine = ugdsm_check_pad_list;
+                        }
+                        else
+                        {
+                            upgrade_stateMachine = ugdsm_idle;
+                            if((mde_upgrade_pull_pad_status()) || (app_general_pull_version_pad_flag()))
+                            {
+                                mde_upgrade_clear_pad_status();
+                                app_general_clear_version_pad_flag();
+                            }
+                            else if((mde_upgrade_pull_fan_status()) || (app_general_pull_version_fan_flag()))
+                            {
+                                app_general_clear_version_fan_flag();
+                                mde_upgrade_clear_fan_status();
+                            }
+                            else if(mde_upgrade_pull_ae_status())
+                            {
+                                mde_upgrade_clear_ae_status();
+                            }
+                        }        
+                    }
+                      
                 }
             }
             
@@ -899,8 +970,31 @@ void app_bough_update_master_task(void)
                 if(max_retryCount >= MAX_RETY_COUNT)
                 {
                     max_retryCount = 0;
-                    upgrade_stateMachine = ugdsm_transFlies;
-                    pbc_reload_timerClock(&timer_transmit,10000);
+                    padList &= (~(0x01<<padPort));
+                    app_general_clear_port_version(padPort);
+                    if(padList)
+                    {
+                        pbc_reload_timerClock(&pad_list_delay,60);
+                        upgrade_stateMachine = ugdsm_check_pad_list;
+                    }
+                    else
+                    {
+                        upgrade_stateMachine = ugdsm_idle;
+                        if((mde_upgrade_pull_pad_status()) || (app_general_pull_version_pad_flag()))
+                        {
+                            mde_upgrade_clear_pad_status();
+                            app_general_clear_version_pad_flag();
+                        }
+                        else if((mde_upgrade_pull_fan_status()) || (app_general_pull_version_fan_flag()))
+                        {
+                            app_general_clear_version_fan_flag();
+                            mde_upgrade_clear_fan_status();
+                        }
+                        else if(mde_upgrade_pull_ae_status())
+                        {
+                            mde_upgrade_clear_ae_status();
+                        }
+                    }          
                 }
                 
             }

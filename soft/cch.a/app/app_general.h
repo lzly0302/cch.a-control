@@ -603,6 +603,9 @@ NewAirLevelSet_Def app_general_pull_dhm_fanSpeed(uint8_t in_port);
 //iec5测量温度
 int16_t app_general_pull_dhm_iec5_temp(uint8_t in_port);
 void  app_general_push_dhm_iec5_temp(uint8_t in_port,int16_t in_temp);
+//iec5测量湿度
+int16_t app_general_pull_dhm_iec5_hum(uint8_t in_port);
+void  app_general_push_dhm_iec5_hum(uint8_t in_port,int16_t in_temp);
 /*除湿输出状态*/
 uint16_t app_general_pull_dhm_dm_output_status(uint8_t in_port);
 void  app_general_push_dhm_dm_output_status(uint8_t in_port,uint16_t in_status);
