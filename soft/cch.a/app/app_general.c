@@ -4012,7 +4012,7 @@ void app_general_clear_version_pad_flag(void)
 }
 void app_general_clear_port_version(uint8_t in_port)
 {
-    s_sysPara.publicPara[in_port].version = 0;
+    s_sysPara.publicPara[in_port].version = 0xffff;
 }
 //风盘版本号升级
 bool fan_version_updata = false;
@@ -4055,7 +4055,7 @@ void app_general_check_pad_updata(void)
                     {
                         if((s_sysPara.publicPara[i].idUsedFlag) && (s_sysPara.publicPara[i].deviceType == DEVICE_TYPE_ROMM))
                         {
-                            if((s_sysPara.publicPara[i].version != 0) && (s_sysPara.publicPara[i].version < padVersion))
+                            if((s_sysPara.publicPara[i].version != 0xffff) && (s_sysPara.publicPara[i].version < padVersion))
                             {
                                 padVersion_list |= (0x01<<i);
                             }
@@ -4075,8 +4075,7 @@ void app_general_check_pad_updata(void)
                     {
                         if((s_sysPara.publicPara[i].idUsedFlag) && (s_sysPara.publicPara[i].deviceType == DEVICE_TYPE_FAN))
                         {
-                            if((s_sysPara.publicPara[i].version != 0) && (s_sysPara.publicPara[i].version < fanVersion))
-                            //if((s_sysPara.publicPara[i].version < fanVersion))
+                            if((s_sysPara.publicPara[i].version != 0xffff) && (s_sysPara.publicPara[i].version < fanVersion))
                             {
                                 fanVersion_list |= (0x01<<i);
                             }

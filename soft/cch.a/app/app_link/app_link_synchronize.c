@@ -614,8 +614,10 @@ void app_pull_data_point_message_pad(uint8_t in_solidNum,uint16_t in_dpAddr,uint
             pbc_int16uToArray_bigEndian(app_general_pull_dhm_iec5_temp(in_solidNum),&out_buff[2]);
             pbc_int16uToArray_bigEndian(app_general_pull_dhm_iec5_hum(in_solidNum),&out_buff[4]);
             pbc_int16uToArray_bigEndian(app_general_pull_dhm_dm_output_status(in_solidNum),&out_buff[6]);
-            pbc_int16uToArray_bigEndian(app_general_pull_pad_version(in_solidNum),&out_buff[8]);
-            pbc_int16uToArray_bigEndian(app_general_pull_pad_hardware_sign(in_solidNum),&out_buff[10]);
+            uint8_t comm_port;
+            comm_port = app_general_pull_dhm_use_port(in_solidNum);
+            pbc_int16uToArray_bigEndian(app_general_pull_pad_version(comm_port),&out_buff[8]);
+            pbc_int16uToArray_bigEndian(app_general_pull_pad_hardware_sign(comm_port),&out_buff[10]);
             break;
         }   
         case DP_ADDR_DHM_LIS_NEW_AIR_PWM:
@@ -836,8 +838,10 @@ void app_push_data_point_message_pad(uint8_t in_solidNum,uint16_t in_dpAddr,uint
             app_general_push_dhm_iec5_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[2]));
             app_general_push_dhm_iec5_hum(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[4]));
             app_general_push_dhm_dm_output_status(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[6]));
-            app_general_push_pad_version(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[8]));
-            app_general_push_pad_hardware_sign(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[10]));
+            uint8_t comm_port;
+            comm_port = app_general_pull_dhm_use_port(in_solidNum);
+            app_general_push_pad_version(comm_port,pbc_arrayToInt16u_bigEndian(&in_buff[8]));
+            app_general_push_pad_hardware_sign(comm_port,pbc_arrayToInt16u_bigEndian(&in_buff[10]));
             break;
         }   
         case DP_ADDR_DHM_LIS_NEW_AIR_PWM:
