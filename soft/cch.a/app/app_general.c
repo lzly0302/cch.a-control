@@ -445,7 +445,7 @@ void app_general_push_aircod_mode(AirRunMode_Def in_mode)
             {
                 if(app_general_pull_dhm_id_use_message(i))
                 {
-                    app_link_syn_push_dhm_updata_word(i,OCCUPY_DHM_POWER);
+                    app_link_syn_push_dhm_updata_word(i,OCCUPY_DHM_RUN_MODE);
                 }
             }
 		}
@@ -2299,14 +2299,15 @@ bool  app_general_pull_humidity_output(void)
 /*调试使能*/
 bool app_general_pull_debug_enable(void)
 {
-    return s_sysPara.debug_enable;
+    return StoRunParameter.debug_enable;
 }
 void app_general_push_debug_enable(bool in_status)
 {
-    if(s_sysPara.debug_enable != in_status)
+    if(StoRunParameter.debug_enable != in_status)
     {
-        s_sysPara.debug_enable = in_status;
-        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUT_STATUS); 
+        StoRunParameter.debug_enable = in_status;
+        app_push_once_save_sto_parameter();
+       // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_LIS_OUT_STATUS); 
     }  
 }
 /*制冷无能需设定温度*/
@@ -4937,6 +4938,7 @@ void app_general_mix_water_task(void)
         for(j = 0; j < MASTER_PAD_NUM;j++)
         {
             s_sysPara.publicPara[j].id_ocupy_delay.timStatusBits = timerType_second;
+            s_sysPara.publicPara[j].version = 0xffff;//设为未知版本号
         }       
     }   
 }
