@@ -13,21 +13,11 @@
 #define  DHM_PORT_0                     10//除湿自动绑定端口
 #define  DHM_PORT_1                     9
 
+
 #define  ERROR_NTC_MIX_WATER            0X0001
 #define  ERROR_NTC_IN_WATER             0X0002
 #define  ERROR_NTC_BACK_WATER           0X0002
 #define  ERROR_THREE_WAY_VAVLE          0X0004
-#define  ERROR_AIRCOD_OFFLINE           0X0010
-#define  ERROR_PORT1_OFFLINE            0X0020
-#define  ERROR_PORT2_OFFLINE            0X0040
-#define  ERROR_PORT3_OFFLINE            0X0080
-#define  ERROR_AIRC4D_OFFLINE           0X0100
-#define  ERROR_PORT5_OFFLINE            0X0200
-#define  ERROR_PORT6_OFFLINE            0X0400
-#define  ERROR_PORT7_OFFLINE            0X0800
-#define  ERROR_PORT8_OFFLINE            0X1000
-#define  ERROR_PORT9_OFFLINE            0X2000
-#define  ERROR_PORT10_OFFLINE           0X4000
 #define  PAD_NO_PHY_BIND                0Xff
 /*系统故障*/
 #define  SYS_ERROR_MIX_WATER             0X0001//混水故障
@@ -59,18 +49,19 @@ enum
     PrgTimeRun_OFF          =0x0200,
     OnceAM4100PM25          =0x0400, //测量一次AM4100的PM2.5值
 };
-
+/*主任务*/
 void app_general_task(void);
-/*时间戳*/
-void app_general_push_system_dp_stamp(uint16_t in_index,uint32_t in_stamp);
-uint32_t app_general_pull_system_dp_stamp(uint16_t in_index);
+/*获取随机数*/
+uint16_t GetRandomDelayTime(void);
+/*重复绑定列表检测*/
+void check_rebind_list(void);
+
+
+/*输配接口*/
 /*系统故障字*/
 uint16_t app_general_pull_master_error_word(void);
 void app_general_push_master_error_word(uint16_t in_error);
 void app_general_clear_master_error_word(uint16_t in_error);
-/*环控故障字*/
-uint16_t app_general_pull_ae_error_word(void);
-void app_general_push_ae_error_word(uint16_t in_error);
 /*输配故障字*/
 uint16_t app_general_pull_ac_error_word(void);
 void app_general_push_ac_error_word(uint16_t in_error);
@@ -92,11 +83,123 @@ int16_t app_general_pull_aircod_humidity(void);
 /*设定风速*/
 void app_general_push_aircod_fanSpeed(NewAirLevelSet_Def in_speed);
 NewAirLevelSet_Def app_general_pull_aircod_fanSpeed(void);
-/*制冷设定温度、制热设定温度*/
+/*主机制冷设定温度、制热设定温度*/
 void app_general_push_aircod_cold_temp(int16_t in_set_temp);
-void app_general_push_aircod_heat_temp(int16_t in_set_temp);
 int16_t app_general_pull_aircod_cold_temp(void);
+void app_general_push_aircod_heat_temp(int16_t in_set_temp);
 int16_t app_general_pull_aircod_heat_temp(void);
+/*水机频率*/
+void app_general_push_water_machine_fre(uint16_t in_fre);
+uint16_t app_general_pull_water_machine_fre(void);
+/*主机供水温度*/
+int16_t app_general_pull_master_supply_temp(void);
+void app_general_push_master_supply_temp(int16_t in_temp);
+/*混水制冷/制热设定温度 */
+void app_general_push_set_mixwater_cold_temp(int16_t in_set_temp);
+void app_general_push_set_mixwater_heat_temp(int16_t in_set_temp);
+int16_t app_general_pull_set_mixwater_cold_temp(void);
+int16_t app_general_pull_set_mixwater_heat_temp(void);
+/*输配水泵状态*/
+bool app_general_pull_pump_output(void);
+void app_general_push_pump_output(bool in_status);
+/*输配三通阀门输出状态*/
+bool app_general_pull_three_vavle_output(void);
+/*旁通输出*/
+bool app_general_pull_anergy_need(void);
+void app_general_push_anergy_need(bool in_status);
+/*输配防冻保护*/
+uint8_t app_general_pull_mix_freeze_protect(void);
+void app_general_push_mix_freeze_protect(uint8_t  in_stemp);
+/*防冻能需*/
+bool app_pull_low_protect_reguest(void);
+/*系统能需*/
+uint8_t app_pull_system_energy_need(void);
+/*绑定故障*/
+void app_general_push_pad_bind_error(uint8_t in_solidNum,uint16_t in_error);
+uint16_t app_general_pull_pad_bind_error(uint8_t in_solidNum);
+/*露点保护状态*/
+void app_general_push_pad_lew_dorp_temp_output(uint8_t in_solidNum,bool in_status);
+bool app_general_pull_pad_lew_dorp_temp_output(uint8_t in_solidNum);
+/*露点状态*/
+void app_general_push_system_lew_temp_status(uint16_t in_status);
+uint16_t app_general_pull_system_lew_temp_status(void);
+/*末端输出状态*/
+uint16_t app_general_pull_pad_output_status(void);
+/*485参数   地址 波特率  奇偶校验位*/
+void app_general_push_adress485(uint8_t in_address);
+void app_general_push_baudrate(uint16_t in_baudRate);
+void app_general_push_checkbit(uint8_t in_check);
+uint8_t app_general_pull_adress485(void);
+uint16_t app_general_pull_baudrate(void);
+uint8_t app_general_pull_checkbit(void);
+/*远程受控模式*/
+void app_general_push_remote_control(bool in_remote_control);
+bool  app_general_pull_remote_control(void);
+/*远程继电器*/
+void app_general_push_remote_relay(uint8_t in_port,bool in_remote_control);
+bool  app_general_pull_remote_relay(uint8_t in_port);
+/*远程水泵*/
+void app_general_push_remote_pump(bool in_remote_status);
+bool  app_general_pull_remote_pump(void);
+/*远程三通阀*/
+void app_general_push_remote_threeVavle(bool in_remote_status);
+bool  app_general_pull_remote_threeVavle(void);
+/*远程旁通*/
+void app_general_push_remote_bypass(bool in_remote_status);
+bool  app_general_pull_remote_bypass(void);
+/*远程三通阀开度*/
+void app_general_push_remote_degree(uint8_t in_vavle);
+uint8_t  app_general_pull_remote_degree(void);
+/*调试使能*/
+bool app_general_pull_debug_enable(void);
+void app_general_push_debug_enable(bool in_status);
+/*主控制策略*/
+uint8_t app_general_pull_main_control_method(void);
+void app_general_push_main_control_method(uint8_t in_method);
+/*获取开机辐射末端最大露点温度*/
+int16_t app_pull_max_low_temp(void);
+/*露点状态上限(开启)带宽 */
+void app_general_push_lew_status_open_status(int16_t in_set_temp);
+int16_t app_general_pull_lew_status_open_status(void);
+/*露点状态下限(关闭)带宽 */
+void app_general_push_lew_status_close_status(int16_t in_set_temp);
+int16_t app_general_pull_lew_status_close_status(void);
+/*输配未绑定的阀门列表(风盘) */
+uint16_t app_general_pull_unbind_list_fan(void);
+void app_general_push_unbind_list_fan(uint16_t in_unbind);
+/*输配未绑定的阀门列表(辐射)*/
+uint16_t app_general_pull_unbind_list_warm(void);
+void app_general_push_unbind_list_warm(uint16_t in_unbind);
+/*重复绑定信息*/
+void app_general_push_pad_repeat_bind_list(uint16_t in_list);
+uint16_t app_general_pull_pad_repeat_bind_list(void);
+/*输配软件复位 */
+void app_general_push_cc_reset(uint16_t in_code);
+//面板版本号升级
+uint16_t app_general_pull_version_pad_list(void);
+bool app_general_pull_version_pad_flag(void);
+void app_general_clear_version_pad_flag(void);
+void app_general_clear_port_version(uint8_t in_port);
+//风盘版本号升级
+uint16_t app_general_pull_version_fan_list(void);
+bool app_general_pull_version_fan_flag(void);
+void app_general_clear_version_fan_flag(void);
+
+
+/*环控软件复位 */
+void app_general_push_hc_reset(uint16_t in_code);
+/*输配环控时间戳*/
+void app_general_push_system_dp_stamp(uint16_t in_index,uint32_t in_stamp);
+uint32_t app_general_pull_system_dp_stamp(uint16_t in_index);
+/*环控故障字*/
+uint16_t app_general_pull_ae_error_word(void);
+void app_general_push_ae_error_word(uint16_t in_error);
+uint16_t app_general_pull_fu_machine_fre(void);
+void app_general_push_fu_machine_fre(uint16_t in_fre);
+int16_t app_general_pull_master_living_temp(void);
+void app_general_push_master_living_temp(int16_t in_temp);
+int16_t app_general_pull_master_outdoor_temp(void);
+void app_general_push_master_outdoor_temp(int16_t in_temp);
 /*新风PWM*/
 uint8_t app_general_pull_new_air_pwm_low(void);
 uint8_t app_general_pull_new_air_pwm_mid(void);
@@ -104,7 +207,6 @@ uint8_t app_general_pull_new_air_pwm_high(void);
 void app_general_push_new_air_pwm_low(uint8_t in_pwm);
 void app_general_push_new_air_pwm_mid(uint8_t in_pwm);
 void app_general_push_new_air_pwm_high(uint8_t in_pwm);
-
 /*回风风PWM*/
 uint8_t app_general_pull_back_air_pwm_low(void);
 uint8_t app_general_pull_back_air_pwm_mid(void);
@@ -112,7 +214,6 @@ uint8_t app_general_pull_back_air_pwm_high(void);
 void app_general_push_back_air_pwm_low(uint8_t in_pwm);
 void app_general_push_back_air_pwm_mid(uint8_t in_pwm);
 void app_general_push_back_air_pwm_high(uint8_t in_pwm);
-
 /*主机制冷制热生活热水设定水温*/
 void app_general_push_set_cold_water_temp(int16_t in_set_temp);
 void app_general_push_set_heat_water_temp(int16_t in_set_temp);
@@ -158,20 +259,6 @@ void app_general_push_aircod_newair_speed(uint16_t in_speed);
 /*回风风机转速*/
 uint16_t app_general_pull_aircod_backair_speed(void);
 void app_general_push_aircod_backair_speed(uint16_t in_speed);
-/*氟机水机频率*/
-void app_general_push_fu_machine_fre(uint16_t in_fre);
-uint16_t app_general_pull_fu_machine_fre(void);
-void app_general_push_water_machine_fre(uint16_t in_fre);
-uint16_t app_general_pull_water_machine_fre(void);
-
-/*主机供水温度、生活热水温度、户外温度*/
-int16_t app_general_pull_master_supply_temp(void);
-void app_general_push_master_supply_temp(int16_t in_temp);
-int16_t app_general_pull_master_living_temp(void);
-void app_general_push_master_living_temp(int16_t in_temp);
-int16_t app_general_pull_master_outdoor_temp(void);
-void app_general_push_master_outdoor_temp(int16_t in_temp);
-
 /*湿度温度co2pm25修正系数  户外 氟盘前 氟盘后 回风 排风*/
 int16_t app_general_pull_adjust_outdoor_hum(void);
 int16_t app_general_pull_adjust_outdoor_temp(void);
@@ -213,9 +300,6 @@ void app_general_push_adjust_exhastair_hum(int16_t in_hum);
 void app_general_push_adjust_exhastair_temp(int16_t in_temp);
 void app_general_push_adjust_exhastair_co2(int16_t in_co2);
 void app_general_push_adjust_exhastair_pm25(int16_t in_pm25);
-/*环控能需预冷预热输出*/
-bool app_general_pull_anergy_need(void);
-void app_general_push_anergy_need(bool in_status);
 /*系统传感器错误*/
 uint16_t app_general_pull_ntc_error_word(void);
 void app_general_push_ntc_error_word(uint16_t in_error);
@@ -226,38 +310,12 @@ void app_general_push_ac_ntc_error_word(uint16_t in_error);
 uint16_t app_general_pull_ae_ntc_error_word(void);
 void app_general_push_ae_ntc_error_word(uint16_t in_error);
 
-/*混水制冷/制热设定温度 */
-void app_general_push_set_mixwater_cold_temp(int16_t in_set_temp);
-void app_general_push_set_mixwater_heat_temp(int16_t in_set_temp);
-int16_t app_general_pull_set_mixwater_cold_temp(void);
-int16_t app_general_pull_set_mixwater_heat_temp(void);
-
-/*输配水泵状态*/
-bool app_general_pull_pump_output(void);
-void app_general_push_pump_output(bool in_status);
-/*输配三通阀门输出状态*/
-bool app_general_pull_three_vavle_output(void);
 /*输配混水AI目标温度 */
 int16_t app_general_pull_ai_dest_temp(void);
 /*输配混水AI使能*/
 bool app_general_pull_ai_enable_status(void);
 void app_general_push_ai_enable_status(bool in_status);
-/*输配防冻保护*/
-uint8_t app_general_pull_mix_freeze_protect(void);
-void app_general_push_mix_freeze_protect(uint8_t  in_stemp);
 /*传感器错误*/
-/*输配未绑定的阀门列表(风盘) */
-uint16_t app_general_pull_unbind_list_fan(void);
-void app_general_push_unbind_list_fan(uint16_t in_unbind);
-/*输配未绑定的阀门列表(辐射)*/
-uint16_t app_general_pull_unbind_list_warm(void);
-void app_general_push_unbind_list_warm(uint16_t in_unbind);
-/*重复绑定信息*/
-void app_general_push_pad_repeat_bind_list(uint16_t in_list);
-uint16_t app_general_pull_pad_repeat_bind_list(void);
-/*防冻能需*/
-bool app_pull_low_protect_reguest(void);
-
 /*生活热水使能*/
 int16_t app_general_pull_hotwater_enable(void);
 void app_general_push_hotwater_enable(uint16_t reg_dat);
@@ -447,144 +505,20 @@ void app_general_push_hotbackwater_set_temp(int16_t  in_set_temp);
 /*校湿*/
 void app_general_push_pad_adjust_hum(uint8_t in_solidNum,int16_t in_hum);
 int16_t app_general_pull_pad_adjust_hum(uint8_t in_solidNum);
-
 /*辐射类型选择*/
 void app_general_push_pad_type_warm_choose(uint8_t in_solidNum,uint8_t in_mode);
 uint8_t app_general_pull_pad_type_warm_choose(uint8_t in_solidNum);
-
 /*房间面积*/
 void app_general_push_pad_room_area(uint8_t in_solidNum,uint8_t in_mode);
 uint8_t app_general_pull_pad_room_area(uint8_t in_solidNum);
 
-
-/*绑定故障*/
-void app_general_push_pad_bind_error(uint8_t in_solidNum,uint16_t in_error);
-uint16_t app_general_pull_pad_bind_error(uint8_t in_solidNum);
-/*露点保护状态*/
-void app_general_push_pad_lew_dorp_temp_output(uint8_t in_solidNum,bool in_status);
-bool app_general_pull_pad_lew_dorp_temp_output(uint8_t in_solidNum);
-/*露点状态*/
-void app_general_push_system_lew_temp_status(uint16_t in_status);
-uint16_t app_general_pull_system_lew_temp_status(void);
-/*末端输出状态*/
-uint16_t app_general_pull_pad_output_status(void);
-/*综合传感器故障*/
-bool pull_integrated_sensor_error(void);
-void app_general_push_error_word(uint16_t in_errorBit);
-void app_general_clear_error_word(uint16_t in_errorBit);
-uint16_t app_general_pull_error_word(void);
-uint16_t GetRandomDelayTime(void);
-void check_rebind_list(void);
-/*系统能需*/
-uint8_t app_pull_system_energy_need(void);
-/*新风效率*/
-void app_general_push_freshair_effciency(int16_t in_effciency);
-int16_t app_general_pull_freshair_effciency(void);
-/*485参数   地址 波特率  奇偶校验位*/
-void app_general_push_adress485(uint8_t in_address);
-void app_general_push_baudrate(uint16_t in_baudRate);
-void app_general_push_checkbit(uint8_t in_check);
-uint8_t app_general_pull_adress485(void);
-uint16_t app_general_pull_baudrate(void);
-uint8_t app_general_pull_checkbit(void);
-/*远程受控模式*/
-void app_general_push_remote_control(bool in_remote_control);
-bool  app_general_pull_remote_control(void);
-/*远程继电器*/
-void app_general_push_remote_relay(uint8_t in_port,bool in_remote_control);
-bool  app_general_pull_remote_relay(uint8_t in_port);
-/*远程水泵*/
-void app_general_push_remote_pump(bool in_remote_status);
-bool  app_general_pull_remote_pump(void);
-/*远程三通阀*/
-void app_general_push_remote_threeVavle(bool in_remote_status);
-bool  app_general_pull_remote_threeVavle(void);
-/*远程旁通*/
-void app_general_push_remote_bypass(bool in_remote_status);
-bool  app_general_pull_remote_bypass(void);
-/*远程三通阀开度*/
-void app_general_push_remote_degree(uint8_t in_vavle);
-uint8_t  app_general_pull_remote_degree(void);
-/*调试使能*/
-bool app_general_pull_debug_enable(void);
-void app_general_push_debug_enable(bool in_status);
-/*制冷无能需设定温度*/
-void app_general_push_cold_no_need_set_temp(int16_t in_set_temp);
-int16_t app_general_pull_cold_no_need_set_temp(void);
-/*制冷风盘能需设定温度*/
-void app_general_push_cold_fan_need_set_temp(int16_t in_set_temp);
-int16_t app_general_pull_cold_fan_need_set_temp(void);
-/*制冷辐射能需设定温度*/
-void app_general_push_cold_warm_need_set_temp(int16_t in_set_temp);
-int16_t app_general_pull_cold_warm_need_set_temp(void);
-/*制冷露点配置温度*/
-void app_general_push_config_lew_set_temp(int16_t in_set_temp);
-int16_t app_general_pull_config_lew_set_temp(void);
-/*制热无能需设定温度*/
-void app_general_push_heat_no_need_set_temp(int16_t in_set_temp);
-int16_t app_general_pull_heat_no_need_set_temp(void);
-/*制热风盘能需设定温度*/
-void app_general_push_heat_fan_need_set_temp(int16_t in_set_temp);
-int16_t app_general_pull_heat_fan_need_set_temp(void);
-/*制热辐射能需设定温度*/
-void app_general_push_heat_warm_need_set_temp(int16_t in_set_temp);
-int16_t app_general_pull_heat_warm_need_set_temp(void);
-/*制热回风配置温度*/
-void app_general_push_config_back_wind_set_temp(int16_t in_set_temp);
-int16_t app_general_pull_config_back_wind_set_temp(void);
-/*除湿设定配置*/
-void app_general_push_config_hum_set(int16_t in_set_temp);
-int16_t app_general_pull_config_hum_set(void);
-/*制冷风温最大设定温度*/
-void app_general_push_cold_wind_max_set_temp(int16_t in_set_temp);
-int16_t app_general_pull_cold_wind_max_set_temp(void);
-/*制热风温最小设定温度 */
-void app_general_push_heat_wind_min_set_temp(int16_t in_set_temp);
-int16_t app_general_pull_heat_wind_min_set_temp(void);
-/*制热风温最大设定温度*/
-void app_general_push_heat_wind_max_set_temp(int16_t in_set_temp);
-int16_t app_general_pull_heat_wind_max_set_temp(void);
-/*主控制策略*/
-uint8_t app_general_pull_main_control_method(void);
-void app_general_push_main_control_method(uint8_t in_method);
-/*户外除湿状态*/
-bool app_general_pull_indoor_dehum_status(void);
-void app_general_push_indoor_dehum_status(bool in_status);
-/*获取开机辐射末端最大露点温度*/
-int16_t app_pull_max_low_temp(void);
-/*露点状态上限(开启)带宽 */
-void app_general_push_lew_status_open_status(int16_t in_set_temp);
-int16_t app_general_pull_lew_status_open_status(void);
-/*露点状态下限(关闭)带宽 */
-void app_general_push_lew_status_close_status(int16_t in_set_temp);
-int16_t app_general_pull_lew_status_close_status(void);
-/*输配软件复位 */
-void app_general_push_cc_reset(uint16_t in_code);
-/*环控软件复位 */
-void app_general_push_hc_reset(uint16_t in_code);
-/*水机开关机*/
-bool app_general_pull_water_machine_status(void);
-void app_general_push_water_machine_status(bool in_status);
-//面板版本号升级
-uint16_t app_general_pull_version_pad_list(void);
-bool app_general_pull_version_pad_flag(void);
-void app_general_clear_version_pad_flag(void);
-void app_general_clear_port_version(uint8_t in_port);
-//风盘版本号升级
-uint16_t app_general_pull_version_fan_list(void);
-bool app_general_pull_version_fan_flag(void);
-void app_general_clear_version_fan_flag(void);
-
-
 /*除湿模块相关接口*/
-
 /*末端id占用信息*/
 void app_general_push_dhm_id_use_message(uint8_t in_port,bool in_status);
 bool app_general_pull_dhm_id_use_message(uint8_t in_port);
 /*公共占用端口*/
 uint8_t app_general_pull_dhm_use_port(uint8_t in_port);
 void app_general_push_dhm_use_port(uint8_t in_port,uint8_t in_com);
-
 /*除湿模块时间戳*/
 void app_general_push_dhm_dp_stamp(uint8_t in_solidNum,uint16_t in_index,uint32_t in_stamp);
 uint32_t app_general_pull_dhm_dp_stamp(uint8_t in_solidNum,uint16_t in_index);
@@ -628,13 +562,10 @@ void app_general_push_dhm_outdoor_temp(uint8_t in_port,int16_t in_temp);
 int16_t app_general_pull_dhm_outdoor_temp(uint8_t in_port);
 void app_general_push_dhm_outdoor_hum(uint8_t in_port,int16_t in_hum);
 int16_t app_general_pull_dhm_outdoor_hum(uint8_t in_port);
-
 int16_t app_general_pull_dhm_adjust_outdoor_hum(uint8_t in_port);
 void app_general_push_dhm_adjust_outdoor_hum(uint8_t in_port,int16_t in_hum);
 int16_t app_general_pull_dhm_adjust_outdoor_temp(uint8_t in_port);
 void app_general_push_dhm_adjust_outdoor_temp(uint8_t in_port,int16_t in_temp);
-
-
 void app_general_push_dhm_before_fu_temp(uint8_t in_port,int16_t in_temp);
 int16_t app_general_pull_dhm_before_fu_temp(uint8_t in_port);
 void app_general_push_dhm_before_fu_hum(uint8_t in_port,int16_t in_hum);
@@ -643,8 +574,6 @@ int16_t app_general_pull_dhm_adjust_beforfu_hum(uint8_t in_port);
 void app_general_push_dhm_adjust_beforfu_hum(uint8_t in_port,int16_t in_hum);
 int16_t app_general_pull_dhm_adjust_beforfu_temp(uint8_t in_port);
 void app_general_push_dhm_adjust_beforfu_temp(uint8_t in_port,int16_t in_temp);
-
-
 void app_general_push_dhm_after_fu_temp(uint8_t in_port,int16_t in_temp);
 int16_t app_general_pull_dhm_after_fu_temp(uint8_t in_port);
 void app_general_push_dhm_after_fu_hum(uint8_t in_port,int16_t in_hum);
@@ -653,8 +582,6 @@ int16_t app_general_pull_dhm_adjust_afterfu_hum(uint8_t in_port);
 void app_general_push_dhm_adjust_afterfu_hum(uint8_t in_port,int16_t in_hum);
 int16_t app_general_pull_dhm_adjust_afterfu_temp(uint8_t in_port);
 void app_general_push_dhm_adjust_afterfu_temp(uint8_t in_port,int16_t in_temp);
-
-
 void app_general_push_dhm_backair_temp(uint8_t in_port,int16_t in_temp);
 int16_t app_general_pull_dhm_backair_temp(uint8_t in_port);
 void app_general_push_dhm_backair_hum(uint8_t in_port,int16_t in_hum);
@@ -671,7 +598,6 @@ int16_t app_general_pull_dhm_adjust_backair_co2(uint8_t in_port);
 int16_t app_general_pull_dhm_adjust_backair_pm25(uint8_t in_port);
 void app_general_push_dhm_adjust_backair_co2(uint8_t in_port,int16_t in_co2);
 void app_general_push_dhm_adjust_backair_pm25(uint8_t in_port,int16_t in_pm25);
-
 void app_general_push_dhm_exhastair_temp(uint8_t in_port,int16_t in_temp);
 int16_t app_general_pull_dhm_exhastair_temp(uint8_t in_port);
 void app_general_push_dhm_exhastair_hum(uint8_t in_port,int16_t in_hum);
@@ -682,5 +608,57 @@ void app_general_push_dhm_adjust_exhastair_temp(uint8_t in_port,int16_t in_temp)
 int16_t app_general_pull_dhm_adjust_exhastair_temp(uint8_t in_port);
 
 
+
+/*多余接口*/
+/*综合传感器故障*/
+bool pull_integrated_sensor_error(void);
+void app_general_push_error_word(uint16_t in_errorBit);
+void app_general_clear_error_word(uint16_t in_errorBit);
+uint16_t app_general_pull_error_word(void);
+/*新风效率*/
+void app_general_push_freshair_effciency(int16_t in_effciency);
+int16_t app_general_pull_freshair_effciency(void);
+/*制冷无能需设定温度*/
+void app_general_push_cold_no_need_set_temp(int16_t in_set_temp);
+int16_t app_general_pull_cold_no_need_set_temp(void);
+/*制冷风盘能需设定温度*/
+void app_general_push_cold_fan_need_set_temp(int16_t in_set_temp);
+int16_t app_general_pull_cold_fan_need_set_temp(void);
+/*制冷辐射能需设定温度*/
+void app_general_push_cold_warm_need_set_temp(int16_t in_set_temp);
+int16_t app_general_pull_cold_warm_need_set_temp(void);
+/*制冷露点配置温度*/
+void app_general_push_config_lew_set_temp(int16_t in_set_temp);
+int16_t app_general_pull_config_lew_set_temp(void);
+/*制热无能需设定温度*/
+void app_general_push_heat_no_need_set_temp(int16_t in_set_temp);
+int16_t app_general_pull_heat_no_need_set_temp(void);
+/*制热风盘能需设定温度*/
+void app_general_push_heat_fan_need_set_temp(int16_t in_set_temp);
+int16_t app_general_pull_heat_fan_need_set_temp(void);
+/*制热辐射能需设定温度*/
+void app_general_push_heat_warm_need_set_temp(int16_t in_set_temp);
+int16_t app_general_pull_heat_warm_need_set_temp(void);
+/*制热回风配置温度*/
+void app_general_push_config_back_wind_set_temp(int16_t in_set_temp);
+int16_t app_general_pull_config_back_wind_set_temp(void);
+/*除湿设定配置*/
+void app_general_push_config_hum_set(int16_t in_set_temp);
+int16_t app_general_pull_config_hum_set(void);
+/*制冷风温最大设定温度*/
+void app_general_push_cold_wind_max_set_temp(int16_t in_set_temp);
+int16_t app_general_pull_cold_wind_max_set_temp(void);
+/*制热风温最小设定温度 */
+void app_general_push_heat_wind_min_set_temp(int16_t in_set_temp);
+int16_t app_general_pull_heat_wind_min_set_temp(void);
+/*制热风温最大设定温度*/
+void app_general_push_heat_wind_max_set_temp(int16_t in_set_temp);
+int16_t app_general_pull_heat_wind_max_set_temp(void);
+/*户外除湿状态*/
+bool app_general_pull_indoor_dehum_status(void);
+void app_general_push_indoor_dehum_status(bool in_status);
+/*水机开关机*/
+bool app_general_pull_water_machine_status(void);
+void app_general_push_water_machine_status(bool in_status);
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endif
