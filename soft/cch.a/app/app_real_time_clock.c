@@ -30,17 +30,17 @@ void stamp_updata(void)
     } 
     for(i = 0;i < MASTER_DHM_NUM;i++)
     {//除湿dp时间戳更新
-        app_general_push_dhm_dp_stamp(i,DP_ADDR_DHM_LIS_RTC,pbc_timeStamp_get_stamp());//时间
+       // app_general_push_dhm_dp_stamp(i,DP_ADDR_DHM_LIS_RTC,pbc_timeStamp_get_stamp());//时间
         app_general_push_dhm_dp_stamp(i,DP_ADDR_DHM_POWER,pbc_timeStamp_get_stamp());//开关机
-        app_general_push_dhm_dp_stamp(i,DP_ADDR_DHM_WIND_SET_MODE,pbc_timeStamp_get_stamp());//模式
+        //app_general_push_dhm_dp_stamp(i,DP_ADDR_DHM_WIND_SET_MODE,pbc_timeStamp_get_stamp());//模式
     }   
     for(i = 9; i < 14;i++)
     {//主机集成dp时间戳更新
         app_general_push_system_dp_stamp((DP_ADDR_START+i),pbc_timeStamp_get_stamp());
     }
-    app_general_push_system_dp_stamp(DP_ADDR_SYSTEM_LIS_RTC,pbc_timeStamp_get_stamp());
-    app_general_push_system_dp_stamp(DP_ADDR_SYSTEM_LIS_MIXWATER_OUT,pbc_timeStamp_get_stamp());
-    app_general_push_system_dp_stamp(DP_ADDR_SYSTEM_LIS_MIXWATER_TEMP,pbc_timeStamp_get_stamp());
+   // app_general_push_system_dp_stamp(DP_ADDR_SYSTEM_LIS_RTC,pbc_timeStamp_get_stamp());
+  //  app_general_push_system_dp_stamp(DP_ADDR_SYSTEM_LIS_MIXWATER_OUT,pbc_timeStamp_get_stamp());
+  //  app_general_push_system_dp_stamp(DP_ADDR_SYSTEM_LIS_MIXWATER_TEMP,pbc_timeStamp_get_stamp());
 }
 void app_clock_timing_read(void)
 {  

@@ -20,7 +20,7 @@ void app_modbus_onewire_task(void)
         {
             while(reg_length)
             {
-                reg_detailes = app_modbus_read_reg_data(reg_addr,SOURCE_OUTSIDE);           
+                reg_detailes = app_modbus_read_reg_data(reg_addr);           
                 if(push_mRtu_readReg(MODBUS_ONEWIRE,reg_addr,reg_detailes))
                 {
                     reg_addr++;
@@ -41,7 +41,7 @@ void app_modbus_onewire_task(void)
 
                 if(pull_mRtu_writeReg(MODBUS_ONEWIRE,reg_addr,&rd_wReg_details))
                 {
-                    app_modebus_write_reg_data(reg_addr,rd_wReg_details,SOURCE_OUTSIDE);
+                    app_modebus_write_reg_data(reg_addr,rd_wReg_details);
                     reg_addr++;
                     reg_length--;
                 }
@@ -62,7 +62,7 @@ void app_modbus_onewire_task(void)
                 sdt_int16u rd_wReg_details;
                 if(pull_mRtu_writeReg(MODBUS_ONEWIRE,w_reg_addr,&rd_wReg_details))
                 {
-                    app_modebus_write_reg_data(w_reg_addr,rd_wReg_details,SOURCE_OUTSIDE);
+                    app_modebus_write_reg_data(w_reg_addr,rd_wReg_details);
                     w_reg_addr++;
                     w_reg_length--;
                 }
@@ -73,7 +73,7 @@ void app_modbus_onewire_task(void)
             }
             while(reg_length)
             {
-                reg_detailes = app_modbus_read_reg_data(reg_addr,SOURCE_OUTSIDE);
+                reg_detailes = app_modbus_read_reg_data(reg_addr);
                 if(push_mRtu_readReg(MODBUS_ONEWIRE,reg_addr,reg_detailes))
                 {             
                     reg_addr++;

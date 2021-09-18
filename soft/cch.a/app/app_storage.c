@@ -31,37 +31,28 @@ uint8_t * app_pull_local_id(void)
 //-----------------------------------------------------------------------------
 void RestoreFactoryStorage(void)
 {
-    StoRunParameter.systemPower = false;
-    StoRunParameter.airRunmode = AIR_MODE_AUTO_COOL;
-    StoRunParameter.humidity_DeadZone =3;
-    StoRunParameter.temp_DeadZone = 10;
-    StoRunParameter.mixColdSetTemp = 160;
-    StoRunParameter.mixHeatSetTemp = 300;
+    StoRunParameter.systemPower = false;// //开关机
+    StoRunParameter.airRunmode = AIR_MODE_AUTO_COOL;//模式
+    StoRunParameter.humidity_DeadZone =5;//湿度带宽
+    StoRunParameter.temp_DeadZone = 10; //温度带宽
+    StoRunParameter.mixColdSetTemp = 160; //混水制冷设定温度
+    StoRunParameter.mixHeatSetTemp = 300;//混水制热设定温度   
     StoRunParameter.deviceAddress = 0x01;
     StoRunParameter.baudrateValue = 0x02;
     StoRunParameter.evenOddCheck = 0x00;
     StoRunParameter.stopBit = 0;
-    StoRunParameter.aiEnable = 0;
-    StoRunParameter.coldDropDiff = 30;
-    StoRunParameter.lowTempProtectConfig = 50;
-    StoRunParameter.powerOffStatus = 0;
-    StoRunParameter.cold_no_need_temp_set = 200;
-    StoRunParameter.cold_fan_need_temp_set = 100;
-    StoRunParameter.cold_warm_need_temp_set = 160;
-    StoRunParameter.config_lew_temp_set = 160;
-    StoRunParameter.heat_no_need_temp_set = 300;
-    StoRunParameter.heat_fan_need_temp_set = 450;
-    StoRunParameter.heat_warm_need_temp_set = 350;
-    StoRunParameter.config_back_wind_temp_set = 200;
-    StoRunParameter.config_hum_set = 50;
-    StoRunParameter.cold_wind_max_temp_set = 300;
-    StoRunParameter.heat_wind_min_temp_set = 160;
-    StoRunParameter.heat_wind_max_temp_set = 300;
-    StoRunParameter.lew_status_open_diff = 0;
-    StoRunParameter.lew_status_close_diff = 10;
-    StoRunParameter.set_cold_water_temp = 100;
-    StoRunParameter.set_heat_water_temp = 400;
+    StoRunParameter.coldDropDiff = 30;//露点带宽
+    StoRunParameter.lowTempProtectConfig = 50;//防冻温度
+    StoRunParameter.powerOffStatus = 0;//上电关机功能
+    StoRunParameter.lew_status_open_diff = 0; //露点开启带宽
+    StoRunParameter.lew_status_close_diff = 10;//露点关闭带宽
+    StoRunParameter.set_cold_water_temp = 100;//主机制冷模式出水设定水温
+    StoRunParameter.set_heat_water_temp = 400;//主机制热模式出水设定水温
     StoRunParameter.set_living_water_temp = 550; //生活热水
+    StoRunParameter.debug_enable = false;//调试使能
+    StoRunParameter.control_method = METHOD_BASIC;//基础策略
+    StoRunParameter.hum_set = 60;                 //设定湿度
+    StoRunParameter.NewAirLevelSet = MiddleFanSet;//设定风速
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 void app_read_run_parameter(void)
@@ -88,7 +79,6 @@ void app_read_run_parameter(void)
         {
             StoRunParameter.evenOddCheck = 0;
         }
-      //  RestoreFactoryStorage();//调试功能，需删除
     }
     else
     {

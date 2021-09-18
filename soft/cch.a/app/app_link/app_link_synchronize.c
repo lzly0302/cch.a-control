@@ -72,237 +72,6 @@ void app_pull_data_point_message_sys(uint16_t in_dpAddr,uint8_t *out_buff)
 {//系统集成信息
     switch (in_dpAddr)
     {
-        case DP_ADDR_SYSTEM_POWER:
-        {
-            out_buff[0] = app_general_pull_power_status();
-            break;
-        }   
-        case DP_ADDR_SYSTEM_RUN_MODE:
-        {
-            out_buff[0] = app_general_pull_aircod_mode();
-            break;
-        }   
-        case DP_ADDR_SYSTEM_WIND_SET_CLOD_TEMP:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_aircod_cold_temp(),out_buff);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_WIND_SET_HEAT_TEMP:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_aircod_heat_temp(),out_buff);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_WIND_SET_HUM:
-        {
-            out_buff[0] = app_general_pull_aircod_humidity();
-            break;
-        }   
-        case DP_ADDR_SYSTEM_WIND_SET_SPEED:
-        {
-            out_buff[0] = app_general_pull_aircod_fanSpeed();
-            break;
-        }   
-        case DP_ADDR_SYSTEM_WATER_SET_CLOD_TEMP:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_set_cold_water_temp(),out_buff);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_WATER_SET_HEAT_TEMP:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_set_heat_water_temp(),out_buff);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_WATER_SET_LIVING_TEMP:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_set_living_water_temp(),out_buff);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_MIXWATER_SET_CLOD_TEMP:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_set_mixwater_cold_temp(),out_buff);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_MIXWATER_SET_HEAT_TEMP:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_set_mixwater_heat_temp(),out_buff);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_MIXWATER_AI_ENABLE:
-        {
-            out_buff[0] = app_general_pull_ai_enable_status();
-            break;
-        }   
-        case DP_ADDR_SYSTEM_MIXWATER_LOW_TEMP_PROTECT:
-        {
-            out_buff[0] = app_general_pull_mix_freeze_protect();
-            break;
-        }   
-        case DP_ADDR_SYSTEM_MIXWATER_AI_DEST_TEMP:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_ai_dest_temp(),out_buff);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_NEW_AIR_PWM:
-        {
-            out_buff[0] = app_general_pull_new_air_pwm_low();
-            out_buff[1] = app_general_pull_new_air_pwm_mid();
-            out_buff[2] = app_general_pull_new_air_pwm_high();
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_BACK_AIR_PWM:
-        {
-            out_buff[0] = app_general_pull_back_air_pwm_low();
-            out_buff[1] = app_general_pull_back_air_pwm_mid();
-            out_buff[2] = app_general_pull_back_air_pwm_high();
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_OUTDOOR_WEATHER:
-        {   
-            pbc_int16uToArray_bigEndian(app_general_pull_outdoor_temp(),&out_buff[0]);
-            out_buff[2] = app_general_pull_outdoor_hum();
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_outdoor_hum(),&out_buff[3]);
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_outdoor_temp(),&out_buff[5]);
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_outdoor_co2(),&out_buff[7]);
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_outdoor_pm25(),&out_buff[9]);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_BEFORE_FU_WEATHER:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_before_fu_temp(),&out_buff[0]);
-            out_buff[2] = app_general_pull_before_fu_hum();
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_beforfu_hum(),&out_buff[3]);
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_beforfu_temp(),&out_buff[5]);
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_beforfu_co2(),&out_buff[7]);
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_beforfu_pm25(),&out_buff[9]);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_AFTER_FU_WEATHER:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_after_fu_temp(),&out_buff[0]);
-            out_buff[2] = app_general_pull_after_fu_hum();
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_afterfu_hum(),&out_buff[3]);
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_afterfu_temp(),&out_buff[5]);
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_afterfu_co2(),&out_buff[7]);
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_afterfu_pm25(),&out_buff[9]);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_BACK_AIR_WEATHER:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_backair_temp(),&out_buff[0]);
-            out_buff[2] = app_general_pull_backair_hum();
-            pbc_int16uToArray_bigEndian(app_general_pull_backair_co2(),&out_buff[3]);
-            pbc_int16uToArray_bigEndian(app_general_pull_backair_pm25(),&out_buff[5]);    
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_backair_hum(),&out_buff[7]);
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_backair_temp(),&out_buff[9]);
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_backair_co2(),&out_buff[11]);
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_backair_pm25(),&out_buff[13]);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_EXHAST_AIR_WEATHER:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_exhastair_temp(),&out_buff[0]);
-            out_buff[2] = app_general_pull_exhastair_hum();
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_exhastair_hum(),&out_buff[3]);
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_exhastair_temp(),&out_buff[5]);
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_exhastair_co2(),&out_buff[7]);
-            pbc_int16uToArray_bigEndian(app_general_pull_adjust_exhastair_pm25(),&out_buff[9]);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_DEAD_ZONE:
-        {
-            out_buff[0] = app_general_pull_aircod_setHum_deadZone();
-            out_buff[1] = app_general_pull_aircod_setTemp_deadZone();
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_OUT_VALVE:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_aircod_newair_speed(),&out_buff[0]);
-            pbc_int16uToArray_bigEndian(app_general_pull_aircod_backair_speed(),&out_buff[2]);
-            pbc_int16uToArray_bigEndian(app_general_pull_water_machine_fre(),&out_buff[4]);
-            pbc_int16uToArray_bigEndian(app_general_pull_fu_machine_fre(),&out_buff[6]);
-			pbc_int16uToArray_bigEndian(app_general_pull_freshair_effciency(),&out_buff[8]);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_OUT_STATUS:
-        {          
-            pbc_int16uToArray_bigEndian(app_general_pull_ae_error_word(),&out_buff[0]);
-            out_buff[2] = app_general_pull_anergy_need();
-            pbc_int16uToArray_bigEndian(app_general_pull_ae_ntc_error_word(),&out_buff[3]);
-            pbc_int16uToArray_bigEndian(app_general_pull_system_reset_word(),&out_buff[5]);
-            pbc_int16uToArray_bigEndian(app_general_pull_system_status_word(),&out_buff[7]);
-            out_buff[9] = app_general_pull_wind_value();
-            out_buff[10] = app_general_pull_hotwater_enable();
-            pbc_int16uToArray_bigEndian(app_general_pull_filter_time(),&out_buff[11]);
-            pbc_int16uToArray_bigEndian(app_general_pull_filter_usetime(),&out_buff[13]);
-            out_buff[15] = app_general_pull_debug_enable();
-            out_buff[16] = app_general_pull_main_control_method();
-            pbc_int16uToArray_bigEndian(app_general_pull_cold_no_need_set_temp(),&out_buff[17]);
-            pbc_int16uToArray_bigEndian(app_general_pull_cold_fan_need_set_temp(),&out_buff[19]);
-            pbc_int16uToArray_bigEndian(app_general_pull_cold_warm_need_set_temp(),&out_buff[21]);
-            pbc_int16uToArray_bigEndian(app_general_pull_config_lew_set_temp(),&out_buff[23]);
-            pbc_int16uToArray_bigEndian(app_general_pull_heat_no_need_set_temp(),&out_buff[25]);
-            pbc_int16uToArray_bigEndian(app_general_pull_heat_fan_need_set_temp(),&out_buff[27]);
-            pbc_int16uToArray_bigEndian(app_general_pull_heat_warm_need_set_temp(),&out_buff[29]);
-            pbc_int16uToArray_bigEndian(app_general_pull_config_back_wind_set_temp(),&out_buff[31]);
-            pbc_int16uToArray_bigEndian(app_general_pull_config_hum_set(),&out_buff[33]);
-            pbc_int16uToArray_bigEndian(app_general_pull_cold_wind_max_set_temp(),&out_buff[35]);
-            pbc_int16uToArray_bigEndian(app_general_pull_heat_wind_min_set_temp(),&out_buff[37]);
-            pbc_int16uToArray_bigEndian(app_general_pull_heat_wind_max_set_temp(),&out_buff[39]);
-            out_buff[41] = app_general_pull_indoor_dehum_status();
-            out_buff[42] = app_general_pull_water_machine_status();
-            break;
-        } 
-        case DP_ADDR_SYSTEM_LIS_MIXWATER_OUT:
-        {
-            out_buff[0] = app_general_pull_pump_output();
-            out_buff[1] = app_general_pull_three_vavle_output();
-            out_buff[2] = app_pull_low_protect_reguest();//防冻请求
-            pbc_int16uToArray_bigEndian(app_general_pull_error_word(),&out_buff[3]);
-            out_buff[5] = app_pull_system_energy_need();
-            pbc_int16uToArray_bigEndian(app_pull_max_low_temp(),&out_buff[6]);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_MAIN_MACHINE_TEMP:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_master_supply_temp(),&out_buff[0]);
-            pbc_int16uToArray_bigEndian(app_general_pull_master_living_temp(),&out_buff[2]);
-            pbc_int16uToArray_bigEndian(app_general_pull_master_outdoor_temp(),&out_buff[4]);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_MIXWATER_TEMP:
-        {
-            pbc_int16uToArray_bigEndian(app_pull_first_in_water_temp(),&out_buff[0]);
-            pbc_int16uToArray_bigEndian(app_pull_back_water_temp(),&out_buff[2]);
-            pbc_int16uToArray_bigEndian(app_pull_mix_water_temp(),&out_buff[4]);
-            break;
-        }      
-        case  DP_ADDR_SYSTEM_LIS_RTC:
-        {
-            realTime_t* rtc;
-            rtc = app_real_time_pull_rtc();
-            out_buff[0] = rtc->second;
-            out_buff[1] = rtc->minute;
-            out_buff[2] = rtc->hour;
-            out_buff[3] = rtc->week;
-            out_buff[4] = rtc->day;
-            out_buff[5] = rtc->month;
-            out_buff[6] = rtc->year;
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_485_PAREMETER:
-        {
-            out_buff[0] = 0x01;
-            out_buff[1] = 0x02;
-            out_buff[2] = 0x03;
-            out_buff[3] = 0x04;
-            break;
-        } 
-		case DP_ADDR_SYSTEM_AIRCOD_COLD_BACK_WATER:
-		{//制冷回水
-			pbc_int16uToArray_bigEndian(app_general_pull_coolbackwater_set_temp(),&out_buff[0]);
-			pbc_int16uToArray_bigEndian(app_general_pull_hotbackwater_set_temp(),&out_buff[0]);
-			break;
-		}
         default:
         {
             break;
@@ -313,265 +82,6 @@ void app_push_data_point_message_sys(uint16_t in_dpAddr,uint8_t *in_buff)
 {
     switch (in_dpAddr)
     {       
-        case DP_ADDR_SYSTEM_POWER:
-        {
-            app_general_push_power_status(in_buff[0]);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_RUN_MODE:
-        {
-            app_general_push_aircod_mode((AirRunMode_Def)in_buff[0]);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_WIND_SET_CLOD_TEMP:
-        {
-            app_general_push_aircod_cold_temp(pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            break;
-        }   
-        case DP_ADDR_SYSTEM_WIND_SET_HEAT_TEMP:
-        {
-            app_general_push_aircod_heat_temp(pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            break;
-        }   
-        case DP_ADDR_SYSTEM_WIND_SET_HUM:
-        {
-            app_general_push_aircod_humidity(in_buff[0]);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_WIND_SET_SPEED:
-        {
-            app_general_push_aircod_fanSpeed((NewAirLevelSet_Def)in_buff[0]);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_WATER_SET_CLOD_TEMP:
-        {
-            app_general_push_set_cold_water_temp(pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            break;
-        }   
-        case DP_ADDR_SYSTEM_WATER_SET_HEAT_TEMP:
-        {
-            app_general_push_set_heat_water_temp(pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            break;
-        }   
-        case DP_ADDR_SYSTEM_WATER_SET_LIVING_TEMP:
-        {
-            app_general_push_set_living_water_temp(pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            break;
-        }   
-        case DP_ADDR_SYSTEM_MIXWATER_SET_CLOD_TEMP:
-        {
-            app_general_push_set_mixwater_cold_temp(pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            break;
-        }   
-        case DP_ADDR_SYSTEM_MIXWATER_SET_HEAT_TEMP:
-        {
-            app_general_push_set_mixwater_heat_temp(pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            break;
-        }   
-        case DP_ADDR_SYSTEM_MIXWATER_AI_ENABLE:
-        {
-            app_general_push_ai_enable_status(in_buff[0]);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_MIXWATER_LOW_TEMP_PROTECT:
-        {
-            app_general_push_mix_freeze_protect(in_buff[0]);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_MIXWATER_AI_DEST_TEMP:
-        {
-             
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_NEW_AIR_PWM:
-        {
-            app_general_push_new_air_pwm_low(in_buff[0]);
-            app_general_push_new_air_pwm_mid(in_buff[1]);
-            app_general_push_new_air_pwm_high(in_buff[2]);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_BACK_AIR_PWM:
-        {
-            app_general_push_back_air_pwm_low(in_buff[0]);
-            app_general_push_back_air_pwm_mid(in_buff[1]);
-            app_general_push_back_air_pwm_high(in_buff[2]);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_OUTDOOR_WEATHER:
-        {
-            app_general_push_outdoor_temp(pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            app_general_push_outdoor_hum(in_buff[2]);
-            app_general_push_adjust_outdoor_hum(pbc_arrayToInt16u_bigEndian(&in_buff[3]));
-            app_general_push_adjust_outdoor_temp(pbc_arrayToInt16u_bigEndian(&in_buff[5]));
-            app_general_push_adjust_outdoor_co2(pbc_arrayToInt16u_bigEndian(&in_buff[7]));
-            app_general_push_adjust_outdoor_pm25(pbc_arrayToInt16u_bigEndian(&in_buff[9]));
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_BEFORE_FU_WEATHER:
-        {
-            app_general_push_before_fu_temp(pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            app_general_push_before_fu_hum(in_buff[2]);
-            app_general_push_adjust_beforfu_hum(pbc_arrayToInt16u_bigEndian(&in_buff[3]));
-            app_general_push_adjust_beforfu_temp(pbc_arrayToInt16u_bigEndian(&in_buff[5]));
-            app_general_push_adjust_beforfu_co2(pbc_arrayToInt16u_bigEndian(&in_buff[7]));
-            app_general_push_adjust_beforfu_pm25(pbc_arrayToInt16u_bigEndian(&in_buff[9]));
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_AFTER_FU_WEATHER:
-        {
-            app_general_push_after_fu_temp(pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            app_general_push_after_fu_hum(in_buff[2]);
-            app_general_push_adjust_afterfu_hum(pbc_arrayToInt16u_bigEndian(&in_buff[3]));
-            app_general_push_adjust_afterfu_temp(pbc_arrayToInt16u_bigEndian(&in_buff[5]));
-            app_general_push_adjust_afterfu_co2(pbc_arrayToInt16u_bigEndian(&in_buff[7]));
-            app_general_push_adjust_afterfu_pm25(pbc_arrayToInt16u_bigEndian(&in_buff[9]));
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_BACK_AIR_WEATHER:
-        {
-            app_general_push_backair_temp(pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            app_general_push_backair_hum(in_buff[2]);
-            app_general_push_backair_co2(pbc_arrayToInt16u_bigEndian(&in_buff[3]));
-            app_general_push_backair_pm25(pbc_arrayToInt16u_bigEndian(&in_buff[5]));
-            app_general_push_adjust_backair_hum(pbc_arrayToInt16u_bigEndian(&in_buff[7]));
-            app_general_push_adjust_backair_temp(pbc_arrayToInt16u_bigEndian(&in_buff[9]));
-            app_general_push_adjust_backair_co2(pbc_arrayToInt16u_bigEndian(&in_buff[11]));
-            app_general_push_adjust_backair_pm25(pbc_arrayToInt16u_bigEndian(&in_buff[13]));
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_EXHAST_AIR_WEATHER:
-        {
-            app_general_push_exhastair_temp(pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            app_general_push_exhastair_hum(in_buff[2]);
-            app_general_push_adjust_exhastair_hum(pbc_arrayToInt16u_bigEndian(&in_buff[3]));
-            app_general_push_adjust_exhastair_temp(pbc_arrayToInt16u_bigEndian(&in_buff[5]));
-            app_general_push_adjust_exhastair_co2(pbc_arrayToInt16u_bigEndian(&in_buff[7]));
-            app_general_push_adjust_exhastair_pm25(pbc_arrayToInt16u_bigEndian(&in_buff[9]));
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_DEAD_ZONE:
-        {
-            app_general_push_aircod_setHum_deadZone(in_buff[0]);
-            app_general_push_aircod_setTemp_deadZone(in_buff[1]);
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_OUT_VALVE:
-        {
-            app_general_push_aircod_newair_speed(pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            app_general_push_aircod_backair_speed(pbc_arrayToInt16u_bigEndian(&in_buff[2]));
-            app_general_push_water_machine_fre(pbc_arrayToInt16u_bigEndian(&in_buff[4]));
-            app_general_push_fu_machine_fre(pbc_arrayToInt16u_bigEndian(&in_buff[6]));
-			app_general_push_freshair_effciency(pbc_arrayToInt16u_bigEndian(&in_buff[8]));
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_OUT_STATUS:
-        {
-            app_general_push_ae_error_word(pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            app_general_push_anergy_need(in_buff[2]);
-            app_general_push_ae_ntc_error_word(pbc_arrayToInt16u_bigEndian(&in_buff[3]));
-            app_general_push_system_reset_word(pbc_arrayToInt16u_bigEndian(&in_buff[5]));
-            app_general_push_system_status_word(pbc_arrayToInt16u_bigEndian(&in_buff[7]));
-            app_general_push_wind_value(in_buff[9]);
-            app_general_push_hotwater_enable(in_buff[10]);
-            app_general_push_filter_time(pbc_arrayToInt16u_bigEndian(&in_buff[11]));
-            app_general_push_filter_usetime_inside(pbc_arrayToInt16u_bigEndian(&in_buff[13]));
-            app_general_push_debug_enable(in_buff[15]);
-            app_general_push_main_control_method(in_buff[16]);
-            app_general_push_cold_no_need_set_temp(pbc_arrayToInt16u_bigEndian(&in_buff[17]));  
-            app_general_push_cold_fan_need_set_temp(pbc_arrayToInt16u_bigEndian(&in_buff[19]));  
-            app_general_push_cold_warm_need_set_temp(pbc_arrayToInt16u_bigEndian(&in_buff[21]));  
-            app_general_push_config_lew_set_temp(pbc_arrayToInt16u_bigEndian(&in_buff[23])); 
-            app_general_push_heat_no_need_set_temp(pbc_arrayToInt16u_bigEndian(&in_buff[25]));  
-            app_general_push_heat_fan_need_set_temp(pbc_arrayToInt16u_bigEndian(&in_buff[27]));  
-            app_general_push_heat_warm_need_set_temp(pbc_arrayToInt16u_bigEndian(&in_buff[29]));  
-            app_general_push_config_back_wind_set_temp(pbc_arrayToInt16u_bigEndian(&in_buff[31]));
-            app_general_push_config_hum_set(pbc_arrayToInt16u_bigEndian(&in_buff[33]));  
-            app_general_push_cold_wind_max_set_temp(pbc_arrayToInt16u_bigEndian(&in_buff[35]));  
-            app_general_push_heat_wind_min_set_temp(pbc_arrayToInt16u_bigEndian(&in_buff[37]));  
-            app_general_push_heat_wind_max_set_temp(pbc_arrayToInt16u_bigEndian(&in_buff[39]));
-            app_general_push_indoor_dehum_status(in_buff[41]);
-            app_general_push_water_machine_status(in_buff[42]);
-            break;
-        } 
-        case DP_ADDR_SYSTEM_LIS_MIXWATER_OUT:
-        {
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_MAIN_MACHINE_TEMP:
-        {
-            app_general_push_master_supply_temp(pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            app_general_push_master_living_temp(pbc_arrayToInt16u_bigEndian(&in_buff[2]));
-            app_general_push_master_outdoor_temp(pbc_arrayToInt16u_bigEndian(&in_buff[4]));
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_MIXWATER_TEMP:
-        {
-            break;
-        }      
-        case  DP_ADDR_SYSTEM_LIS_RTC:
-        {
-            realTime_t* rtc;
-            rtc = app_real_time_pull_rtc();
-            rtc->second = in_buff[0];
-            rtc->minute= in_buff[1];
-            rtc->hour= in_buff[2];
-            rtc->week= in_buff[3];
-            rtc->day= in_buff[4];
-            rtc->month= in_buff[5];
-            rtc->year= in_buff[6];
-            break;
-        }   
-        case DP_ADDR_SYSTEM_LIS_485_PAREMETER:
-        {
-            break;
-        }          
-        case DP_ADDR_WRITE_DEVICE_ID:
-        {
-            if((in_buff[0] == ((uint8_t)(DEVICE_KEY>>24))) && 
-                (in_buff[1] == ((uint8_t)(DEVICE_KEY>>16))) &&
-                (in_buff[2] == ((uint8_t)(DEVICE_KEY>>8)))&& 
-                (in_buff[3] == ((uint8_t)(DEVICE_KEY))))
-            {
-                uint8_t *local_addr;
-                local_addr = app_pull_local_id(); 
-                local_addr[0] = in_buff[4];
-                local_addr[1] = in_buff[5];
-                local_addr[2] = in_buff[6];
-                local_addr[3] = in_buff[7];
-                local_addr[4] = in_buff[8];
-                local_addr[5] = in_buff[9];
-                app_push_once_save_sto_parameter();
-            }
-            break;
-        }  
-		case DP_ADDR_SYSTEM_AIRCOD_READ_ONLY_PAREMETER:
-		{
-			uint8_t i = 0;
-			uint8_t j = 0;
-			for(i = 1;i <= ARICOD_READ_ONLY_REG_NUM;i++)
-			{
-				APP_push_aricod_message(i,pbc_arrayToInt16u_bigEndian(&in_buff[j]));
-				j += 2;
-			}
-			break;
-		}
-		case DP_ADDR_SYSTEM_AIRCOD_READ_WRITE_PAREMETER:
-		{
-			uint8_t i = 0;
-			uint8_t j = 0;
-			for(i = 1;i <= ARICOD_READ_WRITE_REG_NUM;i++)
-			{
-				APP_push_aricod_message((5000+i),pbc_arrayToInt16u_bigEndian(&in_buff[j]));
-				j += 2;
-			}
-			break;
-		}
-		case DP_ADDR_SYSTEM_AIRCOD_COLD_BACK_WATER:
-		{//制冷回水
-			app_general_push_coolbackwater_set_temp(pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-			app_general_push_hotbackwater_set_temp(pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-			break;
-		}
         default:
         {
             break;
@@ -583,101 +93,128 @@ void app_pull_data_point_message_pad(uint8_t in_solidNum,uint16_t in_dpAddr,uint
 {//面板获取信息
     switch (in_dpAddr)
     {
+        /*除湿模块信息*/
         case DP_ADDR_DHM_POWER:
-        {
-            out_buff[0] = app_general_pull_power_status();
+        {//除湿模块开关机
+            //out_buff[0] = app_general_pull_power_status();
             break;
         }   
-        case DP_ADDR_DHM_WIND_SET_HUM:
-        {
-            out_buff[0] = app_general_pull_dhm_aircod_humidity(in_solidNum);
+        case DP_ADDR_DHM_RUN_MODE:
+        {//运行模式
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
             break;
-        }   
-        case DP_ADDR_DHM_WIND_SET_MODE:
-        {//
-            out_buff[0] = app_general_pull_aircod_mode();
+        }
+        case DP_ADDR_DHM_SET_HUM:
+        {//设定湿度
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
             break;
-        }  
-        case DP_ADDR_DHM_WIND_SET_SPEED:
-        {
-            out_buff[0] = app_general_pull_dhm_fanSpeed(in_solidNum);
+        } 
+        case DP_ADDR_DHM_SET_SPEED:
+        {//设定风速
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
             break;
-        }   
-        case DP_ADDR_DHM_DEHUM_NEDD:
-        {
-            out_buff[0] = app_general_pull_dhm_dehum_request(in_solidNum);
+        } 
+        case DP_ADDR_DHM_RUN_SPEED:
+        {//运行风速
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
             break;
-        }  
-        case DP_ADDR_DHM_DEHUM_STATUS:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_ptc_temp(in_solidNum),&out_buff[0]);
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_iec5_temp(in_solidNum),&out_buff[2]);
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_iec5_hum(in_solidNum),&out_buff[4]);
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_dm_output_status(in_solidNum),&out_buff[6]);
-            uint8_t comm_port;
-            comm_port = app_general_pull_dhm_use_port(in_solidNum);
-            pbc_int16uToArray_bigEndian(app_general_pull_pad_version(comm_port),&out_buff[8]);
-            pbc_int16uToArray_bigEndian(app_general_pull_pad_hardware_sign(comm_port),&out_buff[10]);
+        } 
+        case DP_ADDR_DHM_SET_HOT_TEMP:
+        {//设定制热目标温度
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
             break;
-        }   
-        case DP_ADDR_DHM_LIS_NEW_AIR_PWM:
-        {
-            out_buff[0] = app_general_pull_dhm_new_air_pwm_low(in_solidNum);
-            out_buff[1] = app_general_pull_dhm_new_air_pwm_mid(in_solidNum);
-            out_buff[2] = app_general_pull_dhm_new_air_pwm_high(in_solidNum);
+        } 
+        case DP_ADDR_DHM_SET_COLD_TEMP:
+        {//设定制冷目标温度
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
             break;
-        }   
-        case DP_ADDR_DHM_LIS_BACK_AIR_PWM:
-        {
-            out_buff[0] = app_general_pull_dhm_back_air_pwm_low(in_solidNum);
-            out_buff[1] = app_general_pull_dhm_back_air_pwm_mid(in_solidNum);
-            out_buff[2] = app_general_pull_dhm_back_air_pwm_high(in_solidNum);
+        } 
+        case DP_ADDR_DHM_SET_BACK_HOT_TEMP:
+        {//设定回热目标温度
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
             break;
-        }   
-        case DP_ADDR_DHM_LIS_OUTDOOR_WEATHER:
-        {   
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_outdoor_temp(in_solidNum),&out_buff[0]);
-            out_buff[2] = app_general_pull_dhm_outdoor_hum(in_solidNum);
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_outdoor_hum(in_solidNum),&out_buff[3]);
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_outdoor_temp(in_solidNum),&out_buff[5]);
+        } 
+        case DP_ADDR_DHM_REVERSE1:
+        {//预留
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
             break;
-        }   
-        case DP_ADDR_DHM_LIS_BEFORE_FU_WEATHER:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_before_fu_temp(in_solidNum),&out_buff[0]);
-            out_buff[2] = app_general_pull_dhm_before_fu_hum(in_solidNum);
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_beforfu_hum(in_solidNum),&out_buff[3]);
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_beforfu_temp(in_solidNum),&out_buff[5]);
+        } 
+        case DP_ADDR_DHM_REVERSE2:
+        {//预留
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
             break;
-        }   
-        case DP_ADDR_DHM_LIS_AFTER_FU_WEATHER:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_after_fu_temp(in_solidNum),&out_buff[0]);
-            out_buff[2] = app_general_pull_dhm_after_fu_hum(in_solidNum);
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_afterfu_hum(in_solidNum),&out_buff[3]);
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_afterfu_temp(in_solidNum),&out_buff[5]);
+        } 
+        case DP_ADDR_DHM_LIST_SYSTEM_RTC:
+        {//系统RTC
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
             break;
-        }   
-        case DP_ADDR_DHM_LIS_BACK_AIR_WEATHER:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
-            out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_co2(in_solidNum),&out_buff[3]);
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_pm25(in_solidNum),&out_buff[5]);    
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_backair_hum(in_solidNum),&out_buff[7]);
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_backair_temp(in_solidNum),&out_buff[9]);
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_backair_co2(in_solidNum),&out_buff[11]);
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_backair_pm25(in_solidNum),&out_buff[13]);
+        } 
+        case DP_ADDR_DHM_LIST_MODULE_MESSAGE:
+        {//除湿模块信息
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
             break;
-        }   
-        case DP_ADDR_DHM_LIS_EXHAST_AIR_WEATHER:
-        {
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_exhastair_temp(in_solidNum),&out_buff[0]);
-            out_buff[2] = app_general_pull_dhm_exhastair_hum(in_solidNum);
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_exhastair_hum(in_solidNum),&out_buff[3]);
-            pbc_int16uToArray_bigEndian(app_general_pull_dhm_adjust_exhastair_temp(in_solidNum),&out_buff[5]);
+        } 
+        case DP_ADDR_DHM_LIST_MODULE_MEASURE:
+        {//除湿模块测量数据
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
             break;
-        }   
+        } 
+        case DP_ADDR_DHM_LIST_SYSTEM_TEMP_HUM:
+        {//系统测量温湿度
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
+            break;
+        } 
+        case DP_ADDR_DHM_LIST_TEMP_HUM_DIFF:
+        {//除湿模块温湿度死区
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
+            break;
+        } 
+        case DP_ADDR_DHM_LIST_OUT_STATUS:
+        {//除湿模块输出状态
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
+            break;
+        } 
+        case DP_ADDR_DHM_LIST_MODULE_CONFIG:
+        {//除湿模块设置
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
+            break;
+        } 
+        case DP_ADDR_DHM_LIST_MODULE_FUN:
+        {//除湿模块功能字
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
+            break;
+        } 
+        case DP_ADDR_DHM_LIST_IEC5_CONGIG:
+        {//IEC5新风设置信息
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
+            break;
+        } 
+        case DP_ADDR_DHM_LIS_IEC5_MESSAGE:
+        {//IEC5新风风机信息
+            //pbc_int16uToArray_bigEndian(app_general_pull_dhm_backair_temp(in_solidNum),&out_buff[0]);
+          //  out_buff[2] = app_general_pull_dhm_backair_hum(in_solidNum);
+            break;
+        } 
+
+        /*面板信息*/
         case DP_ADDR_PAD_POWER:
         {
             out_buff[0] = app_general_pull_devive_power(in_solidNum);
@@ -776,7 +313,6 @@ void app_pull_data_point_message_pad(uint8_t in_solidNum,uint16_t in_dpAddr,uint
             pbc_int16uToArray_bigEndian(app_general_pull_system_lew_temp_status(),&out_buff[12]);
             break;
         } 
-        case DP_ADDR_DHM_LIS_RTC:
         case  DP_ADDR_PAD_SYSTEM_RTC:
         {
             realTime_t* rtc;
@@ -807,32 +343,7 @@ void app_push_data_point_message_pad(uint8_t in_solidNum,uint16_t in_dpAddr,uint
 {//面板写入信息
     switch (in_dpAddr)
     {
-        case DP_ADDR_DHM_POWER:
-        {
-            app_general_push_power_status(in_buff[0]);
-            break;
-        }   
-        case DP_ADDR_DHM_WIND_SET_HUM:
-        {
-            app_general_push_dhm_aircod_humidity(in_solidNum,in_buff[0]);
-            break;
-        }   
-        case DP_ADDR_DHM_WIND_SET_MODE:
-        {//
-            app_general_push_aircod_mode((AirRunMode_Def)in_buff[0]);
-            break;
-        }  
-        case DP_ADDR_DHM_WIND_SET_SPEED:
-        {
-            app_general_push_dhm_fanSpeed(in_solidNum,(NewAirLevelSet_Def)in_buff[0]);
-            break;
-        }   
-        case DP_ADDR_DHM_DEHUM_NEDD:
-        {
-            app_general_push_dhm_dehum_request(in_solidNum,in_buff[0]);
-            break;
-        }  
-        case DP_ADDR_DHM_DEHUM_STATUS:
+      /*  case DP_ADDR_DHM_DEHUM_STATUS:
         {
             app_general_push_dhm_ptc_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
             app_general_push_dhm_iec5_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[2]));
@@ -843,65 +354,128 @@ void app_push_data_point_message_pad(uint8_t in_solidNum,uint16_t in_dpAddr,uint
             app_general_push_pad_version(comm_port,pbc_arrayToInt16u_bigEndian(&in_buff[8]));
             app_general_push_pad_hardware_sign(comm_port,pbc_arrayToInt16u_bigEndian(&in_buff[10]));
             break;
-        }   
-        case DP_ADDR_DHM_LIS_NEW_AIR_PWM:
-        {
-            app_general_push_dhm_new_air_pwm_low(in_solidNum,in_buff[0]);
-            app_general_push_dhm_new_air_pwm_mid(in_solidNum,in_buff[1]);
-            app_general_push_dhm_new_air_pwm_high(in_solidNum,in_buff[2]);
+        } */  
+        case DP_ADDR_DHM_POWER:
+        {//除湿模块开关机
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
             break;
         }   
-        case DP_ADDR_DHM_LIS_BACK_AIR_PWM:
-        {
-            app_general_push_dhm_back_air_pwm_low(in_solidNum,in_buff[0]);
-            app_general_push_dhm_back_air_pwm_mid(in_solidNum,in_buff[1]);
-            app_general_push_dhm_back_air_pwm_high(in_solidNum,in_buff[2]);
+        case DP_ADDR_DHM_RUN_MODE:
+        {//运行模式
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
             break;
-        }   
-        case DP_ADDR_DHM_LIS_OUTDOOR_WEATHER:
-        {   
-            app_general_push_dhm_outdoor_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            app_general_push_dhm_outdoor_hum(in_solidNum,in_buff[2]);
-            app_general_push_dhm_adjust_outdoor_hum(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[3]));
-            app_general_push_dhm_adjust_outdoor_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[5]));
+        }
+        case DP_ADDR_DHM_SET_HUM:
+        {//设定湿度
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
             break;
-        }   
-        case DP_ADDR_DHM_LIS_BEFORE_FU_WEATHER:
-        {
-            app_general_push_dhm_before_fu_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            app_general_push_dhm_before_fu_hum(in_solidNum,in_buff[2]);
-            app_general_push_dhm_adjust_beforfu_hum(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[3]));
-            app_general_push_dhm_adjust_beforfu_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[5]));
+        } 
+        case DP_ADDR_DHM_SET_SPEED:
+        {//设定风速
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
             break;
-        }   
-        case DP_ADDR_DHM_LIS_AFTER_FU_WEATHER:
-        {
-            app_general_push_dhm_after_fu_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            app_general_push_dhm_after_fu_hum(in_solidNum,in_buff[2]);
-            app_general_push_dhm_adjust_afterfu_hum(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[3]));
-            app_general_push_dhm_adjust_afterfu_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[5]));
+        } 
+        case DP_ADDR_DHM_RUN_SPEED:
+        {//运行风速
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
             break;
-        }   
-        case DP_ADDR_DHM_LIS_BACK_AIR_WEATHER:
-        {
-            app_general_push_dhm_backair_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            app_general_push_dhm_backair_hum(in_solidNum,in_buff[2]);
-            app_general_push_dhm_backair_co2(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[3]));
-            app_general_push_dhm_backair_pm25(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[5]));    
-            app_general_push_dhm_adjust_backair_hum(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[7]));
-            app_general_push_dhm_adjust_backair_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[9]));    
-            app_general_push_dhm_adjust_backair_co2(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[11]));
-            app_general_push_dhm_adjust_backair_pm25(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[13]));    
+        } 
+        case DP_ADDR_DHM_SET_HOT_TEMP:
+        {//设定制热目标温度
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
             break;
-        }   
-        case DP_ADDR_DHM_LIS_EXHAST_AIR_WEATHER:
-        {
-            app_general_push_dhm_exhastair_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
-            app_general_push_dhm_exhastair_hum(in_solidNum,in_buff[2]);
-            app_general_push_dhm_adjust_exhastair_hum(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[3]));
-            app_general_push_dhm_adjust_exhastair_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[5]));
+        } 
+        case DP_ADDR_DHM_SET_COLD_TEMP:
+        {//设定制冷目标温度
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
             break;
-        }   
+        } 
+        case DP_ADDR_DHM_SET_BACK_HOT_TEMP:
+        {//设定回热目标温度
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            break;
+        } 
+        case DP_ADDR_DHM_REVERSE1:
+        {//预留
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            break;
+        } 
+        case DP_ADDR_DHM_REVERSE2:
+        {//预留
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            break;
+        } 
+        case DP_ADDR_DHM_LIST_SYSTEM_RTC:
+        {//系统RTC
+             //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            break;
+        } 
+        case DP_ADDR_DHM_LIST_MODULE_MESSAGE:
+        {//除湿模块信息
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            break;
+        } 
+        case DP_ADDR_DHM_LIST_MODULE_MEASURE:
+        {//除湿模块测量数据
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            break;
+        } 
+        case DP_ADDR_DHM_LIST_SYSTEM_TEMP_HUM:
+        {//系统测量温湿度
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            break;
+        } 
+        case DP_ADDR_DHM_LIST_TEMP_HUM_DIFF:
+        {//除湿模块温湿度死区
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            break;
+        } 
+        case DP_ADDR_DHM_LIST_OUT_STATUS:
+        {//除湿模块输出状态
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            break;
+        } 
+        case DP_ADDR_DHM_LIST_MODULE_CONFIG:
+        {//除湿模块设置
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            break;
+        } 
+        case DP_ADDR_DHM_LIST_MODULE_FUN:
+        {//除湿模块功能字
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            break;
+        } 
+        case DP_ADDR_DHM_LIST_IEC5_CONGIG:
+        {//IEC5新风设置信息
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+            //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            break;
+        } 
+        case DP_ADDR_DHM_LIS_IEC5_MESSAGE:
+        {//IEC5新风风机信息
+            //app_general_push_devive_power(in_solidNum,in_buff[0]);
+          //  app_general_push_pad_set_cold_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));
+            break;
+        } 
+        /*面板信息*/
         case DP_ADDR_PAD_POWER:
         {
             app_general_push_devive_power(in_solidNum,in_buff[0]);
