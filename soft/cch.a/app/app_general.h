@@ -4,7 +4,7 @@
 #include ".\app_cfg.h"
 
 #define  MAX_DATA_POINT_LEN_PAD                16//DP最大长度
-#define  MAX_DATA_POINT_LEN_DHM                15//DP最大长度
+#define  MAX_DATA_POINT_LEN_DHM                20//DP最大长度
 #define  MAX_DATA_POINT_LEN_SYSTEM             32//DP最大长度
 
 #define  MASTER_PAD_NUM                 12//最大末端数量

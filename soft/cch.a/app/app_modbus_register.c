@@ -139,12 +139,12 @@ uint16_t app_modbus_read_reg_data(uint16_t reg_addr)
 			}
 			case REG_ADDR_YESTERDAY_POWER_USED:
 			{//昨日能耗
-				//reg_detailes = app_general_pull_adjust_outdoor_co2();
+				reg_detailes = app_general_pull_yesterday_power_use();
 				break;
 			}
 			case REG_ADDR_TODAY_POWER_USED:
 			{//今日能耗
-				//reg_detailes = app_general_pull_adjust_outdoor_pm25();
+				reg_detailes = app_general_pull_today_power_use();
 				break;
 			}
             case REG_ADDR_SYSTEM_STATSU:
@@ -309,17 +309,17 @@ uint16_t app_modbus_read_reg_data(uint16_t reg_addr)
 			}	
 			case REG_ADRESS_CC_DEVICE_NUM:
 			{//输配数量
-				//reg_detailes = app_general_pull_remote_bypass();
+				reg_detailes = app_general_pull_master_control_num();
 				break;
 			}	
 			case REG_ADRESS_CC_DEVICE_SEL:
 			{//当前输配片选
-				//reg_detailes = app_general_pull_remote_bypass();
+				reg_detailes = app_general_pull_master_control_sel();
 				break;
 			}	
 			case REG_ADRESS_CC_DEVICE_MASTER:
 			{//主站选择
-				//reg_detailes = app_general_pull_remote_bypass();
+				reg_detailes = app_general_pull_master_control_main();
 				break;
 			}	 
 			case REG_ADRESS_HARDWARESIGN:
@@ -4907,12 +4907,12 @@ uint16_t app_modbus_read_reg_data(uint16_t reg_addr)
 			}
 			case REG_ADDR_DHM1_POWER:
 			{//除湿模块开关机
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_dehum_power((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_RUN_STATUS:
 			{//除湿模块运行状态
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_dehum_run_status((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_SET_HUM:
@@ -4927,207 +4927,207 @@ uint16_t app_modbus_read_reg_data(uint16_t reg_addr)
 			}	
 			case REG_ADDR_DHM1_RUN_FANSPEED:
 			{//运行风速
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_dehum_run_fan_speed((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}		
 			case REG_ADDR_DHM1_SET_WARM_TEMP:
 			{//设定制热目标温度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_dehum_set_dest_warm_temp((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_SET_CLOD_TEMP:
 			{//设定制冷目标温度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_dehum_set_dest_cold_temp((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_SET_BACK_HOT_TEMP:
 			{//设定回热目标温度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_dehum_set_dest_back_hot_temp((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_SYSTEM_TEMP:
 			{//系统温度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_system_temp((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_SYSTEM_HUM:
 			{//系统湿度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_system_hum((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_IN_WIND_TEMP:
 			{//进风温度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_in_wind_temp((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_IN_WIND_HUM:
 			{//进风湿度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_in_wind_hum((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}	
 			case REG_ADDR_DHM1_OUT_WIND_TEMP:
 			{//出风温度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_out_wind_temp((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_OUT_WIND_HUM:
 			{//出风湿度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_out_wind_hum((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_BACK_AIR_TEMP:
 			{//室内温度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_backair_temp((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_BACK_AIR_HUM:
 			{//室内湿度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_backair_hum((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_BACK_AIR_CO2:
 			{//室内CO2
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_backair_co2((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_BACK_AIR_PM25:
 			{//室内PM2.5
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_backair_pm25((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_RESEVER4_TEMP:
 			{//预留4温度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_reserve4_temp((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_RESEVER4_HUM:
 			{//预留4湿度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_reserve4_hum((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_RESEVER5_TEMP:
 			{//预留5温度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_reserve5_temp((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			} 
 			case REG_ADDR_DHM1_RESEVER5_HUM:
 			{//预留5湿度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_reserve5_hum((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_PTC_TEMP:
 			{//PTC温度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_ptc_temp((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_TEMP_DIFF:
 			{//温度带宽
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_dehum_deadzone_temp((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_HUM_DIFF:
 			{//湿度带宽
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_deadzone_hum((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_PTC_PROTECT_DIFF:
 			{//PTC保护带宽
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_diff_ptc_protect((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_PTC_LIMIT_TEMP:
 			{//PTC温度限制
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_ptc_temp_limit_set((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_HOT_VAVLE_OUT:
 			{//电热阀输出
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_local_vavle_out((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_LIFT_PUMP_OUT:
 			{//提水泵输出
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_lift_pump_out((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_PTC_OUT:
 			{//PTC输出
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_ptc_out((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_MAIN_OUT:
 			{//输配接口输出
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_dehum_request((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_HOT_ASSIST:
 			{//辅助制热
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_hot_assist_enable((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_IN_WIND_TEMP:
 			{//进风校准温度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_adjust_in_wind_temp((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_IN_WIND_HUM:
 			{//进风校准湿度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_adjust_in_wind_hum((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_OUT_WIND_TEMP:
 			{//出风校准温度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_adjust_out_wind_temp((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_OUT_WIND_HUM:
 			{//出风校准湿度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_adjust_out_wind_hum((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_BACK_WIND_TEMP:
 			{//室内校准温度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_adjust_backair_temp((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			} 
 			case REG_ADDR_DHM1_ADJUST_BACK_WIND_HUM:
 			{//室内校准湿度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_adjust_backair_hum((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_BACK_WIND_CO2:
 			{//室内校准CO2
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_adjust_backair_co2((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_BACK_WIND_PM25:
 			{//室内校准PM2.5
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_adjust_backair_pm25((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_4_TEMP:
 			{//校准4温度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_adjust_reserve4_temp((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_4_HUM:
 			{//校准4湿度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_adjust_reserve4_hum((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_5_TEMP:
 			{//校准5温度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_reserve5_temp((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_5_HUM:
 			{//校准5湿度
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_reserve5_hum((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_DEVICE_ERROR:
 			{//设备故障字
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_error_word((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_DEVICE_RESET:
@@ -5137,77 +5137,77 @@ uint16_t app_modbus_read_reg_data(uint16_t reg_addr)
 			}
 			case REG_ADDR_DHM1_NEW_AIR_LOW_PWM:
 			{//新风低风量PWM值
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_new_air_pwm_low((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_NEW_AIR_MID_PWM:
 			{//新风中风量PWM值
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_new_air_pwm_mid((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_NEW_AIR_HIGH_PWM:
 			{//新风高风量PWM值
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_new_air_pwm_high((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_BACK_AIR_LOW_PWM:
 			{//回风低风量PWM值
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_back_air_pwm_low((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_BACK_AIR_MID_PWM:
 			{//回风中风量PWM值
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_back_air_pwm_mid((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_BACK_AIR_HIGH_PWM:
 			{//回风高风量PWM值
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_back_air_pwm_high((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_NET_CHANGE_PERIOD:
 			{//粗效过滤网更换周期
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_filter_change_time((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_NET_USED_TIME:
 			{//粗效过滤网使用时间
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_filter_usetime((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			} 
 			case REG_ADDR_DHM1_FAN_DIR_CHANGE:
 			{//风机互换功能
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_fan_hard_change((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_IN_FAN_STATUS:
 			{//进风风速状态值
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_in_wind_fanspeed_status((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_OUT_FAN_STATUS:
 			{//出风风速状态值
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_out_wind_fanspeed_status((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_IN_FAN_PWM:
 			{//进风电机PWM值
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_in_wind_fanspeed_pwm((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_IN_FAN_SPEED:
 			{//进风电机转速
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_in_wind_speed((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_OUT_FAN_PWM:
 			{//出风电机PWM值
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_out_wind_fanspeed_pwm((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_OUT_FAN_SPEED:
 			{//出风电机转速
-				//reg_detailes = app_general_pull_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_out_wind_speed((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			default:
@@ -5290,7 +5290,6 @@ bool app_modebus_write_reg_data(uint16_t reg_addr,uint16_t reg_detailes)
             }        
 			case MRegaddr_Restoragefac:
 			{//恢复出厂设置
-			  //  app_general_push_master_error_word(reg_detailes);
 			  	if(reg_detailes == 0x3589)
 				{
 					RestoreFactoryStorage();
@@ -5457,6 +5456,16 @@ bool app_modebus_write_reg_data(uint16_t reg_addr,uint16_t reg_detailes)
 				app_general_push_remote_bypass(reg_detailes);
 				break;
 			}
+			case REG_ADRESS_CC_DEVICE_SEL:
+			{//当前输配片选
+				app_general_push_master_control_sel(reg_detailes);
+				break;
+			}	
+			case REG_ADRESS_CC_DEVICE_MASTER:
+			{//主站选择
+				app_general_push_master_control_main(reg_detailes);
+				break;
+			}	 
 			case REG_ADDR_PAD1_POWER:
 			{
 				virtualPort = app_general_pull_pad_phy_port_bind_message((reg_addr-REG_ADDR_PAD_START)/256);
@@ -8656,182 +8665,182 @@ bool app_modebus_write_reg_data(uint16_t reg_addr,uint16_t reg_detailes)
 
 			case REG_ADDR_DHM1_POWER:
 			{//除湿模块开关机
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+			    app_general_push_dhm_dehum_powert((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_RUN_STATUS:
 			{//除湿模块运行状态
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_dehum_run_status((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_SET_HUM:
 			{//设定湿度
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_aircod_humidity((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_SET_FANSPEED:
 			{//设定风速
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
 				break;
 			}		
 			case REG_ADDR_DHM1_SET_WARM_TEMP:
 			{//设定制热目标温度
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_dehum_set_dest_warm_temp((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_SET_CLOD_TEMP:
 			{//设定制冷目标温度
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_dehum_set_dest_cold_temp((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_SET_BACK_HOT_TEMP:
 			{//设定回热目标温度
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_dehum_set_dest_back_hot_temp((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_SYSTEM_TEMP:
 			{//系统温度
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_system_temp((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_SYSTEM_HUM:
 			{//系统湿度
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_system_hum((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}		
 			case REG_ADDR_DHM1_TEMP_DIFF:
 			{//温度带宽
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_dehum_deadzone_temp((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_HUM_DIFF:
 			{//湿度带宽
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_deadzone_hum((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_PTC_PROTECT_DIFF:
 			{//PTC保护带宽
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_diff_ptc_protect((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_PTC_LIMIT_TEMP:
 			{//PTC温度限制
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_ptc_temp_limit_set((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_HOT_ASSIST:
 			{//辅助制热
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_error_word((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_IN_WIND_TEMP:
 			{//进风校准温度
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_adjust_in_wind_temp((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_IN_WIND_HUM:
 			{//进风校准湿度
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_adjust_in_wind_hum((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_OUT_WIND_TEMP:
 			{//出风校准温度
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_adjust_out_wind_temp((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_OUT_WIND_HUM:
 			{//出风校准湿度
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_adjust_out_wind_hum((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_BACK_WIND_TEMP:
 			{//室内校准温度
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_adjust_backair_temp((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			} 
 			case REG_ADDR_DHM1_ADJUST_BACK_WIND_HUM:
 			{//室内校准湿度
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_adjust_backair_hum((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_BACK_WIND_CO2:
 			{//室内校准CO2
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_adjust_backair_co2((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_BACK_WIND_PM25:
 			{//室内校准PM2.5
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_adjust_backair_pm25((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_4_TEMP:
 			{//校准4温度
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_adjust_reserve4_temp((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_4_HUM:
 			{//校准4湿度
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_adjust_reserve4_hum((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_5_TEMP:
 			{//校准5温度
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_adjust_reserve5_temp((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_5_HUM:
 			{//校准5湿度
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_adjust_reserve5_hum((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_DEVICE_RESET:
 			{//故障复位字
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_NEW_AIR_LOW_PWM:
 			{//新风低风量PWM值
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_new_air_pwm_low((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_NEW_AIR_MID_PWM:
 			{//新风中风量PWM值
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_new_air_pwm_mid((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_NEW_AIR_HIGH_PWM:
 			{//新风高风量PWM值
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_new_air_pwm_high((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_BACK_AIR_LOW_PWM:
 			{//回风低风量PWM值
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_back_air_pwm_low((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_BACK_AIR_MID_PWM:
 			{//回风中风量PWM值
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_back_air_pwm_mid((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_BACK_AIR_HIGH_PWM:
 			{//回风高风量PWM值
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_back_air_pwm_high((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_NET_CHANGE_PERIOD:
 			{//粗效过滤网更换周期
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_filter_change_time((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			case REG_ADDR_DHM1_NET_USED_TIME:
 			{//粗效过滤网使用时间
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_filter_usetime((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			} 
 			case REG_ADDR_DHM1_FAN_DIR_CHANGE:
 			{//风机互换功能
-				//app_general_push_dhm_fanSpeed((reg_addr-REG_ADDR_DHM_START)/256,(NewAirLevelSet_Def)reg_detailes);
+				app_general_push_dhm_fan_hard_change((reg_addr-REG_ADDR_DHM_START)/256,reg_detailes);
 				break;
 			}
 			default:
