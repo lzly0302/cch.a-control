@@ -5117,12 +5117,12 @@ uint16_t app_modbus_read_reg_data(uint16_t reg_addr)
 			}
 			case REG_ADDR_DHM1_ADJUST_5_TEMP:
 			{//校准5温度
-				reg_detailes = app_general_pull_dhm_reserve5_temp((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_adjust_reserve5_temp((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_ADJUST_5_HUM:
 			{//校准5湿度
-				reg_detailes = app_general_pull_dhm_reserve5_hum((reg_addr-REG_ADDR_DHM_START)/256);
+				reg_detailes = app_general_pull_dhm_adjust_reserve5_hum((reg_addr-REG_ADDR_DHM_START)/256);
 				break;
 			}
 			case REG_ADDR_DHM1_DEVICE_ERROR:

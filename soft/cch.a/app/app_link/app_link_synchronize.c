@@ -41,7 +41,7 @@ uint32_t        dhmOccupyWord[MASTER_DHM_NUM];//除湿机抢占字
 uint8_t deviceid_addr[6]={0xaa,0xaa,0xaa,0xaa,0xaa,0xaa};//写入设备ID时用的地址
 #define  DEVICE_KEY 0XFA3456AF//写入设备密匙
 const uint8_t dpPadLen_pad[MAX_DATA_POINT_LEN_PAD] = {1,2,2,1,1,1,4,10,5,32,14,7,4,4,6};//面板数据点长度
-const uint8_t dpPadLen_hm[MAX_DATA_POINT_LEN_DHM]  = {1,1,1,1,1,2,2,2,1,1,7,12,21,3,6,4,22,2,11,8};//除湿模块数据点长度
+const uint8_t dpPadLen_hm[MAX_DATA_POINT_LEN_DHM]  = {1,1,1,1,1,2,2,2,1,1,7,12,21,3,6,4,27,2,11,8};//除湿模块数据点长度
 const uint8_t dpPadLen_system[MAX_DATA_POINT_LEN_SYSTEM] = {1,1,2,2,1,1,2,2,2,2,2,1,1,2,3,3,11,11,11,15,11,2,10,43,8,6,6,7,4,168,148,4};//系统数据点长度
 
 
@@ -96,7 +96,7 @@ void app_pull_data_point_message_pad(uint8_t in_solidNum,uint16_t in_dpAddr,uint
         /*除湿模块信息*/
         case DP_ADDR_DHM_POWER:
         {//除湿模块开关机
-            out_buff[0] = app_general_pull_dhm_dehum_power(in_solidNum);
+            out_buff[0] = app_general_pull_power_status();
             break;
         }   
         case DP_ADDR_DHM_RUN_MODE:
@@ -438,12 +438,12 @@ void app_push_data_point_message_pad(uint8_t in_solidNum,uint16_t in_dpAddr,uint
             app_general_push_pad_hardware_sign(comm_port,pbc_arrayToInt16u_bigEndian(&in_buff[5]));//硬件标识
             break;
         } 
-               case DP_ADDR_DHM_LIST_MODULE_MEASURE:
+        case DP_ADDR_DHM_LIST_MODULE_MEASURE:
         {//除湿模块测量数据
             app_general_push_dhm_in_wind_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[0]));//进风温度
             app_general_push_dhm_in_wind_hum(in_solidNum,in_buff[2]);//进风湿度
-            app_general_push_dhm_in_wind_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[3]));//出风温度
-            app_general_push_dhm_in_wind_hum(in_solidNum,in_buff[5]);//	出风湿度
+            app_general_push_dhm_out_wind_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[3]));//出风温度
+            app_general_push_dhm_out_wind_hum(in_solidNum,in_buff[5]);//	出风湿度
             app_general_push_dhm_backair_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[6]));//室内温度
             app_general_push_dhm_backair_hum(in_solidNum,in_buff[8]);//室内湿度
             app_general_push_dhm_backair_co2(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[9]));//室内CO2浓度
@@ -489,8 +489,8 @@ void app_push_data_point_message_pad(uint8_t in_solidNum,uint16_t in_dpAddr,uint
             app_general_push_dhm_adjust_backair_co2(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[15]));//室内校准CO2
             app_general_push_dhm_adjust_reserve4_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[17]));//校准4温度
             app_general_push_dhm_adjust_reserve4_hum(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[19]));//校准4湿度
-            app_general_push_dhm_reserve5_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[21]));//校准5温度
-            app_general_push_dhm_reserve5_hum(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[23]));//校准5湿度
+            app_general_push_dhm_adjust_reserve5_temp(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[21]));//校准5温度
+            app_general_push_dhm_adjust_reserve5_hum(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[23]));//校准5湿度
             app_general_push_dhm_ptc_temp_limit_set(in_solidNum,pbc_arrayToInt16u_bigEndian(&in_buff[25]));//PTC温度限制
             break;
         } 
@@ -2123,7 +2123,7 @@ void _control_pad_syn_task(void)
                             pbc_int16uToArray_bigEndian(app_general_pull_devive_id1(app_general_pull_dhm_use_port(i)),&idBuff[2]);
                             pbc_int16uToArray_bigEndian(app_general_pull_devive_id2(app_general_pull_dhm_use_port(i)),&idBuff[4]);
                             app_master_slave_send_syn_block(SYSTEM_PAD,&idBuff[0],padSynBlock);
-                            appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_SEND_UPDATA_WORD_RESULT;
+                            appModbusSyn[SYSTEM_PAD].mainSynStatsus = SYN_STATUS_RESEND_UPDATA_WORD_RESULT;
                             break;
                         }
                     }                  

@@ -12,7 +12,7 @@ typedef struct
         uint16_t   padErrorWord;//面板故障字
         uint16_t   outputFanSpeed;//转速
         int16_t    measureTemp;//测量温度
-        uint16_t   humility;//湿度
+        int16_t   humility;//湿度
         uint16_t   set_coldTemp;//制冷设定温度
         uint16_t   set_warmTemp;//采暖设定温度
         uint16_t   adjTemp;//校温
@@ -451,7 +451,7 @@ void app_general_push_power_status(bool in_power_status)
     {
         StoRunParameter.systemPower = in_power_status;
         app_push_once_save_sto_parameter();
-        app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_POWER);
+       // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_POWER);
         app_link_syn_push_outside_updata_word(SYSTEM_PAD,OCCUPY_PAD_SYSTEM_MESSAGE);
         uint8_t i = 0;
         for(i = 0;i < MASTER_DHM_NUM;i++)
@@ -482,7 +482,7 @@ void app_general_push_aircod_mode(AirRunMode_Def in_mode)
 		if(StoRunParameter.airRunmode != in_mode)
 		{
 			StoRunParameter.airRunmode = in_mode;
-            app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_RUN_MODE);//系统模式
+           // app_link_syn_push_outside_updata_word(SYSTEM_MASTER,OCCUPY_SYSTEM_RUN_MODE);//系统模式
             app_link_syn_push_outside_updata_word(SYSTEM_PAD,OCCUPY_PAD_SYSTEM_MESSAGE);//末端模式
 			app_push_once_save_sto_parameter();
             uint8_t i = 0;
@@ -3637,6 +3637,28 @@ void app_general_para_updata_task(void)
         {//辐射关机则固定为16度
             max_lew_temp = 160;
         }
+        //系統溫濕度
+        int16_t maxTemp = 0;
+        int16_t maxHum = 0;
+        for(i = 0; i < MASTER_PAD_NUM;i++)
+        {
+            if(s_sysPara.publicPara[i].onlineFlag)
+            {             
+                if(s_sysPara.padPara[i].measureTemp > maxTemp)
+                {
+                    maxTemp = s_sysPara.padPara[i].measureTemp;
+                }
+                if(s_sysPara.padPara[i].humility > maxHum)
+                {
+                    maxHum = s_sysPara.padPara[i].humility;
+                }
+            }
+        }
+        for(i = 0; i < MASTER_DHM_NUM;i++)
+        {
+            s_sysPara.dhmPara[i].system_temp = maxTemp;
+            s_sysPara.dhmPara[i].system_hum = maxHum;
+        }
         /*二号策略氟机制冷*/
         bool method2_dehum_flag = false;
         #define HUM_VALUE_CONFIG  60
@@ -3690,11 +3712,11 @@ void app_general_para_updata_task(void)
         }
         if(output_aircod_backup)
         {//预冷阀
-            s_sysPara.pad_output_status |= (0x01 << 8);
+            s_sysPara.pad_output_status |= (0x01 << 11);
         }
         else
         {   
-            s_sysPara.pad_output_status &= (~(0x01<<8));
+            s_sysPara.pad_output_status &= (~(0x01<<11));
         }
     }
 }
@@ -3715,7 +3737,7 @@ void app_general_mix_water_task(void)
         app_general_id_ocupy_task();//末端ID占用任务
         app_general_para_updata_task();//参数更新  
         app_general_check_dpstamp();//时间戳校准
-        app_general_check_pad_updata();//面板升级
+       // app_general_check_pad_updata();//面板升级
         static uint8_t   pump_status = 0;    //水泵输出
         if(StoRunParameter.systemPower)
         {
@@ -3738,6 +3760,13 @@ void app_general_mix_water_task(void)
                     }
                 }
                 APP_push_aricod_message(DRIVE_BOARD_SET_MODE,AIR_MODE_STOP);//停机模式
+                for(i = 0;i < MASTER_DHM_NUM;i++)
+                {
+                    if(app_general_pull_dhm_id_use_message(i))
+                    {
+                        app_general_push_dhm_dehum_run_status(i,0x04);//通风
+                    }
+                }
             }
             else
             {//制冷、制热、除湿   
@@ -3745,11 +3774,33 @@ void app_general_mix_water_task(void)
                 {
                     APP_push_aricod_message(DRIVE_BOARD_SET_MODE,AIR_MODE_COOL);//制冷模式
                     APP_push_aricod_message(DRIVE_BOARD_COOL_OUTWATER_SETTEMP,app_general_pull_set_cold_water_temp());//制冷出水设置温度
+                    for(i = 0;i < MASTER_DHM_NUM;i++)
+                    {
+                        if(app_general_pull_dhm_id_use_message(i))
+                        {
+                            if(system_need & ENGER_NEED_DEHM_BIT)
+                            {
+                                app_general_push_dhm_dehum_run_status(i,0x03);//除湿
+                            }
+                            else
+                            {
+                                app_general_push_dhm_dehum_run_status(i,0x01);//制冷
+                            }
+                            
+                        }
+                    }
                 }
                 else
                 {
                     APP_push_aricod_message(DRIVE_BOARD_SET_MODE,AIR_MODE_HEAT);//制热模式
                     APP_push_aricod_message(DRIVE_BOARD_HOT_OUTWATER_SETTEMP,app_general_pull_set_heat_water_temp());//制热出水设置温度
+                    for(i = 0;i < MASTER_DHM_NUM;i++)
+                    {
+                        if(app_general_pull_dhm_id_use_message(i))
+                        {
+                            app_general_push_dhm_dehum_run_status(i,0x02);//制热
+                        }
+                    }
                 }
                 if(_app_pull_fan_energy_need())
                 {
@@ -3825,41 +3876,9 @@ void app_general_mix_water_task(void)
                             }
                             else
                             {//无辐射能需
+                                s_sysPara.output_threeWayValve = false;   
+                                s_sysPara.output_pump = false;
                                 start_energy_need = false;
-                                switch (pump_status)
-                                {
-                                    case 0:
-                                    {
-                                        s_sysPara.output_pump = false;
-                                        if((s_sysPara.master_supply_temp - app_pull_mix_water_temp()) >= 20)
-                                        {
-                                            s_sysPara.output_pump = true;
-                                            pump_status = 1;
-                                        }
-                                        break;
-                                    }
-                                    case 1:
-                                    {
-                                        if((s_sysPara.master_supply_temp - app_pull_mix_water_temp()) >= 20)
-                                        {//防止水泵停止运行后混水温度一直无变化
-                                            s_sysPara.output_pump = true;
-                                        }
-                                        else if((s_sysPara.master_supply_temp - app_pull_mix_water_temp()) <= 10)
-                                        {
-                                            s_sysPara.output_pump = false;
-                                        } 
-                                        break;
-                                    }                                                               
-                                    default: break;
-                                }                                
-                                s_sysPara.output_threeWayValve = false;       
-                                for(i = 0; i <  MASTER_PAD_NUM;i++)
-                                {
-                                    output_terminal_backup[i] = false;
-                                }
-                                /*两路风盘保持不变*/
-                                output_terminal_backup[6] = s_sysPara.publicPara[6].output_terminal;
-                                output_terminal_backup[7] = s_sysPara.publicPara[7].output_terminal;
                             }   
                         } 
                         if(inloop_checkFlag)
@@ -3962,41 +3981,9 @@ void app_general_mix_water_task(void)
                             }
                             else
                             {//无辐射能需
-                                start_energy_need = false;
-                                switch (pump_status)
-                                {
-                                    case 0:
-                                    {
-                                        s_sysPara.output_pump = false;
-                                        if((s_sysPara.master_supply_temp - app_pull_mix_water_temp()) >= 20)
-                                        {
-                                            s_sysPara.output_pump = true;
-                                            pump_status = 1;
-                                        }
-                                        break;
-                                    }
-                                    case 1:
-                                    {
-                                        if((s_sysPara.master_supply_temp - app_pull_mix_water_temp()) >= 20)
-                                        {//防止水泵停止运行后混水温度一直无变化
-                                            s_sysPara.output_pump = true;
-                                        }
-                                        else if((s_sysPara.master_supply_temp - app_pull_mix_water_temp()) <= 10)
-                                        {
-                                            s_sysPara.output_pump = false;
-                                        } 
-                                        break;
-                                    }                                                               
-                                    default: break;
-                                }           
-                                s_sysPara.output_threeWayValve = false;        
-                                for(i = 0; i <  MASTER_PAD_NUM;i++)
-                                {
-                                    output_terminal_backup[i] = false;
-                                }
-                                /*两路风盘保持不变*/
-                                output_terminal_backup[6] = s_sysPara.publicPara[6].output_terminal;
-                                output_terminal_backup[7] = s_sysPara.publicPara[7].output_terminal;
+                                 s_sysPara.output_threeWayValve = false;   
+                                 s_sysPara.output_pump = false;
+                                 start_energy_need = false;
                             }   
                         } 
                         if(inloop_checkFlag)

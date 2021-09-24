@@ -31,6 +31,8 @@ void stamp_updata(void)
     for(i = 0;i < MASTER_DHM_NUM;i++)
     {//除湿dp时间戳更新
         app_general_push_dhm_dp_stamp(i,DP_ADDR_DHM_LIST_SYSTEM_RTC,pbc_timeStamp_get_stamp());//时间
+        app_general_push_dhm_dp_stamp(i,DP_ADDR_DHM_LIST_SYSTEM_TEMP_HUM,pbc_timeStamp_get_stamp());//系统温湿度
+        app_general_push_dhm_dp_stamp(i,DP_ADDR_DHM_RUN_MODE,pbc_timeStamp_get_stamp());//运行状态
     }   
 }
 void app_clock_timing_read(void)
