@@ -3633,7 +3633,7 @@ void app_general_para_updata_task(void)
             }
         }
         max_lew_temp = max_lew_temp_backup;
-        if(max_lew_temp == 0)
+        if(max_lew_temp < 160)
         {//辐射关机则固定为16度
             max_lew_temp = 160;
         }

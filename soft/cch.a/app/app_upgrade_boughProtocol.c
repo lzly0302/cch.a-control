@@ -536,14 +536,14 @@ void app_bough_update_master_task(void)
                 }
                 else
                 {
-                    for(i = 0; i < MASTER_PAD_NUM;i++)
+                    for(i = 0; i < MASTER_DHM_NUM;i++)
                     {
-                        if(app_general_pull_pad_id_use_message(i))
+                        if(app_general_pull_dhm_id_use_message(i))
                         {
-                            if(app_general_pull_devive_type(i) == DEVICE_TYPE_DHM)
-                            {
+                          //  if(app_general_pull_devive_type(i) == DEVICE_TYPE_DHM)
+                          //  {
                                 padList |= (0x01<<i);
-                            }
+                          //  }
                         }
                     }      
                 }

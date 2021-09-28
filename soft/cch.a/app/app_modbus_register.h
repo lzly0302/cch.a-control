@@ -759,7 +759,7 @@
 
 /*房间温控器DP点地址*/ 
 #define DP_ADDR_PAD_POWER                                 0X00//开关机
-#define DP_ADDR_PAD_SET_COLD_TEMP                         0X01//	制冷设定温度
+#define DP_ADDR_PAD_SET_COLD_TEMP                         0X01//制冷设定温度
 #define DP_ADDR_PAD_SET_HEAT_TEMP                         0X02//制热设定温度
 #define DP_ADDR_PAD_CHILD_LOCK                            0X03//童锁
 #define DP_ADDR_PAD_SET_FAN                               0X04//设定风速
